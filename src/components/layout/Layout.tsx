@@ -17,7 +17,6 @@ const Layout = (props: {
 export default Layout;
 
 const Main = styled.main`
-    padding: 20px;
     width: 70%;
     margin: 0 auto;
 `;
