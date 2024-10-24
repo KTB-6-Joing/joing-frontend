@@ -2,12 +2,17 @@ import React from 'react';
 import styled from 'styled-components';
 import LogoImg from "../../assets/Logo_joing.png";
 import '../../styles/fonts.css';
+import {useUser} from '../../contexts/UserContext.tsx'
+import iconMail from "../../assets/icons/icon_mail.png";
+import iconProfile from "../../assets/icons/icon_profile.png";
 
 interface HeaderProps {
     onLoginClick: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
+    const { role } = useUser();
+
     return (
         <HeaderContainer>
             <Content>
@@ -15,7 +20,18 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
                     <img src={LogoImg} alt="arrow icon"/>
                     Joing
                 </Logo>
-                <Button onClick={onLoginClick}>Login</Button>
+                {role === null
+                    ? <Button onClick={onLoginClick}>Login</Button>
+                    : <ButtonGroup>
+                        <Button>
+                            <img src={iconMail} alt="arrow icon"/>
+                        </Button>
+                        <Button>
+                            <img src={iconProfile} alt="arrow icon"/>
+                        </Button>
+                    </ButtonGroup>
+                }
+
             </Content>
         </HeaderContainer>
     );
@@ -71,6 +87,19 @@ const Button = styled.button`
     background-color: white;
 
     &:hover {
-        background-color: #dfdfdf;
+        transform: scale(1.05);    
     }
+
+    &:focus{
+        outline: none;
+    }
+
+    img {
+        width: 24px;
+        height: 24px;
+    }
+`;
+
+const ButtonGroup = styled.div`
+
 `;

@@ -228,102 +228,14 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
                         <InputForm>
                             <Label>선호 카테고리</Label>
                             <Category>
-                                <Type
-                                    onClick={() => handleTypeClick("게임")}
-                                    isSelected={selectedType === "게임"}
-                                >
-                                    게임
-                                </Type>
-                                <Type
-                                    onClick={() => handleTypeClick("과학기술")}
-                                    isSelected={selectedType === "과학기술"}
-                                >
-                                    과학기술
-                                </Type>
-                                <Type
-                                    onClick={() => handleTypeClick("교육")}
-                                    isSelected={selectedType === "교육"}
-                                >
-                                    교육
-                                </Type>
-                                <Type
-                                    onClick={() => handleTypeClick("노하우/스타일")}
-                                    isSelected={selectedType === "노하우/스타일"}
-                                >
-                                    노하우/스타일
-                                </Type>
-                                <Type
-                                    onClick={() => handleTypeClick("뉴스/정치")}
-                                    isSelected={selectedType === "뉴스/정치"}
-                                >
-                                    뉴스/정치
-                                </Type>
-                                <Type
-                                    onClick={() => handleTypeClick("스포츠")}
-                                    isSelected={selectedType === "스포츠"}
-                                >
-                                    스포츠
-                                </Type>
-                                <Type
-                                    onClick={() => handleTypeClick("비영리/사회운동")}
-                                    isSelected={selectedType === "비영리/사회운동"}
-                                >
-                                    비영리/사회운동
-                                </Type>
-                                <Type
-                                    onClick={() => handleTypeClick("애완동물/동물")}
-                                    isSelected={selectedType === "애완동물/동물"}
-                                >
-                                    애완동물/동물
-                                </Type>
-                                <Type
-                                    onClick={() => handleTypeClick("엔터테인먼트")}
-                                    isSelected={selectedType === "엔터테인먼트"}
-                                >
-                                    엔터테인먼트
-                                </Type>
-                                <Type
-                                    onClick={() => handleTypeClick("여행/이벤트")}
-                                    isSelected={selectedType === "여행/이벤트"}
-                                >
-                                    여행/이벤트
-                                </Type>
-                                <Type
-                                    onClick={() => handleTypeClick("영화/애니메이션")}
-                                    isSelected={selectedType === "영화/애니메이션"}
-                                >
-                                    영화/애니메이션
-                                </Type>
-                                <Type
-                                    onClick={() => handleTypeClick("음악")}
-                                    isSelected={selectedType === "음악"}
-                                >
-                                    음악
-                                </Type>
-                                <Type
-                                    onClick={() => handleTypeClick("인물/블로그")}
-                                    isSelected={selectedType === "인물/블로그"}
-                                >
-                                    인물/블로그
-                                </Type>
-                                <Type
-                                    onClick={() => handleTypeClick("자동차/교통")}
-                                    isSelected={selectedType === "자동차/교통"}
-                                >
-                                    자동차/교통
-                                </Type>
-                                <Type
-                                    onClick={() => handleTypeClick("코미디")}
-                                    isSelected={selectedType === "코미디"}
-                                >
-                                    코미디
-                                </Type>
-                                <Type
-                                    onClick={() => handleTypeClick("기타")}
-                                    isSelected={selectedType === "기타"}
-                                >
-                                    기타
-                                </Type>
+                                {categories.map((category) => (
+                                        <Type
+                                            onClick={() => handleTypeClick(category)}
+                                            isSelected={selectedType === category}
+                                        >
+                                            {category}
+                                        </Type>
+                                    ))}
                             </Category>
                         </InputForm>
                     </>

@@ -24,7 +24,7 @@ const Auth: React.FC<AuthProps> = ({handleClose}) => {
     const renderContent = () => {
         switch (currentView) {
             case "login":
-                return <LoginForm onNext={() => setCurrentView("roleSelection")} />;
+                return <LoginForm onNext={() => setCurrentView("roleSelection")}/>;
             case "roleSelection":
                 return (
                     <RoleSelection
@@ -44,7 +44,7 @@ const Auth: React.FC<AuthProps> = ({handleClose}) => {
                     onNext={() => setCurrentView("joinCompletion")}
                     onBack={() => setCurrentView("roleSelection")}/>;
             case "joinCompletion":
-                return <JoinCompletion onClose={handleClose} />;
+                return <JoinCompletion onClose={handleClose}/>;
             default:
                 return null;
         }
@@ -53,7 +53,7 @@ const Auth: React.FC<AuthProps> = ({handleClose}) => {
     return (
         <ModalOverlay onClick={handleClose}>
             <ModalContainer onClick={(e) => e.stopPropagation()}>
-                <Cross src={iconCross} alt="Cross Icon" onClick={handleClose} />
+                <Cross src={iconCross} alt="Cross Icon" onClick={handleClose}/>
                 {renderContent()}
             </ModalContainer>
         </ModalOverlay>

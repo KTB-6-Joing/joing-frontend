@@ -23,7 +23,7 @@ const Layout = (props: {
                 {props.children}
             </Main>
             {isOpenModal && (
-                <Auth handleLoginClick={handleLoginClick} handleClose={handleClose}/>
+                <Auth handleClose={handleClose}/>
             )}
         </>
     )

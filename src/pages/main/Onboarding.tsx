@@ -1,7 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
+// @ts-ignore
+import Fullpage, { FullPageSections, FullpageSection, FullpageNavigation } from '@ap.cx/react-fullpage';
+import {useUser} from '../../contexts/UserContext.tsx'
+
 import Toggle from "../../components/toggle/Toggle.tsx";
 import Layout from "../../components/layout/Layout.tsx";
+
 import iconArrow from '../../assets/icons/icon_arrow.png';
 import iconMatching from '../../assets/icons/icon_matching.png';
 import iconContent from '../../assets/icons/icon_content.png';
@@ -9,11 +14,18 @@ import iconStoryboard from '../../assets/icons/icon_storyboard.png';
 import iconCleanbot from '../../assets/icons/icon_bot.png';
 
 import '../../styles/fonts.css';
-// @ts-ignore
-import Fullpage, { FullPageSections, FullpageSection, FullpageNavigation } from '@ap.cx/react-fullpage';
 
 const Onboarding: React.FC = () => {
-    const [toggleValue, setIsToggled] = useState("creator");
+    const { role } = useUser();
+    const [toggleValue, setIsToggled] = useState<string>("");
+
+    useEffect(() => {
+        if (role === "creator" || role === null) {
+            setIsToggled("creator");
+        } else if (role === "planner") {
+            setIsToggled("planner");
+        }
+    }, [role]);
 
     const handleToggleChange = (newValue: string) => {
         setIsToggled(newValue);
