@@ -8,8 +8,10 @@ const Header: React.FC = () => {
 
     return (
         <HeaderContainer>
-            <Logo>Joing</Logo>
-            <Button onClick={handleLoginClick}>Login</Button>
+            <Content>
+                <Logo>Joing</Logo>
+                <Button onClick={handleLoginClick}>Login</Button>
+            </Content>
         </HeaderContainer>
     );
 };
@@ -21,13 +23,24 @@ const HeaderContainer = styled.header`
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 70%;
+    width: 100%;
     height: 60px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
     padding: 0 20px;
     z-index: 1000;
+    background-color: white;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
+
+`;
+
+const Content = styled.div`
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
 `;
 
 const Logo = styled.div`

@@ -44,7 +44,7 @@ const Switch = styled.div<{ value: string }>`
     border: 2px solid;
     
     ${({ value }) =>
-            value === "creator" ? "border-color: #ff8484;" : "border-color: #6cbd4f;"}
+            value === "creator" ? "border-color: #FF5D5D;" : "border-color: #6cbd4f;"}
 
     span {
         position: absolute;
@@ -57,7 +57,7 @@ const Switch = styled.div<{ value: string }>`
         z-index: 1;
         ${({value}) =>
                 value === "creator"
-                        ? "transform: translateX(2px); background-color: #ff8484"
+                        ? "transform: translateX(2px); background-color: #FF5D5D"
                         : "transform: translateX(168px); background-color: #6cbd4f"}
     }
 `;
