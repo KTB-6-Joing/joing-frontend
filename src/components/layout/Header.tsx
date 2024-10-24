@@ -1,16 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
+import LogoImg from "../../assets/Logo_joing.png";
+import '../../styles/fonts.css';
 
-const Header: React.FC = () => {
-    const handleLoginClick = () => {
-        console.log('Login button clicked');
-    };
+interface HeaderProps {
+    onLoginClick: () => void;
+}
 
+const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
     return (
         <HeaderContainer>
             <Content>
-                <Logo>Joing</Logo>
-                <Button onClick={handleLoginClick}>Login</Button>
+                <Logo>
+                    <img src={LogoImg} alt="arrow icon"/>
+                    Joing
+                </Logo>
+                <Button onClick={onLoginClick}>Login</Button>
             </Content>
         </HeaderContainer>
     );
@@ -40,22 +45,32 @@ const Content = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-
 `;
 
 const Logo = styled.div`
-    font-size: 24px;
+    font-family: 'SaenggeoJincheon', serif;
+    letter-spacing: -0.03em;
+    font-size: 28px;
     font-weight: bold;
     color: black;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    img{
+        width: 44px;
+        height: auto;
+    }
 `;
 
 const Button = styled.button`
+    font-family: 'SUITE-Regular', serif;
     border: none;
     font-size: 16px;
     cursor: pointer;
     background-color: white;
-    
+
     &:hover {
-    background-color: #ff5d5d;
+        background-color: #dfdfdf;
     }
 `;

@@ -1,15 +1,30 @@
 import Header from "./Header.tsx";
 import styled from 'styled-components';
+import Auth from "../modal/Auth.tsx";
+import React, {useCallback, useState} from "react";
 
 const Layout = (props: {
     children: React.ReactNode
 }) => {
+    const [isOpenModal, setOpenModal] = useState<boolean>(false);
+
+    const handleLoginClick = useCallback(() => {
+        setOpenModal(!isOpenModal);
+    }, [isOpenModal]);
+
+    const handleClose = useCallback(() => {
+        setOpenModal(false);
+    }, []);
+
     return (
         <>
-            <Header />
+            <Header onLoginClick={handleLoginClick}/>
             <Main>
                 {props.children}
             </Main>
+            {isOpenModal && (
+                <Auth handleLoginClick={handleLoginClick} handleClose={handleClose}/>
+            )}
         </>
     )
 }

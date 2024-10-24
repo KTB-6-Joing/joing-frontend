@@ -3,6 +3,12 @@ import styled from "styled-components";
 import Toggle from "../../components/toggle/Toggle.tsx";
 import Layout from "../../components/layout/Layout.tsx";
 import iconArrow from '../../assets/icons/icon_arrow.png';
+import iconMatching from '../../assets/icons/icon_matching.png';
+import iconContent from '../../assets/icons/icon_content.png';
+import iconStoryboard from '../../assets/icons/icon_storyboard.png';
+import iconCleanbot from '../../assets/icons/icon_bot.png';
+
+import '../../styles/fonts.css';
 // @ts-ignore
 import Fullpage, { FullPageSections, FullpageSection, FullpageNavigation } from '@ap.cx/react-fullpage';
 
@@ -53,10 +59,33 @@ const Onboarding: React.FC = () => {
                     </CenteredSection>
                     <CenteredSection>
                         <Container2>
+                            <Slogan><span className="highlight">AI가 제공하는 Joing만의 차별화 서비스</span></Slogan>
+                            <Services>
+                                <ServBox>
+                                    <img src={iconMatching} alt="Matching icon"/>
+                                    프로필/기획안 기반 매칭
+                                </ServBox>
+                                <ServBox>
+                                    <img src={iconContent} alt="Content icon"/>
+                                    기획안 평가/요약
+                                </ServBox>
+                                <ServBox>
+                                    <img src={iconStoryboard} alt="Storyboard icon" />
+                                    기획안 콘티 생성
+                                </ServBox>
+                                <ServBox>
+                                    <img src={iconCleanbot} alt="Bot icon" />
+                                    클린봇을 통한 부적격 점검
+                                </ServBox>
+                            </Services>
+                        </Container2>
+                    </CenteredSection>
+                    <CenteredSection>
+                        <Container3>
                             {toggleValue === "creator" ? (
                                 <>
                                     <Slogan>
-                                        크리에이터인 당신을 위한 JOING만의 차별화된 서비스!
+                                        크리에이터인 당신을 위한 JOING만의 서비스 프로세스!
                                     </Slogan>
                                     <Process>
                                         <Box>
@@ -89,7 +118,7 @@ const Onboarding: React.FC = () => {
                             ) : (
                                 <>
                                     <Slogan>
-                                        기획자인 당신을 위한 JOING만의 차별화된 서비스!
+                                        기획자인 당신을 위한 JOING만의 서비스 프로세스!
                                     </Slogan>
                                     <Process>
                                         <Box>
@@ -120,7 +149,7 @@ const Onboarding: React.FC = () => {
                                     </Process>
                                 </>
                             )}
-                        </Container2>
+                        </Container3>
                     </CenteredSection>
                 </FullPageSections>
             </Fullpage>
@@ -150,12 +179,19 @@ const LeftBox = styled.div`
 `;
 
 const Slogan = styled.h2`
+    font-family: 'GongGothicMedium',serif;
     font-size: 24px;
     font-weight: bolder;
+    color: black;
+
+    .highlight {
+        color: #fff;
+    }
 `;
 
 const Detail = styled.text`
     margin-bottom: 50px;
+    font-family: 'SUITE-Regular';
 `;
 
 const MainButton = styled.button`
@@ -194,6 +230,44 @@ const Container2 = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    background-color: #636363;
+    width: 100%;
+    height: 100vh;
+`;
+
+const Services = styled.div`
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    margin: 50px 0 0 0;
+`;
+
+const ServBox = styled.div`
+    width: 230px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-radius: 30px;
+    gap: 50px;
+    font-family: 'SUITE-BOld',serif;
+    font-size: 20px;
+    
+    img{
+        width: 130px;
+        height: auto;
+        filter: drop-shadow(-6px 6px 1px rgba(0, 0, 0, 0.2)); /* drop-shadow 사용 */
+    }
+`;
+
+const Container3 = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
 `;
 
@@ -201,7 +275,7 @@ const Process = styled.div`
     width: 70%;
     display: flex;
     justify-content: space-between;
-    margin: 20px 0;
+    margin: 50px 0 0 0;
 `;
 
 const Box = styled.div`
@@ -226,7 +300,8 @@ const Num = styled.h2`
 `;
 
 const Title = styled.h2<{ value: string }>`
-    font-size: 20px;
+    font-family: 'GongGothicMedium';
+    font-size: 18px;
     font-weight: bolder;
     color: ${({ value }) => (value === "creator" ? "#FF5D5D" : "#6cbd4f")};
 `;
