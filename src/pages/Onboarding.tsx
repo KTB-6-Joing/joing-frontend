@@ -2,18 +2,18 @@ import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 // @ts-ignore
 import Fullpage, { FullPageSections, FullpageSection, FullpageNavigation } from '@ap.cx/react-fullpage';
-import {useUser} from '../../contexts/UserContext.tsx'
+import {useUser} from '../contexts/UserContext.tsx'
 
-import Toggle from "../../components/toggle/Toggle.tsx";
-import Layout from "../../components/layout/Layout.tsx";
+import Toggle from "../components/toggle/Toggle.tsx";
+import Layout from "../components/layout/Layout.tsx";
 
-import iconArrow from '../../assets/icons/icon_arrow.png';
-import iconMatching from '../../assets/icons/icon_matching.png';
-import iconContent from '../../assets/icons/icon_content.png';
-import iconStoryboard from '../../assets/icons/icon_storyboard.png';
-import iconCleanbot from '../../assets/icons/icon_bot.png';
+import iconArrow from '../assets/icons/icon_arrow.png';
+import iconMatching from '../assets/icons/icon_matching.png';
+import iconContent from '../assets/icons/icon_content.png';
+import iconStoryboard from '../assets/icons/icon_storyboard.png';
+import iconCleanbot from '../assets/icons/icon_bot.png';
 
-import '../../styles/fonts.css';
+import '../styles/fonts.css';
 
 const Onboarding: React.FC = () => {
     const { role } = useUser();
