@@ -55,6 +55,11 @@ const DraftPlan: React.FC = () => {
         e.preventDefault();
     };
 
+    const handleReWriteClick = () => {
+        setReadOnly(false);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (isOkayEnabled) {
@@ -206,15 +211,31 @@ const DraftPlan: React.FC = () => {
                                 </>
                             )}
                         </Summary>
-                        <Buttons>
-                            <ReSumButton
-                                type="button"
-                                onClick={handleSubmit}
-                            >
-                                요약 재생성
-                            </ReSumButton>
-                            <MatchingButton>크리에이터 매칭하기</MatchingButton>
-                        </Buttons>
+                        {!isFeedback ? (
+                            <Buttons>
+                                <ReSumButton
+                                    type="button"
+                                    onClick={handleSubmit}
+                                >
+                                    요약 재생성
+                                </ReSumButton>
+                                <MatchingButton>크리에이터 매칭하기</MatchingButton>
+                            </Buttons>
+                        ) : (
+                            <Buttons>
+                                <CancelButton
+                                    type="button"
+                                    onClick={openModal}
+                                >
+                                    cancel
+                                </CancelButton>
+                                <ReWriteButton
+                                    onClick={handleReWriteClick}
+                                >
+                                    기획안 수정하기
+                                </ReWriteButton>
+                            </Buttons>
+                        )}
                     </SummaryPage>
                 </>
             )}
@@ -337,7 +358,7 @@ const Types = styled.div`
     margin-top: 8px;
 `;
 
-const Type = styled.button<{ isSelected: boolean; readOnly: boolean; }>`
+const Type = styled.button<{ isSelected: boolean }>`
     padding: 6px 10px;
     border: 1px solid ${({ isSelected }) => (isSelected ? '#555' : '#ccc')};
     border-radius: 20px;
@@ -403,6 +424,24 @@ const SummarizeButton = styled.button`
 
     &:hover {
         background-color: ${({ disabled }) => (disabled ? '#cccccc' : '#3e3e3e')};
+        border: none;
+    }
+`;
+
+const ReWriteButton = styled.button`
+    font-family: 'SUITE-Bold',serif;
+    padding: 6px 15px;
+    width: 150px;
+    height: 40px;
+    background-color: black;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #3e3e3e;
         border: none;
     }
 `;
