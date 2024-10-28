@@ -32,7 +32,6 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
     const [fullEmail, setFullEmail] = useState('');
     const [verificationCode, setVerificationCode] = useState('');
     const [isVerifyEnabled, setIsVerifyEnabled] = useState(false);
-    const [isCodeInputVisible, setIsCodeInputVisible] = useState(false);
     const [isVerifiedClicked, setIsVerifiedClicked] = useState(false);
     const [isEmailVerified, setIsEmailVerified] = useState(false);
     const [selectedType, setSelectedType] = useState<string | null>(null);
@@ -84,7 +83,6 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
             setIsEmailVerified(true);
         }
 
-        setIsCodeInputVisible(true);
         setIsVerifiedClicked(true);
     }
 
@@ -104,20 +102,23 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
         setSelectedType(type);
     };
 
-    const handleNext = () => {
-        console.log({
-            nickname,
-            fullEmail,
-            selectedCategory,
-            channelLink,
-            selectedType,
-        });
-        onNext();
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (isOkayEnabled) {
+            console.log({
+                nickname,
+                fullEmail,
+                selectedCategory,
+                channelLink,
+                selectedType,
+            });
+            onNext();
+        }
     };
 
     return (
         <>
-            <Form>
+            <Form onSubmit={handleSubmit}>
                 <Title>회원가입</Title>
                 <InputForm>
                     <Label>Nickname (Channel Name)</Label>
@@ -168,7 +169,7 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
                             value={verificationCode}
                             onChange={handleVerificationCodeChange}
                             disabled={isEmailVerified}
-                            style={{ display: isCodeInputVisible ? 'block' : 'none' }}
+                            style={{ display: isVerifiedClicked ? 'block' : 'none' }}
                         />
                         <VerifyButton
                             onClick={handleVerifyClick}
@@ -242,10 +243,10 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
                 )}
 
                 <Buttons>
-                    <BackButton onClick={onBack}>뒤로가기</BackButton>
+                    <BackButton type="button" onClick={onBack}>뒤로가기</BackButton>
                     <OkayButton
+                        type="submit"
                         disabled={!isOkayEnabled}
-                        onClick={handleNext}
                     >
                         확인
                     </OkayButton>
@@ -257,7 +258,7 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
 
 export default Join;
 
-const Form = styled.div`
+const Form = styled.form`
     width: 100%;
 `;
 

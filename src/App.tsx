@@ -2,7 +2,8 @@
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import styled from 'styled-components';
 import { UserProvider } from './contexts/UserContext.tsx';
-import Onboarding from "./pages/main/Onboarding.tsx";
+import Onboarding from "./pages/Onboarding.tsx";
+import DraftPlan from "./pages/DraftPlan.tsx";
 
 const App = () => {
     return (
@@ -10,7 +11,8 @@ const App = () => {
             <Wrapper>
                 <Router>
                     <Routes>
-                            <Route path="/" element={<Onboarding/>}/>
+                        <Route path="/" element={<Onboarding/>}/>
+                        <Route path="/draftplan" element={<DraftPlan/>}/>
                     </Routes>
                 </Router>
             </Wrapper>
