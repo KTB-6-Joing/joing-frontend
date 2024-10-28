@@ -33,5 +33,6 @@ export default Layout;
 
 const Main = styled.main`
     width: 70%;
-    margin: 0 auto;
+    height: calc(100vh - 60px);
+    margin: 60px auto 0 auto;
 `;

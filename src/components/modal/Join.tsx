@@ -32,7 +32,6 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
     const [fullEmail, setFullEmail] = useState('');
     const [verificationCode, setVerificationCode] = useState('');
     const [isVerifyEnabled, setIsVerifyEnabled] = useState(false);
-    const [isCodeInputVisible, setIsCodeInputVisible] = useState(false);
     const [isVerifiedClicked, setIsVerifiedClicked] = useState(false);
     const [isEmailVerified, setIsEmailVerified] = useState(false);
     const [selectedType, setSelectedType] = useState<string | null>(null);
@@ -84,7 +83,6 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
             setIsEmailVerified(true);
         }
 
-        setIsCodeInputVisible(true);
         setIsVerifiedClicked(true);
     }
 
@@ -171,7 +169,7 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
                             value={verificationCode}
                             onChange={handleVerificationCodeChange}
                             disabled={isEmailVerified}
-                            style={{ display: isCodeInputVisible ? 'block' : 'none' }}
+                            style={{ display: isVerifiedClicked ? 'block' : 'none' }}
                         />
                         <VerifyButton
                             onClick={handleVerifyClick}

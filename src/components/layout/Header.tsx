@@ -53,7 +53,6 @@ const HeaderContainer = styled.header`
     z-index: 1000;
     background-color: white;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
-
 `;
 
 const Content = styled.div`
