@@ -1,11 +1,15 @@
 import React, {useEffect, useRef, useState} from 'react';
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../components/layout/Layout.tsx";
 import '../styles/fonts.css';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import CancelModal from '../components/modal/CancelModal.tsx';
 
 import ArrowDown from '../assets/icons/icon_arrowdown.png';
+import WarningIcon from '../assets/icons/icon_warning.png';
+import Loading from '../assets/Loading.gif';
 
 const categories = [
     "게임", "과학기술", "교육", "노하우/스타일", "뉴스/정치", "비영리/사회운동", "스포츠", "애완동물/동물",
@@ -20,9 +24,16 @@ const DraftPlan: React.FC = () => {
     const [readOnly, setReadOnly] = useState(false);
     const [isSummaryClicked, setIsSummaryClicked] = useState(false);
     const [isSummarizing, setIsSummaraizing] = useState(false);
+    const [isFeedback, setIsFeedback] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const isOkayEnabled = title && content && selectedType && selectedCategory
     const quillRef = useRef<ReactQuill | null>(null);
+    const navigate = useNavigate();
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
+    const handleExit = () => navigate('/');
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
@@ -111,6 +122,7 @@ const DraftPlan: React.FC = () => {
                                             handleButtonClick(e);
                                         }}
                                         isSelected={selectedCategory === category}
+                                        disabled={readOnly}
                                     >
                                         {category}
                                     </Type>
@@ -126,6 +138,7 @@ const DraftPlan: React.FC = () => {
                                         handleButtonClick(e);
                                     }}
                                     isSelected={selectedType === "Short-Form"}
+                                    disabled={readOnly}
                                 >
                                     Short-Form
                                 </Type>
@@ -135,6 +148,7 @@ const DraftPlan: React.FC = () => {
                                         handleButtonClick(e);
                                     }}
                                     isSelected={selectedType === "Long-Form"}
+                                    disabled={readOnly}
                                 >
                                     Long-Form
                                 </Type>
@@ -143,7 +157,23 @@ const DraftPlan: React.FC = () => {
                     </RightBox>
                 </Container>
                 <Buttons>
-                    <CancelButton type="button">cancel</CancelButton>
+                    <CancelButton
+                        type="button"
+                        onClick={openModal}
+                    >
+                        cancel
+                    </CancelButton>
+                    <CancelModal isOpen={isModalOpen} onClose={closeModal}>
+                        <WarningHeader>
+                            <img src={WarningIcon} alt="warning Icon" />
+                            <h2>경고</h2>
+                        </WarningHeader>
+                        <p>취소하시면 작성하신 기획안이 저장되지 않습니다. 계속 작성하시겠습니까?</p>
+                        <ButtonContainer>
+                            <ExitButton onClick={handleExit}>나가기</ExitButton>
+                            <ContinueButton onClick={closeModal}>이어서 작성하기</ContinueButton>
+                        </ButtonContainer>
+                    </CancelModal>
                     <SummarizeButton
                         type="submit"
                         disabled={!isOkayEnabled}
@@ -154,6 +184,7 @@ const DraftPlan: React.FC = () => {
             </DraftForm>
             {isSummarizing && (
                 <Modal>
+                    <img src={Loading} alt="loading img"/>
                     <p>Joing이 요약하는 중이예요...</p>
                 </Modal>
             )}
@@ -162,17 +193,26 @@ const DraftPlan: React.FC = () => {
                     <SummaryPage>
                         <img src={ArrowDown} alt="arrow down"/>
                         <Summary>
-                            <SumTitle>{title}</SumTitle>
-                            <SumSubTitle>Summary</SumSubTitle>
-                            <SumContent>{content}</SumContent>
-                            <SumSubTitle>Keywords</SumSubTitle>
-                            <SumKeywords>
-                                <Keyword>{selectedType}</Keyword>
-                                <Keyword>{selectedCategory}</Keyword>
-                            </SumKeywords>
+                            <SumTitle>{isFeedback ? 'Feedback' : title}</SumTitle>
+                            <SumSubTitle>{isFeedback ? 'Feedback Content' : 'Summary'}</SumSubTitle>
+                            <SumContent>{isFeedback ? 'This is a placeholder for feedback content.' : content}</SumContent>
+                            {!isFeedback && (
+                                <>
+                                    <SumSubTitle>Keywords</SumSubTitle>
+                                    <SumKeywords>
+                                        <Keyword>{selectedType}</Keyword>
+                                        <Keyword>{selectedCategory}</Keyword>
+                                    </SumKeywords>
+                                </>
+                            )}
                         </Summary>
                         <Buttons>
-                            <ReSumButton type="button">요약 재생성</ReSumButton>
+                            <ReSumButton
+                                type="button"
+                                onClick={handleSubmit}
+                            >
+                                요약 재생성
+                            </ReSumButton>
                             <MatchingButton>크리에이터 매칭하기</MatchingButton>
                         </Buttons>
                     </SummaryPage>
@@ -193,6 +233,7 @@ const Modal = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     font-size: 18px;
@@ -296,7 +337,7 @@ const Types = styled.div`
     margin-top: 8px;
 `;
 
-const Type = styled.button<{ isSelected: boolean }>`
+const Type = styled.button<{ isSelected: boolean; readOnly: boolean; }>`
     padding: 6px 10px;
     border: 1px solid ${({ isSelected }) => (isSelected ? '#555' : '#ccc')};
     border-radius: 20px;
@@ -465,5 +506,54 @@ const MatchingButton = styled.button`
     &:hover {
         background-color: ${({ disabled }) => (disabled ? '#cccccc' : '#3e3e3e')};
         border: none;
+    }
+`;
+
+const WarningHeader = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    h2 {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+    
+    img{
+        width: 40px;
+        height: auto; 
+    }
+`;
+
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    gap: 10px;
+`;
+
+const ExitButton = styled.button`
+    background-color: #d9d9d9; /* 회색 */
+    color: #333;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    
+    &:hover {
+        background-color: #bfbfbf;
+    }
+`;
+
+const ContinueButton = styled.button`
+    background-color: #ff595b; /* 빨간색 */
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #e33e3f;
     }
 `;
