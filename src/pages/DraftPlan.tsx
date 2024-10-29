@@ -1,11 +1,16 @@
 import React, {useEffect, useRef, useState} from 'react';
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../components/layout/Layout.tsx";
 import '../styles/fonts.css';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import CancelModal from '../components/modal/CancelModal.tsx';
 
 import ArrowDown from '../assets/icons/icon_arrowdown.png';
+import WarningIcon from '../assets/icons/icon_warning.png';
+import Loading from '../assets/Loading.gif';
+import NoticeIcon from "../assets/icons/icon_notice.png";
 
 const categories = [
     "게임", "과학기술", "교육", "노하우/스타일", "뉴스/정치", "비영리/사회운동", "스포츠", "애완동물/동물",
@@ -17,12 +22,20 @@ const DraftPlan: React.FC = () => {
     const [content, setContent] = useState('');
     const [selectedType, setSelectedType] = useState<string | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const [miscFields, setMiscFields] = useState<{ name: string; value: string }[]>([{ name: '', value: '' }]);
     const [readOnly, setReadOnly] = useState(false);
     const [isSummaryClicked, setIsSummaryClicked] = useState(false);
     const [isSummarizing, setIsSummaraizing] = useState(false);
+    const [isFeedback, setIsFeedback] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const isOkayEnabled = title && content && selectedType && selectedCategory
     const quillRef = useRef<ReactQuill | null>(null);
+    const navigate = useNavigate();
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
+    const handleExit = () => navigate('/');
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
@@ -42,6 +55,25 @@ const DraftPlan: React.FC = () => {
 
     const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+    };
+
+    const handleMiscChange = (index: number, field: 'name' | 'value', value: string) => {
+        const updatedFields = [...miscFields];
+        updatedFields[index][field] = value;
+        setMiscFields(updatedFields);
+    };
+
+    const addMiscField = () => {
+        setMiscFields([...miscFields, { name: '', value: '' }]);
+    };
+
+    const removeMiscField = (index: number) => {
+        setMiscFields(miscFields.filter((_, i) => i !== index));
+    };
+
+    const handleReWriteClick = () => {
+        setReadOnly(false);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -111,6 +143,7 @@ const DraftPlan: React.FC = () => {
                                             handleButtonClick(e);
                                         }}
                                         isSelected={selectedCategory === category}
+                                        disabled={readOnly}
                                     >
                                         {category}
                                     </Type>
@@ -126,6 +159,7 @@ const DraftPlan: React.FC = () => {
                                         handleButtonClick(e);
                                     }}
                                     isSelected={selectedType === "Short-Form"}
+                                    disabled={readOnly}
                                 >
                                     Short-Form
                                 </Type>
@@ -135,15 +169,71 @@ const DraftPlan: React.FC = () => {
                                         handleButtonClick(e);
                                     }}
                                     isSelected={selectedType === "Long-Form"}
+                                    disabled={readOnly}
                                 >
                                     Long-Form
                                 </Type>
                             </Types>
                         </TypeForm>
+                        <MiscForm>
+                            <Label>기타사항</Label>
+                            <Notice>
+                                <img src={NoticeIcon} alt="Notice Icon"/>
+                                ex) 키: 180 이상 / 출연인원: 5명
+                            </Notice>
+                            {miscFields.map((field, index) => (
+                                <div key={index} style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                                    <InputField
+                                        type="text"
+                                        placeholder="항목"
+                                        value={field.name}
+                                        onChange={(e) => handleMiscChange(index, 'name', e.target.value)}
+                                        disabled={readOnly}
+                                    />
+                                    <InputField
+                                        type="text"
+                                        placeholder="내용"
+                                        value={field.value}
+                                        onChange={(e) => handleMiscChange(index, 'value', e.target.value)}
+                                        disabled={readOnly}
+                                    />
+                                    <RemoveButton
+                                        type="button"
+                                        onClick={() => removeMiscField(index)}
+                                        disabled={readOnly}
+                                    >
+                                        -
+                                    </RemoveButton>
+                                </div>
+                            ))}
+                            <AddButton
+                                type="button"
+                                onClick={addMiscField}
+                                disabled={readOnly}
+                            >
+                                + 필드 추가
+                            </AddButton>
+                        </MiscForm>
                     </RightBox>
                 </Container>
                 <Buttons>
-                    <CancelButton type="button">cancel</CancelButton>
+                    <CancelButton
+                        type="button"
+                        onClick={openModal}
+                    >
+                        cancel
+                    </CancelButton>
+                    <CancelModal isOpen={isModalOpen} onClose={closeModal}>
+                        <WarningHeader>
+                            <img src={WarningIcon} alt="warning Icon" />
+                            <h2>경고</h2>
+                        </WarningHeader>
+                        <p>취소하시면 작성하신 기획안이 저장되지 않습니다. 계속 작성하시겠습니까?</p>
+                        <ButtonContainer>
+                            <ExitButton onClick={handleExit}>나가기</ExitButton>
+                            <ContinueButton onClick={closeModal}>이어서 작성하기</ContinueButton>
+                        </ButtonContainer>
+                    </CancelModal>
                     <SummarizeButton
                         type="submit"
                         disabled={!isOkayEnabled}
@@ -154,6 +244,7 @@ const DraftPlan: React.FC = () => {
             </DraftForm>
             {isSummarizing && (
                 <Modal>
+                    <img src={Loading} alt="loading img"/>
                     <p>Joing이 요약하는 중이예요...</p>
                 </Modal>
             )}
@@ -162,19 +253,45 @@ const DraftPlan: React.FC = () => {
                     <SummaryPage>
                         <img src={ArrowDown} alt="arrow down"/>
                         <Summary>
-                            <SumTitle>{title}</SumTitle>
-                            <SumSubTitle>Summary</SumSubTitle>
-                            <SumContent>{content}</SumContent>
-                            <SumSubTitle>Keywords</SumSubTitle>
-                            <SumKeywords>
-                                <Keyword>{selectedType}</Keyword>
-                                <Keyword>{selectedCategory}</Keyword>
-                            </SumKeywords>
+                            <SumTitle>{isFeedback ? 'Feedback' : title}</SumTitle>
+                            <SumSubTitle>{isFeedback ? 'Feedback Content' : 'Summary'}</SumSubTitle>
+                            <SumContent>{isFeedback ? 'This is a placeholder for feedback content.' : content}</SumContent>
+                            {!isFeedback && (
+                                <>
+                                    <SumSubTitle>Keywords</SumSubTitle>
+                                    <SumKeywords>
+                                        <Keyword>{selectedType}</Keyword>
+                                        <Keyword>{selectedCategory}</Keyword>
+                                    </SumKeywords>
+                                </>
+                            )}
                         </Summary>
-                        <Buttons>
-                            <ReSumButton type="button">요약 재생성</ReSumButton>
-                            <MatchingButton>크리에이터 매칭하기</MatchingButton>
-                        </Buttons>
+                        {!isFeedback ? (
+                            <Buttons>
+                                <ReSumButton
+                                    type="button"
+                                    onClick={handleSubmit}
+                                >
+                                    요약 재생성
+                                </ReSumButton>
+                                <MatchingButton>크리에이터 매칭하기</MatchingButton>
+                            </Buttons>
+                        ) : (
+                            <Buttons>
+                                <CancelButton
+                                    type="button"
+                                    onClick={openModal}
+                                    style={{  width: '200px' }}
+                                >
+                                    cancel
+                                </CancelButton>
+                                <ReWriteButton
+                                    onClick={handleReWriteClick}
+                                >
+                                    기획안 수정하기
+                                </ReWriteButton>
+                            </Buttons>
+                        )}
                     </SummaryPage>
                 </>
             )}
@@ -193,6 +310,7 @@ const Modal = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     font-size: 18px;
@@ -239,6 +357,8 @@ const LeftBox = styled.div`
 
 const RightBox = styled.div`
     flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
 `;
 
 const Label = styled.label`
@@ -275,6 +395,18 @@ const ContentForm = styled.div`
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+`;
+
+const ReactQuillWrapper = styled(ReactQuill)`
+    height: auto;
+
+    .ql-container {
+        min-height: 280px;
+    }
+
+    .ql-editor {
+        min-height: 280px;
+    }
 `;
 
 const CategoryForm = styled.div`
@@ -324,10 +456,73 @@ const TypeForm = styled.div`
     margin-bottom: 15px;
 `;
 
+const MiscForm = styled.div`
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+`;
+
+const Notice = styled.div`
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    color: #777;
+    margin-bottom: 5px;
+
+    img {
+        width: 14px;
+        height: 14px;
+        margin-right: 4px;
+    }
+`;
+
+const InputField = styled.input`
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-top: 3px;
+    transition: border-color 0.3s;
+    font-family: 'SUITE-Regular',serif;
+    flex-grow: 1;
+    min-width: 50px;
+
+    &:focus {
+        border-color: #666;
+        outline: none;
+    }
+`;
+
+const RemoveButton = styled.button`
+    color: #ff5d5d;
+    padding: 10px;
+
+    &:hover {
+        border-color: #ff5d5d;
+    }
+
+    &:focus {
+        outline: none;
+    }
+`;
+
+const AddButton = styled.button`
+    flex: 1;
+    font-size: 14px;
+
+    &:hover {
+        border-color: #c6c6c6;
+    }
+
+    &:focus {
+        outline: none;
+    }
+`;
+
 const Buttons = styled.div`
     display: flex;
     justify-content: center;
-    margin: 25px 0;
+    margin: 50px 0;
     gap: 10px;
 `;
 
@@ -345,6 +540,10 @@ const CancelButton = styled.button`
     &:hover {
         background-color: #e0e0e0;
         border: 1px solid #000000;
+    }
+    
+    &:focus {
+        outline: none;
     }
 `;
 
@@ -364,15 +563,31 @@ const SummarizeButton = styled.button`
         background-color: ${({ disabled }) => (disabled ? '#cccccc' : '#3e3e3e')};
         border: none;
     }
+
+    &:focus {
+        outline: none;
+    }
 `;
 
-const ReactQuillWrapper = styled(ReactQuill)`
-    flex: 1;
-    height: calc(100% - 100px);
+const ReWriteButton = styled.button`
+    font-family: 'SUITE-Bold',serif;
+    padding: 6px 15px;
+    width: 200px;
+    height: 40px;
+    background-color: black;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
 
-    .ql-container {
-        height: 100%;
-        min-height: 280px;
+    &:hover {
+        background-color: #3e3e3e;
+        border: none;
+    }
+
+    &:focus {
+        outline: none;
     }
 `;
 
@@ -385,12 +600,11 @@ const SummaryPage = styled.div`
     img {
         width: 64px;
         height: auto;
-        margin-top: 50px;
     }
 `;
 
 const Summary = styled.div`
-    margin: 100px;
+    margin: 150px 100px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -448,6 +662,10 @@ const ReSumButton = styled.button`
         background-color: #e0e0e0;
         border: 1px solid #000000;
     }
+
+    &:focus {
+        outline: none;
+    }
 `;
 
 const MatchingButton = styled.button`
@@ -465,5 +683,66 @@ const MatchingButton = styled.button`
     &:hover {
         background-color: ${({ disabled }) => (disabled ? '#cccccc' : '#3e3e3e')};
         border: none;
+    }
+
+    &:focus {
+        outline: none;
+    }
+`;
+
+const WarningHeader = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    h2 {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+    
+    img{
+        width: 40px;
+        height: auto; 
+    }
+`;
+
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    gap: 10px;
+`;
+
+const ExitButton = styled.button`
+    background-color: #d9d9d9;
+    color: #333;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    
+    &:hover {
+        background-color: #bfbfbf;
+    }
+
+    &:focus {
+        outline: none;
+    }
+`;
+
+const ContinueButton = styled.button`
+    background-color: #ff595b;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+
+    &:hover {
+        background-color: #e33e3f;
+    }
+
+    &:focus {
+        outline: none;
     }
 `;

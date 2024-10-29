@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 // @ts-ignore
 import Fullpage, { FullPageSections, FullpageSection, FullpageNavigation } from '@ap.cx/react-fullpage';
@@ -16,6 +17,7 @@ import iconCleanbot from '../assets/icons/icon_bot.png';
 import '../styles/fonts.css';
 
 const Onboarding: React.FC = () => {
+    const navigate = useNavigate();
     const { role } = useUser();
     const [toggleValue, setIsToggled] = useState<string>("");
 
@@ -49,7 +51,14 @@ const Onboarding: React.FC = () => {
                                     Ut enim ad minim veniam, quis nostrud exercitation ullamco<br/>
                                     laboris nisi ut aliquip ex ea commodo consequat.
                                 </Detail>
-                                <MainButton value={toggleValue}>
+                                <MainButton
+                                    value={toggleValue}
+                                    onClick={() => {
+                                        if (toggleValue === "planner") {
+                                            navigate("/draftplan");
+                                        }
+                                    }}
+                                >
                                     {toggleValue === "creator" ? (
                                         <>
                                             <span>기획안 추천받기</span>
