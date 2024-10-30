@@ -26,7 +26,8 @@ const DraftPlan: React.FC = () => {
     const [readOnly, setReadOnly] = useState(false);
     const [isSummaryClicked, setIsSummaryClicked] = useState(false);
     const [isSummarizing, setIsSummaraizing] = useState(false);
-    const [isFeedback, setIsFeedback] = useState(false);
+    //const [isFeedback, setIsFeedback] = useState(false);
+    const isFeedback = false; //delete
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const isOkayEnabled = title && content && selectedType && selectedCategory
@@ -36,6 +37,21 @@ const DraftPlan: React.FC = () => {
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
     const handleExit = () => navigate('/');
+
+    const saveDraftPlan = (title: string, content: string, selectedType: string, selectedCategory: string, miscFields: { name: string; value: string }[]) => {
+        const draftPlans = JSON.parse(localStorage.getItem("draftPlans") || "[]");
+
+        const newDraft = {
+            title,
+            content,
+            selectedType,
+            selectedCategory,
+            miscFields,
+        };
+
+        draftPlans.push(newDraft);
+        localStorage.setItem("draftPlans", JSON.stringify(draftPlans));
+    };
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
@@ -84,6 +100,7 @@ const DraftPlan: React.FC = () => {
                 setIsSummaraizing(false);
                 setIsSummaryClicked(true);
             }, 2000);
+            saveDraftPlan(title, content, selectedType, selectedCategory, miscFields )
         }
         setReadOnly(true);
     };
@@ -179,7 +196,7 @@ const DraftPlan: React.FC = () => {
                             <Label>기타사항</Label>
                             <Notice>
                                 <img src={NoticeIcon} alt="Notice Icon"/>
-                                ex) 키: 180 이상 / 출연인원: 5명
+                                ex) 키: 180 이상 / 참고링크: youtube.com 등
                             </Notice>
                             {miscFields.map((field, index) => (
                                 <div key={index} style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
@@ -604,7 +621,7 @@ const SummaryPage = styled.div`
 `;
 
 const Summary = styled.div`
-    margin: 150px 100px;
+    margin: 100px 0 30px 0;
     flex-grow: 1;
     display: flex;
     flex-direction: column;

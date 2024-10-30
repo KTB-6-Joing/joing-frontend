@@ -210,7 +210,7 @@ const Slogan = styled.h2`
     }
 `;
 
-const Detail = styled.text`
+const Detail = styled.p`
     margin-bottom: 50px;
     font-family: 'SUITE-Regular';
 `;
@@ -321,7 +321,7 @@ const Num = styled.h2`
 `;
 
 const Title = styled.h2<{ value: string }>`
-    font-family: 'GongGothicMedium';
+    font-family: 'GongGothicMedium', serif;
     font-size: 18px;
     font-weight: bolder;
     color: ${({ value }) => (value === "creator" ? "#FF5D5D" : "#6cbd4f")};
