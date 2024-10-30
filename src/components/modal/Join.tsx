@@ -102,6 +102,10 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
         setSelectedType(type);
     };
 
+    const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+    };
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (isOkayEnabled) {
@@ -209,13 +213,19 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
                             <Label>Media Type</Label>
                             <Types>
                                 <Type
-                                    onClick={() => handleTypeClick("Short-Form")}
+                                    onClick={(e) => {
+                                        handleTypeClick("Short-Form");
+                                        handleButtonClick(e);
+                                    }}
                                     isSelected={selectedType === "Short-Form"}
                                 >
                                     Short-Form
                                 </Type>
                                 <Type
-                                    onClick={() => handleTypeClick("Long-Form")}
+                                    onClick={(e) => {
+                                        handleTypeClick("Long-Form");
+                                        handleButtonClick(e);
+                                    }}
                                     isSelected={selectedType === "Long-Form"}
                                 >
                                     Long-Form
@@ -231,7 +241,10 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
                             <Category>
                                 {categories.map((category) => (
                                         <Type
-                                            onClick={() => handleTypeClick(category)}
+                                            onClick={(e) => {
+                                                handleTypeClick(category);
+                                                handleButtonClick(e);
+                                            }}
                                             isSelected={selectedType === category}
                                         >
                                             {category}

@@ -10,7 +10,7 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-    const [role, setRole] = useState<Role>(null);
+    const [role, setRole] = useState<Role>("planner");
 
     return (
         <UserContext.Provider value={{ role, setRole }}>

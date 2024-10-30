@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { UserProvider } from './contexts/UserContext.tsx';
 import Onboarding from "./pages/Onboarding.tsx";
 import DraftPlan from "./pages/DraftPlan.tsx";
+import DraftDetailView from "./pages/DraftDetailView.tsx";
 
 const App = () => {
     return (
@@ -13,6 +14,7 @@ const App = () => {
                     <Routes>
                         <Route path="/" element={<Onboarding/>}/>
                         <Route path="/draftplan" element={<DraftPlan/>}/>
+                        <Route path="/draftplan/:index" element={<DraftDetailView />} />
                     </Routes>
                 </Router>
             </Wrapper>
