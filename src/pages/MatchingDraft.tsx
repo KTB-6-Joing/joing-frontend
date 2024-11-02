@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Layout from "../components/layout/Layout.tsx";
 import 'react-horizontal-scrolling-menu/dist/styles.css';
 import HorizontalScroll from "../components/HorizontalScroll.tsx";
+import {useNavigate} from "react-router-dom";
 
 interface Draft {
     title: string;
@@ -12,6 +13,7 @@ interface Draft {
 
 const MatchingDraft = () => {
     const drafts = JSON.parse(localStorage.getItem("draftPlans") || "[]");
+    const navigate = useNavigate();
 
     return (
         <Layout>
@@ -38,7 +40,7 @@ const MatchingDraft = () => {
 
                 <Buttons>
                     <EditButton>추천 재생성</EditButton>
-                    <DeleteButton>매칭 끝내기</DeleteButton>
+                    <DeleteButton onClick={() => navigate("/")}>매칭 끝내기</DeleteButton>
                 </Buttons>
             </Container>
         </Layout>

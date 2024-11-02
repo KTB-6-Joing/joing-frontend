@@ -64,7 +64,7 @@ const Onboarding: React.FC = () => {
                                 >
                                     {toggleValue === "creator" ? (
                                         <>
-                                            <span>기획안 추천받기</span>ƒs
+                                            <span>기획안 추천받기</span>
                                             <img src={iconArrow} alt="arrow icon" />
                                         </>
                                     ) : (
