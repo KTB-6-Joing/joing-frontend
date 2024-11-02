@@ -57,6 +57,9 @@ const Onboarding: React.FC = () => {
                                         if (toggleValue === "planner") {
                                             navigate("/draftplan");
                                         }
+                                        else if (toggleValue === "creator") {
+                                            navigate("/matching/draft");
+                                        }
                                     }}
                                 >
                                     {toggleValue === "creator" ? (
