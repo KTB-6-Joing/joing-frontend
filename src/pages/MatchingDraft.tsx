@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import Layout from "../components/layout/Layout.tsx";
 import 'react-horizontal-scrolling-menu/dist/styles.css';
 import HorizontalScroll from "../components/HorizontalScroll.tsx";
 import {useNavigate} from "react-router-dom";
+import MessageIcon from "../assets/icons/icon_message.png";
 
 interface Draft {
     title: string;
@@ -14,6 +15,13 @@ interface Draft {
 const MatchingDraft = () => {
     const drafts = JSON.parse(localStorage.getItem("draftPlans") || "[]");
     const navigate = useNavigate();
+    const [isRequestSent, setIsRequestSent] = useState<boolean[]>(new Array(drafts.length).fill(false));
+
+    const handleMatchingRequest = (index: number) => {
+        const updatedRequestSent = [...isRequestSent];
+        updatedRequestSent[index] = true;
+        setIsRequestSent(updatedRequestSent);
+    };
 
     return (
         <Layout>
@@ -32,7 +40,19 @@ const MatchingDraft = () => {
                                         <Keyword key={idx}>{keyword}</Keyword>
                                     ))}
                                 </Keywords>
-                                <MatchingButton>Matching Request</MatchingButton>
+                                <MatchingButton
+                                    onClick={() => handleMatchingRequest(index)}
+                                    disabled={isRequestSent[index]}
+                                >
+                                    {isRequestSent[index] ? (
+                                        "매칭 요청이 전송되었습니다"
+                                    ) : (
+                                        <>
+                                            <img src={MessageIcon} alt="message icon" />
+                                            Matching Request
+                                        </>
+                                    )}
+                                </MatchingButton>
                             </DraftItem>
                         ))}
                     </HorizontalScroll>
@@ -111,20 +131,29 @@ const Keyword = styled.span`
 
 const MatchingButton = styled.button`
     font-family: 'SUITE-Bold', serif;
-    background-color: #000000;
+    background-color: ${({ disabled }) => (disabled ? "#a0a0a0" : "#000000")};
     border-radius: 8px;
     color: #ffffff;
     transition: background-color 0.3s;
-    cursor: pointer;
+    cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
 
     &:hover {
-        background-color: #424242;
+        background-color: ${({ disabled }) => (disabled ? "#a0a0a0" : "#424242")};
         border: none;
         transform: none;
     }
 
     &:focus {
         outline: none;
+    }
+    
+    img{
+        width: 16px;
+        height: auto;
     }
 `;
 
