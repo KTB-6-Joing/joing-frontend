@@ -103,7 +103,6 @@ const LeftBox = styled.div`
 
 const Title = styled.h2`
     font-family: 'SUITE-Bold';
-
     font-size: 1.5rem;
     margin: 30px 0;
 `;

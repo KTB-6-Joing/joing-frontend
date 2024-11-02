@@ -57,11 +57,14 @@ const Onboarding: React.FC = () => {
                                         if (toggleValue === "planner") {
                                             navigate("/draftplan");
                                         }
+                                        else if (toggleValue === "creator") {
+                                            navigate("/matching/draft");
+                                        }
                                     }}
                                 >
                                     {toggleValue === "creator" ? (
                                         <>
-                                            <span>기획안 추천받기</span>
+                                            <span>기획안 추천받기</span>ƒs
                                             <img src={iconArrow} alt="arrow icon" />
                                         </>
                                     ) : (

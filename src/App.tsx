@@ -5,6 +5,7 @@ import { UserProvider } from './contexts/UserContext.tsx';
 import Onboarding from "./pages/Onboarding.tsx";
 import DraftPlan from "./pages/DraftPlan.tsx";
 import DraftDetailView from "./pages/DraftDetailView.tsx";
+import MatchingDraft from "./pages/MatchingDraft.tsx";
 
 const App = () => {
     return (
@@ -15,6 +16,7 @@ const App = () => {
                         <Route path="/" element={<Onboarding/>}/>
                         <Route path="/draftplan" element={<DraftPlan/>}/>
                         <Route path="/draftplan/:index" element={<DraftDetailView />} />
+                        <Route path="/matching/draft" element={<MatchingDraft />} />
                     </Routes>
                 </Router>
             </Wrapper>
