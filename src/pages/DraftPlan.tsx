@@ -291,7 +291,11 @@ const DraftPlan: React.FC = () => {
                                 >
                                     요약 재생성
                                 </ReSumButton>
-                                <MatchingButton>크리에이터 매칭하기</MatchingButton>
+                                <MatchingButton
+                                    onClick={() => navigate("/matching/creator")}
+                                >
+                                    크리에이터 매칭하기
+                                </MatchingButton>
                             </Buttons>
                         ) : (
                             <Buttons>
