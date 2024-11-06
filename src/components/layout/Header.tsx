@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import {useNavigate} from "react-router-dom";
 import LogoImg from "../../assets/Logo_joing.png";
 import '../../styles/fonts.css';
 import {useUser} from '../../contexts/UserContext.tsx'
@@ -12,18 +13,21 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
     const { role } = useUser();
+    const navigate = useNavigate();
 
     return (
         <HeaderContainer>
             <Content>
-                <Logo>
+                <Logo onClick={() => navigate("/")}>
                     <img src={LogoImg} alt="arrow icon"/>
                     Joing
                 </Logo>
                 {role === null
                     ? <Button onClick={onLoginClick}>Login</Button>
                     : <ButtonGroup>
-                        <Button>
+                        <Button
+                            onClick={() => navigate("/message")}
+                        >
                             <img src={iconMail} alt="arrow icon"/>
                         </Button>
                         <Button>
@@ -71,7 +75,8 @@ const Logo = styled.div`
     display: flex;
     align-items: center;
     gap: 8px;
-    
+    cursor: pointer;
+
     img{
         width: 44px;
         height: auto;
