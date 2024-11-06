@@ -12,7 +12,7 @@ interface Draft {
     keywords: string[];
 }
 
-const MatchingDraft = () => {
+const MatchingCreator = () => {
     const drafts = JSON.parse(localStorage.getItem("draftPlans") || "[]");
     const navigate = useNavigate();
     const [isRequestSent, setIsRequestSent] = useState<boolean[]>(new Array(drafts.length).fill(false));
@@ -27,36 +27,41 @@ const MatchingDraft = () => {
         <Layout>
             <Container>
                 <Slogan>
-                    Joing이 OOO님에게 추천하는 기획안을 가져왔어요!
+                    크리에이터에게 매칭을 제안해보세요
                 </Slogan>
-                <DraftBox>
+                <CreatorBox>
                     <HorizontalScroll>
                         {drafts.slice(0, 5).map((draft: Draft, index: number) => (
                             <DraftItem key={index}>
-                                <Title>{draft.title}</Title>
-                                <Summary>{draft.summary}</Summary>
-                                <Keywords>
-                                    {(draft.keywords || []).map((keyword: string, idx: number) => (
-                                        <Keyword key={idx}>{keyword}</Keyword>
-                                    ))}
-                                </Keywords>
-                                <MatchingButton
-                                    onClick={() => handleMatchingRequest(index)}
-                                    disabled={isRequestSent[index]}
-                                >
-                                    {isRequestSent[index] ? (
-                                        "매칭 요청이 전송되었습니다"
-                                    ) : (
-                                        <>
-                                            <img src={MessageIcon} alt="message icon" />
-                                            Matching Request
-                                        </>
-                                    )}
-                                </MatchingButton>
+                                <Profile>
+                                    <ProfileImg></ProfileImg>
+                                    <ProfileDetail>
+                                        <Name>Ellie Park</Name>
+                                        <Email>soyeon_0307@naver.com</Email>
+                                    </ProfileDetail>
+                                </Profile>
+                                <MatchingButtons>
+                                    <VisitButton>
+                                        Visit Channel
+                                    </VisitButton>
+                                    <MatchingButton
+                                        onClick={() => handleMatchingRequest(index)}
+                                        disabled={isRequestSent[index]}
+                                    >
+                                        {isRequestSent[index] ? (
+                                            "매칭 요청이 전송되었습니다"
+                                        ) : (
+                                            <>
+                                                <img src={MessageIcon} alt="message icon" />
+                                                Matching Request
+                                            </>
+                                        )}
+                                    </MatchingButton>
+                                </MatchingButtons>
                             </DraftItem>
                         ))}
                     </HorizontalScroll>
-                </DraftBox>
+                </CreatorBox>
 
                 <Buttons>
                     <EditButton>추천 재생성</EditButton>
@@ -67,7 +72,7 @@ const MatchingDraft = () => {
     )
 };
 
-export default MatchingDraft;
+export default MatchingCreator;
 
 const Container = styled.section`
     display: flex;
@@ -84,7 +89,7 @@ const Slogan = styled.h2`
     color: black;
 `;
 
-const DraftBox = styled.div`
+const CreatorBox = styled.div`
     overflow: hidden;
 `;
 
@@ -98,39 +103,70 @@ const DraftItem = styled.div`
     white-space: normal;
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 `;
 
-const Title = styled.h2`
-    font-family: 'SUITE-Bold', serif;
-    font-size: 1.2rem;
-    margin: 30px 0 0 0;
-`;
-
-const Summary = styled.p`
-    font-family: 'SUITE-Regular', serif;
-    font-size: 1rem;
-    margin: 0;
-    flex: 1;
-`;
-
-const Keywords = styled.div`
+const Profile = styled.div`
+    width: 100%;
+    height: 150px;
     display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
+    align-items: center;
+    margin: 8px 0;
+    gap: 16px;
 `;
 
-const Keyword = styled.span`
-    padding: 6px 10px;
+const ProfileImg = styled.div`
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: gray;
+`;
+
+const ProfileDetail = styled.div``;
+
+const Name = styled.h3`
+    font-family: 'GongGothicMedium', serif;
+`;
+
+const Email = styled.p`
+    font-family: 'SUITE-Bold', serif;
+    font-size: 0.9rem;
+`;
+
+const MatchingButtons = styled.div`
+    display: flex;
+    justify-content: center;
+    padding-bottom: 1rem;
+    gap: 10px;
+`;
+
+const VisitButton = styled.button`
+    font-family: 'SUITE-Bold', serif;
+    font-size: 0.8rem;
+    padding: 6px 15px;
+    height: 40px;
+    background-color: #ffffff;
+    border: 1px solid black;
     border-radius: 10px;
-    background-color: #f3f3f3;
-    font-size: 13px;
-    font-family: 'SUITE-Regular', serif;
+    color: black;
+    transition: background-color 0.3s;
+    cursor: pointer;
+    flex: 1;
+
+    &:hover {
+        background-color: #e0e0e0;
+        border: 1px solid #000000;
+    }
+
+    &:focus {
+        outline: none;
+    }
 `;
 
 const MatchingButton = styled.button`
     font-family: 'SUITE-Bold', serif;
+    font-size: 0.9rem;
     background-color: ${({ disabled }) => (disabled ? "#a0a0a0" : "#000000")};
     border-radius: 8px;
     color: #ffffff;
@@ -140,6 +176,7 @@ const MatchingButton = styled.button`
     align-items: center;
     justify-content: center;
     gap: 1rem;
+    flex: 2;
 
     &:hover {
         background-color: ${({ disabled }) => (disabled ? "#a0a0a0" : "#424242")};
