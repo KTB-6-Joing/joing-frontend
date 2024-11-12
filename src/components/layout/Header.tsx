@@ -30,7 +30,9 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
                         >
                             <img src={iconMail} alt="arrow icon"/>
                         </Button>
-                        <Button>
+                        <Button
+                            onClick={() => navigate("/mypage")}
+                        >
                             <img src={iconProfile} alt="arrow icon"/>
                         </Button>
                     </ButtonGroup>

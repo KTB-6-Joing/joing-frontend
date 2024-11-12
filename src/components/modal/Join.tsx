@@ -25,6 +25,7 @@ const categories = [
 const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
     const [nickname, setNickname] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string | null> (null);
+    const [channelID, setChannelID] = useState('');
     const [channelLink, setChannelLink] = useState('');
     const [emailPrefix, setEmailPrefix] = useState('');
     const [emailDomain, setEmailDomain] = useState(emailDomains[0]);
@@ -93,6 +94,10 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
     const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategory(e.target.value);
     };
+
+    const handleChannelIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setChannelID(e.target.value);
+    }
 
     const handleChannelLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setChannelLink(e.target.value);
@@ -198,7 +203,12 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
                             </ComboBox>
                         </InputForm>
                         <InputForm>
-                            <Label>Chennel Link</Label>
+                            <Label>Chennel ID / Link</Label>
+                            <InputField
+                                placeholder="Enter your Channel ID"
+                                value={channelID}
+                                onChange={handleChannelIDChange}
+                            />
                             <InputField
                                 placeholder="Enter your Channel URL"
                                 value={channelLink}
@@ -206,7 +216,7 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
                             />
                             <Notice>
                                 <img src={NoticeIcon} alt="Notice Icon"/>
-                                유튜브, 인스타그램, 틱톡 등 프로필 링크를 입력해주세요
+                                유튜브, 인스타그램, 틱톡 등 프로필 아이디 및 링크를 입력해주세요
                             </Notice>
                         </InputForm>
                         <InputForm>
@@ -404,7 +414,7 @@ const Type = styled.button<{ isSelected: boolean }>`
 const Buttons = styled.div`
     display: flex;
     justify-content: center;
-    margin-top: 25px;
+    margin-top: 1rem;
     gap: 10px;
 `;
 

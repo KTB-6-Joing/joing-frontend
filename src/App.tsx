@@ -8,6 +8,7 @@ import DraftDetailView from "./pages/DraftDetailView.tsx";
 import MatchingDraft from "./pages/MatchingDraft.tsx";
 import MatchingCreator from "./pages/MatchingCreator.tsx";
 import Message from "./pages/Message.tsx";
+import Mypage from "./pages/Mypage.tsx";
 
 const App = () => {
     return (
@@ -21,6 +22,7 @@ const App = () => {
                         <Route path="/matching/draft" element={<MatchingDraft />} />
                         <Route path="/matching/creator" element={<MatchingCreator />} />
                         <Route path="/message" element={<Message />}/>
+                        <Route path="/mypage" element={<Mypage />}/>
                     </Routes>
                 </Router>
             </Wrapper>
