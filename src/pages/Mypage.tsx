@@ -2,14 +2,12 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../components/layout/Layout.tsx";
-import {useUser} from '../contexts/UserContext.tsx'
 import Tabs from "../components/tab/Tabs.tsx";
 import TabPanel from "../components/tab/TabPanel.tsx";
-import React from "react";
 import TabProfileDetail from "../components/tab/TabProfileDetail.tsx";
+import TabRecordDetail from "../components/tab/TabRecordDetail.tsx";
 
 const Mypage= () => {
-
 
     return (
         <Layout>
@@ -29,7 +27,7 @@ const Mypage= () => {
                         <TabProfileDetail />
                     </TabPanel>
                     <TabPanel label="Record">
-                        {/*<TabRecordDetail />*/}
+                        <TabRecordDetail />
                     </TabPanel>
                 </Tabs>
             </Container>
