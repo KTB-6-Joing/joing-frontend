@@ -18,7 +18,7 @@ import '../styles/fonts.css';
 
 const Onboarding: React.FC = () => {
     const navigate = useNavigate();
-    const { role } = useUser();
+    const {role} = useUser();
     const [toggleValue, setIsToggled] = useState<string>("");
 
     useEffect(() => {
