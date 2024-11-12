@@ -36,7 +36,7 @@ const TabButton = styled.button<{ isActive: boolean }>`
     border-bottom: ${({ isActive }) => (isActive ? '3px solid #000' : '3px solid transparent')};
     
     &:hover {
-        color: #000;    
+        color: #000;
     }
     
     &:focus{
