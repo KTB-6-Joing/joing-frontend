@@ -6,11 +6,11 @@ import HorizontalScroll from "../components/HorizontalScroll.tsx";
 import {useNavigate} from "react-router-dom";
 import MessageIcon from "../assets/icons/icon_message.png";
 
-interface Draft {
-    title: string;
-    summary: string;
-    keywords: string[];
-}
+// interface Draft {
+//     title: string;
+//     summary: string;
+//     keywords: string[];
+// }
 
 const MatchingCreator = () => {
     const drafts = JSON.parse(localStorage.getItem("draftPlans") || "[]");
@@ -31,7 +31,7 @@ const MatchingCreator = () => {
                 </Slogan>
                 <CreatorBox>
                     <HorizontalScroll>
-                        {drafts.slice(0, 5).map((draft: Draft, index: number) => (
+                        {drafts.slice(0, 5).map((index: number) => (
                             <DraftItem key={index}>
                                 <Profile>
                                     <ProfileImg></ProfileImg>
