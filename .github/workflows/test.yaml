@@ -2,7 +2,7 @@ name: Node.js CI Test (React+Vite)
 
 on:
   push:
-    branches: [ "develop", "build/JOING-42-Dockerfile" ]
+    branches: [ "develop" ]
 
 jobs:
   build:
