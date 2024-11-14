@@ -287,7 +287,7 @@ const DraftPlan: React.FC = () => {
                             <Buttons>
                                 <ReSumButton
                                     type="button"
-                                    onClick={handleSubmit}
+                                    //onClick={handleSubmit}
                                 >
                                     요약 재생성
                                 </ReSumButton>

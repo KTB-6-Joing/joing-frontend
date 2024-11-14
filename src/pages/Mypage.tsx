@@ -1,5 +1,4 @@
 //import React from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../components/layout/Layout.tsx";
 import Tabs from "../components/tab/Tabs.tsx";
