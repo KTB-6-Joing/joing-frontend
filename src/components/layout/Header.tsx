@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {useNavigate} from "react-router-dom";
-import LogoImg from "../../assets/Logo_joing.png";
+import LogoImg from "../../assets/Logo_joing2.png";
 import '../../styles/fonts.css';
 import {useUser} from '../../contexts/UserContext.tsx'
 import iconMail from "../../assets/icons/icon_mail.png";
