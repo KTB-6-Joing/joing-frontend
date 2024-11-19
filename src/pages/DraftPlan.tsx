@@ -11,6 +11,7 @@ import ArrowDown from '../assets/icons/icon_arrowdown.png';
 import WarningIcon from '../assets/icons/icon_warning.png';
 import Loading from '../assets/Loading.gif';
 import NoticeIcon from "../assets/icons/icon_notice.png";
+import {Evaluation, ReSummary, SaveDraftPlan} from "../services/draftService.ts";
 
 const categories = [
     "게임", "과학기술", "교육", "노하우/스타일", "뉴스/정치", "비영리/사회운동", "스포츠", "애완동물/동물",
@@ -23,10 +24,11 @@ const DraftPlan: React.FC = () => {
     const [selectedType, setSelectedType] = useState<string | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [miscFields, setMiscFields] = useState<{ name: string; value: string }[]>([{ name: '', value: '' }]);
+    const [draftId, setDraftId] = useState('');
     const [readOnly, setReadOnly] = useState(false);
     const [isSummaryClicked, setIsSummaryClicked] = useState(false);
     const [isSummarizing, setIsSummaraizing] = useState(false);
-    //const [isFeedback, setIsFeedback] = useState(false);
+    // const [isFeedback, setIsFeedback] = useState(false);
     const isFeedback = false; //delete
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -34,24 +36,15 @@ const DraftPlan: React.FC = () => {
     const quillRef = useRef<ReactQuill | null>(null);
     const navigate = useNavigate();
 
+    const [summaryData, setSummaryData] = useState({
+        sum_title: '',
+        sum_content: '',
+        keywords: [] as string[],
+    });
+
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
     const handleExit = () => navigate('/');
-
-    const saveDraftPlan = (title: string, content: string, selectedType: string, selectedCategory: string, miscFields: { name: string; value: string }[]) => {
-        const draftPlans = JSON.parse(localStorage.getItem("draftPlans") || "[]");
-
-        const newDraft = {
-            title,
-            content,
-            selectedType,
-            selectedCategory,
-            miscFields,
-        };
-
-        draftPlans.push(newDraft);
-        localStorage.setItem("draftPlans", JSON.stringify(draftPlans));
-    };
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
@@ -92,18 +85,54 @@ const DraftPlan: React.FC = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (isOkayEnabled) {
             setIsSummaraizing(true);
-            setTimeout(() => {
-                setIsSummaraizing(false);
+
+            try {
+                const itemId = await SaveDraftPlan(
+                    title,
+                    content,
+                    selectedType,
+                    selectedCategory,
+                    miscFields
+                );
+
+                setDraftId(itemId);
+
+                const response = await Evaluation(itemId);
+                const { sum_title, sum_content, keywords } = response.data;
+
+                setSummaryData({
+                    sum_title,
+                    sum_content,
+                    keywords,
+                });
                 setIsSummaryClicked(true);
-            }, 2000);
-            saveDraftPlan(title, content, selectedType, selectedCategory, miscFields )
+            } catch (error) {
+                console.error("Failed to handle draft plan:", error);
+            } finally {
+                setIsSummaraizing(false);
+            }
         }
         setReadOnly(true);
     };
+
+    const handleReSummary = async(draftId: string) => {
+        try {
+            const response = await ReSummary(draftId);
+            const { sum_title, sum_content, keywords } = response.data;
+
+            setSummaryData({
+                sum_title,
+                sum_content,
+                keywords,
+            });
+        } catch (error) {
+            console.error("Failed to fetch resummary:", error);
+        }
+    }
 
     useEffect(() => {
         if (isSummaryClicked) {
@@ -270,24 +299,27 @@ const DraftPlan: React.FC = () => {
                     <SummaryPage>
                         <img src={ArrowDown} alt="arrow down"/>
                         <Summary>
-                            <SumTitle>{isFeedback ? 'Feedback' : title}</SumTitle>
+                            <SumTitle>{isFeedback ? 'Feedback' : summaryData.sum_title}</SumTitle>
                             <SumSubTitle>{isFeedback ? 'Feedback Content' : 'Summary'}</SumSubTitle>
-                            <SumContent>{isFeedback ? 'This is a placeholder for feedback content.' : content}</SumContent>
+                            <SumContent>{isFeedback ? 'This is a placeholder for feedback content.' : summaryData.sum_content}</SumContent>
                             {!isFeedback && (
-                                <>
-                                    <SumSubTitle>Keywords</SumSubTitle>
-                                    <SumKeywords>
-                                        <Keyword>{selectedType}</Keyword>
-                                        <Keyword>{selectedCategory}</Keyword>
-                                    </SumKeywords>
-                                </>
+                                summaryData.keywords.length > 0 && (
+                                        <>
+                                            <SumSubTitle>Keywords</SumSubTitle>
+                                            <SumKeywords>
+                                                {summaryData.keywords.map((keyword, index) => (
+                                                    <Keyword key={index}>{keyword}</Keyword>
+                                                ))}
+                                            </SumKeywords>
+                                        </>
+                                    )
                             )}
                         </Summary>
                         {!isFeedback ? (
                             <Buttons>
                                 <ReSumButton
                                     type="button"
-                                    //onClick={handleSubmit}
+                                    onClick={() => handleReSummary(draftId)}
                                 >
                                     요약 재생성
                                 </ReSumButton>

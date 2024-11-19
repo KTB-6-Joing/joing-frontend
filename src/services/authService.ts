@@ -2,7 +2,7 @@ import apiClient from './apiClient';
 
 export const refreshAccessToken = async () => {
     try {
-        const response = await apiClient.patch('/auth/reissue');
+        const response = await apiClient.patch('/api/v1/reissue');
 
         const newAccessToken = parseBearerToken(response.headers['authorization']);
 

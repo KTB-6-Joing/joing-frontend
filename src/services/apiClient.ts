@@ -82,7 +82,7 @@ apiClient.interceptors.response.use(
         for (const data of rawData) {
             let responseData: { status: number; message: string };
             try {
-                responseData = typeof data === 'string' ? JSON.parse(data) : data;
+                responseData = (typeof data === 'string' ? JSON.parse(data) : data);
             } catch (error) {
                 console.error("Failed to parse JSON:", data);
                 return Promise.reject(error);
