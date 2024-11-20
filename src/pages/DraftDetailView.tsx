@@ -1,14 +1,61 @@
 //import React from "react";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../components/layout/Layout.tsx";
 import {useUser} from '../contexts/UserContext.tsx'
+import {DeleteDraftPlan, ViewDraftPlan} from "../services/draftService.ts";
+import {useEffect, useState} from "react";
+
+interface EtcItem {
+    id: number;
+    name: string;
+    value: string;
+}
+
+interface Draft {
+    id: number;
+    title: string;
+    content: string;
+    mediaType: string;
+    score: number;
+    category: string;
+    userName: string;
+    etcList: EtcItem[];
+    createdAt: string;
+    updatedAt: string;
+    userEmail: string;
+    summary: string;
+    keywords: string[];
+}
 
 const DraftDetailView = () => {
     const { index } = useParams<{ index: string }>();
-    const drafts = JSON.parse(localStorage.getItem("draftPlans") || "[]");
-    const draft = drafts[Number(index)];
+    const [draft, setDraft] = useState<Draft | null>(null);
     const { role } = useUser();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchDraft = async () => {
+            try {
+                const response = await ViewDraftPlan(index || "");
+                setDraft(response.data);
+            } catch (error) {
+                console.error("Failed to fetch draft:", error);
+            }
+        };
+        fetchDraft();
+    }, [index]);
+
+    const handleDelete = async () => {
+        try {
+            if (draft) {
+                await DeleteDraftPlan(draft.id.toString());
+                navigate("/");
+            }
+        } catch (error) {
+            console.error("삭제 실패:", error);
+        }
+    };
 
     if (!draft) {
         return (
@@ -27,10 +74,11 @@ const DraftDetailView = () => {
                 </LeftBox>
                 <RightBox>
                     <Profile>
-                        <ProfileImg></ProfileImg>
+                        <ProfileImg />
                         <ProfileDetail>
-                            <Name>Ellie Park</Name>
+                            <Name>{draft.userName}</Name>
                             <Email>soyeon_0307@naver.com</Email>
+                            <CreatedAt>생성일: {new Date(draft.createdAt).toLocaleDateString()}</CreatedAt>
                         </ProfileDetail>
                     </Profile>
                     <SummaryView>
@@ -39,36 +87,43 @@ const DraftDetailView = () => {
                     </SummaryView>
                     <KeywordView>
                         <Label>Keywords</Label>
-                        <Keywords>
-                            {(draft.keywords || []).map((keyword: string, idx: number) => (
-                                <Keyword key={idx}>{keyword}</Keyword>
-                            ))}
-                        </Keywords>
+                        {draft.keywords.length > 0 ? (
+                            <Keywords>
+                                {draft.keywords.map((keyword, idx) => (
+                                    <Keyword key={idx}>{keyword}</Keyword>
+                                ))}
+                            </Keywords>
+                        ) : (
+                            <p>키워드가 없습니다.</p>
+                        )}
                     </KeywordView>
                     <TypeView>
                         <Label>Type</Label>
-                        <Type>{draft.selectedType}</Type>
+                        <Type>{draft.mediaType}</Type>
                     </TypeView>
                     <CategoryView>
                         <Label>Category</Label>
-                        <Category>{draft.selectedCategory}</Category>
+                        <Category>{draft.category}</Category>
                     </CategoryView>
                     <MiscView>
                         <Label>Additional Information</Label>
-                        <Miscs>
-                            {(draft.miscFields || []).map((field: { name: string; value: string }, idx: number) => (
-                                <Misc key={idx}>
-                                    {field.name}: {field.value}
-                                </Misc>
-                            ))}
-                        </Miscs>
+                        {draft.etcList.length > 0 ? (
+                            <Miscs>
+                                {draft.etcList.map((field, idx) => (
+                                    <Misc key={idx}>
+                                        {field.name}: {field.value}
+                                    </Misc>
+                                ))}
+                            </Miscs>
+                        ) : (
+                            <p>추가 정보가 없습니다.</p>
+                        )}
                     </MiscView>
                 </RightBox>
             </Container>
             {role === "planner" && (
                 <Buttons>
-                    <EditButton>수정하기</EditButton>
-                    <DeleteButton>삭제하기</DeleteButton>
+                    <DeleteButton onClick={handleDelete}>삭제하기</DeleteButton>
                 </Buttons>
            )}
         </Layout>
@@ -158,6 +213,11 @@ const Email = styled.p`
     font-size: 0.9rem;
 `;
 
+const CreatedAt = styled.p`
+    font-family: 'SUITE-Regular', serif;
+    font-size: 0.9rem;
+`;
+
 const SummaryView = styled(View)``;
 
 const Summary = styled.p`
@@ -207,28 +267,6 @@ const Buttons = styled.div`
     margin: 50px 0;
     padding-bottom: 30px;
     gap: 10px;
-`;
-
-const EditButton = styled.button`
-    font-family: 'SUITE-Bold', serif;
-    padding: 6px 15px;
-    width: 200px;
-    height: 40px;
-    background-color: #ffffff;
-    border: 1px solid black;
-    border-radius: 10px;
-    color: black;
-    transition: background-color 0.3s;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #e0e0e0;
-        border: 1px solid #000000;
-    }
-
-    &:focus {
-        outline: none;
-    }
 `;
 
 const DeleteButton = styled.button`

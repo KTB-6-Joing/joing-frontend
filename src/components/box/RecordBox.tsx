@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import {useUser} from "../../contexts/UserContext.tsx";
 
 interface RecordBoxProps {
+    id: string;
     title: string;
     summary: string;
-    onViewDetails: () => void;
+    onViewDetails: (id: string) => void;
 }
 
-const RecordBox: React.FC<RecordBoxProps> = ({title, summary, onViewDetails}) => {
+const RecordBox: React.FC<RecordBoxProps> = ({id, title, summary, onViewDetails}) => {
     const {role} = useUser();
 
     return (
@@ -18,7 +19,7 @@ const RecordBox: React.FC<RecordBoxProps> = ({title, summary, onViewDetails}) =>
                 <Title>{title}</Title>
                 <Summary>{summary}</Summary>
             </TextContainer>
-            <DetailsButton onClick={onViewDetails}>View details</DetailsButton>
+            <DetailsButton onClick={() => onViewDetails(id)}>View details</DetailsButton>
         </BoxContainer>
     );
 };

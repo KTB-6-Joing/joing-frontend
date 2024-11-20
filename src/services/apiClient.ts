@@ -1,7 +1,7 @@
 import axios, {AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig} from 'axios';
 import {logout, refreshAccessToken} from './authService.js';
 
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = import.meta.env.REACT_APP_API_URL;
 
 const apiClient = axios.create({
     baseURL: apiUrl,

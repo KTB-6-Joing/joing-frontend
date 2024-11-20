@@ -3,10 +3,12 @@ import styled from "styled-components";
 import SearchIcon from "../../assets/icons/icon_search.png";
 import RecordBox from "../box/RecordBox.tsx";
 import {ViewDraftList} from "../../services/draftService.ts";
+import {useNavigate} from "react-router-dom";
 
 const TabRecordDetail: React.FC = () => {
-    const [Drafts, setDrafts] = useState<{ title: string; summary: string }[]>([]);
+    const [Drafts, setDrafts] = useState<{ id: string; title: string; summary: string }[]>([]);
     const [searchKeyword, setSearchKeyword] = useState('');
+    const navigate = useNavigate();
 
     const fetchDrafts = async () => {
         try {
@@ -21,9 +23,10 @@ const TabRecordDetail: React.FC = () => {
         fetchDrafts();
     }, []);
 
-    const handleViewDetails = () => {
-
+    const handleViewDetails = (id: string) => {
+        navigate(`/draftplan/${id}`);
     };
+
 
     const filteredItems = Drafts.filter(item =>
         item.title.toLowerCase().includes(searchKeyword.toLowerCase())
@@ -39,9 +42,10 @@ const TabRecordDetail: React.FC = () => {
                     onChange={(e) => setSearchKeyword(e.target.value)}
                 />
             </SearchBar>
-            {filteredItems.map((item, index) => (
+            {filteredItems.map((item) => (
                 <RecordBox
-                    key={index}
+                    key={item.id}
+                    id={item.id}
                     title={item.title}
                     summary={item.summary}
                     onViewDetails={handleViewDetails}
