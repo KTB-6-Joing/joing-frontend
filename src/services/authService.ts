@@ -1,21 +1,42 @@
 import apiClient from './apiClient';
 
-export const refreshAccessToken = async () => {
+export const creatorJoin = async (data: {
+    nickname: string;
+    email: string;
+    channelId: string;
+    channelUrl: string;
+    mediaType: string;
+    category: string;
+}) => {
     try {
-        const response = await apiClient.patch('/auth/reissue');
+        const response = await apiClient.post('/api/v1/users/signup/creator', data);
+        console.log('API response:', response);
 
-        const newAccessToken = parseBearerToken(response.headers['authorization']);
-
-        if (newAccessToken) {
-            localStorage.setItem('accessToken', newAccessToken);
-            return true;
-        } else {
-            console.error("Failed to parse new access token");
-            return false;
+        if (response.status === 201) {
+            return { success: true };
         }
+        throw new Error(`Unexpected status code: ${response.status}`);
     } catch (error) {
-        console.error("Failed to refresh token:", error);
-        throw error;
+        console.error('Error in creatorJoin:', error);
+        return { success: false, error };
+    }
+};
+
+export const plannerJoin = async(data: {
+        nickname: string;
+        email: string;
+        favoriteCategories: string[];
+    }) => {
+    try{
+        const response = await apiClient.post('/api/v1/users/signup/productmanager', {data});
+
+        if (response.status === 201 || response.status === 200) {
+            return { success: true };
+        }
+        throw new Error(`Unexpected status code: ${response.status}`);
+    } catch (error) {
+        console.error('Error in creatorJoin:', error);
+        return { success: false, error };
     }
 };
 
@@ -28,7 +49,7 @@ export const logout = async () => {
     }
 
     try {
-        await apiClient.patch('/auth/logout', {}, {
+        await apiClient.patch('/auth/v1/logout', {}, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -38,13 +59,6 @@ export const logout = async () => {
     } finally {
         clearTokens();
     }
-};
-
-const parseBearerToken = (headerValue: string) => {
-    if (headerValue && headerValue.startsWith('Bearer ')) {
-        return headerValue.split(' ')[1];
-    }
-    return null;
 };
 
 const clearTokens = () => {

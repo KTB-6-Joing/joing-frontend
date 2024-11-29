@@ -1,60 +1,18 @@
-import React, {useState} from "react";
+import React from "react";
 import styled from "styled-components"
 
 import iconCross from '../../assets/icons/icon_cross.png';
 import LoginForm from "./LoginForm.tsx";
-import RoleSelection from "./RoleSelection.tsx";
-import Join from "./Join.tsx";
-import JoinCompletion from "./JoinCompletion.tsx";
-
-type ModalView =
-    | "login"
-    | "roleSelection"
-    | "Join"
-    | "joinCompletion";
-
 interface AuthProps {
     handleClose: () => void;
 }
 
 const Auth: React.FC<AuthProps> = ({handleClose}) => {
-    const [currentView, setCurrentView] = useState<ModalView>("login");
-    const [selectedRole, setSelectedRole] = useState<"creator" | "planner" | null>(null);
-
-    const renderContent = () => {
-        switch (currentView) {
-            case "login":
-                return <LoginForm onNext={() => setCurrentView("roleSelection")}/>;
-            case "roleSelection":
-                return (
-                    <RoleSelection
-                        onSelectPlanner={() => {
-                            setSelectedRole("planner");
-                            setCurrentView("Join")
-                        }}
-                        onSelectCreator={() => {
-                            setSelectedRole("creator");
-                            setCurrentView("Join")
-                        }}
-                    />
-                );
-            case "Join":
-                return <Join
-                    role={selectedRole}
-                    onNext={() => setCurrentView("joinCompletion")}
-                    onBack={() => setCurrentView("roleSelection")}/>;
-            case "joinCompletion":
-                return <JoinCompletion onClose={handleClose}/>;
-            default:
-                return null;
-        }
-    };
-
     return (
         <ModalOverlay onClick={handleClose}>
             <ModalContainer onClick={(e) => e.stopPropagation()}>
                 <Cross src={iconCross} alt="Cross Icon" onClick={handleClose}/>
-                {renderContent()}
+                <LoginForm />
             </ModalContainer>
         </ModalOverlay>
     );

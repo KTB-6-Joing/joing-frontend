@@ -1,5 +1,5 @@
 import React from "react";
-import JoingLogo from '../../assets/Logo_joing.png';
+import JoingLogo from '../../assets/Logo_joing2.png';
 import styled from "styled-components";
 
 interface LoginCompletionProps {
@@ -13,7 +13,6 @@ const JoinCompletion: React.FC<LoginCompletionProps> = ({ onClose }) => {
             <LogoTitle>Joing</LogoTitle>
             <Title>회원가입이 완료되었습니다</Title>
             <OkayButton onClick={onClose}>확인</OkayButton>
-
         </>
     );
 }
@@ -36,8 +35,8 @@ const LogoTitle = styled.h1`
 const Title = styled.h2`
     font-size: 20px;
     font-weight: bold;
-    margin-bottom: 20px;
     text-align: center;
+    margin: 5rem;
 `;
 
 const OkayButton = styled.button`
