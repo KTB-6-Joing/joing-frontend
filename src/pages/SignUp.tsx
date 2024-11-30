@@ -4,14 +4,12 @@ import RoleSelection from "../components/modal/RoleSelection.tsx";
 import Join from "../components/modal/Join.tsx";
 import JoinCompletion from "../components/modal/JoinCompletion.tsx";
 import styled from "styled-components";
-import {useNavigate} from "react-router-dom";
 
 type JoinView = "roleSelection" | "Join" | "joinCompletion";
 
 const SignUp = () => {
     const [currentView, setCurrentView] = useState<JoinView>("roleSelection");
     const [selectedRole, setSelectedRole] = useState<"creator" | "planner" | null>(null);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const existingToken = localStorage.getItem("accessToken");
@@ -51,15 +49,11 @@ const SignUp = () => {
                     onNext={() => setCurrentView("joinCompletion")}
                     onBack={() => setCurrentView("roleSelection")}/>;
             case "joinCompletion":
-                return <JoinCompletion onClose={handleClose}/>;
+                return <JoinCompletion />;
             default:
                 return null;
         }
     };
-
-    const handleClose = () => {
-        navigate("/");
-    }
 
     return (
         <Layout>

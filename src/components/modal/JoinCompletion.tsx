@@ -1,18 +1,18 @@
 import React from "react";
 import JoingLogo from '../../assets/Logo_joing2.png';
 import styled from "styled-components";
+import {useNavigate} from "react-router-dom";
 
-interface LoginCompletionProps {
-    onClose: () => void;
-}
 
-const JoinCompletion: React.FC<LoginCompletionProps> = ({ onClose }) => {
+const JoinCompletion: React.FC = () => {
+    const navigate = useNavigate();
+
     return (
         <>
             <Logo src={JoingLogo} alt="Project Logo" />
             <LogoTitle>Joing</LogoTitle>
             <Title>회원가입이 완료되었습니다</Title>
-            <OkayButton onClick={onClose}>확인</OkayButton>
+            <OkayButton onClick={() => navigate("/")}>확인</OkayButton>
         </>
     );
 }
