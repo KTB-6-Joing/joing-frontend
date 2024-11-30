@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import NoticeIcon from "../../assets/icons/icon_notice.png";
 import {creatorJoin, plannerJoin} from "../../services/authService.ts";
@@ -37,9 +37,9 @@ const categories = [
     "ETC"
 ];
 
-const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
+const Join: React.FC<CreatorJoinProps> = ({onNext, onBack, role}) => {
     const [nickname, setNickname] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState<string | null> (null);
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [channelID, setChannelID] = useState('');
     const [channelLink, setChannelLink] = useState('');
     const [emailPrefix, setEmailPrefix] = useState('');
@@ -47,8 +47,8 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
     const [customDomain, setCustomDomain] = useState('');
     const [fullEmail, setFullEmail] = useState('');
     const [isVerifyEnabled, setIsVerifyEnabled] = useState(false);
-    const [selectedType, setSelectedType] = useState<string| null>(null);
-    const [selectedCategories, setSelectedCategories] = useState<string[] >([]);
+    const [selectedType, setSelectedType] = useState<string | null>(null);
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
     const isOkayEnabled =
         role === "creator"
@@ -193,7 +193,7 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
                     <EmailContainer>
                         <InputField
                             placeholder="Enter your Email"
-                            onChange = {handleEmailPrefixChange}
+                            onChange={handleEmailPrefixChange}
                         />
                         <EmailSeparator>@</EmailSeparator>
                         {emailDomain === '직접 입력' ? (
@@ -257,19 +257,19 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
                             <Types>
                                 <Type
                                     onClick={(e) => {
-                                        handleTypeClick("Short-Form");
+                                        handleTypeClick("SHORT_FORM");
                                         handleButtonClick(e);
                                     }}
-                                    isSelected={selectedType === "Short-Form"}
+                                    isSelected={selectedType === "SHORT_FORM"}
                                 >
                                     Short-Form
                                 </Type>
                                 <Type
                                     onClick={(e) => {
-                                        handleTypeClick("Long-Form");
+                                        handleTypeClick("LONG_FORM");
                                         handleButtonClick(e);
                                     }}
-                                    isSelected={selectedType === "Long-Form"}
+                                    isSelected={selectedType === "LONG_FORM"}
                                 >
                                     Long-Form
                                 </Type>
@@ -290,7 +290,7 @@ const Join: React.FC<CreatorJoinProps> = ({ onNext, onBack, role}) => {
                                     >
                                         {category}
                                     </Type>
-                                    ))}
+                                ))}
                             </Category>
                         </InputForm>
                     </>
@@ -435,7 +435,7 @@ const Type = styled.button<{ isSelected: boolean }>`
         background-color: #bdbdbd;
         border-color: #888;
     }
-    
+
     &:focus {
         border-color: #555;
         outline: none;
@@ -470,15 +470,15 @@ const OkayButton = styled.button`
     padding: 6px 15px;
     width: 100px;
     height: 40px;
-    background-color: ${({ disabled }) => (disabled ? '#cccccc' : '#000000')};
+    background-color: ${({disabled}) => (disabled ? '#cccccc' : '#000000')};
     border: none;
     border-radius: 10px;
     color: white;
     transition: background-color 0.3s;
-    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+    cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
 
     &:hover {
-        background-color: ${({ disabled }) => (disabled ? '#cccccc' : '#3e3e3e')};
+        background-color: ${({disabled}) => (disabled ? '#cccccc' : '#3e3e3e')};
         border: none;
     }
 `;
