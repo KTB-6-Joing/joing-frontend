@@ -2,6 +2,8 @@ import React, {useState} from "react";
 import styled from "styled-components";
 import NoticeIcon from "../../assets/icons/icon_notice.png";
 import {creatorJoin, plannerJoin} from "../../services/authService.ts";
+import {getRole} from "../../services/userService.ts";
+import {useUser} from "../../contexts/UserContext.tsx";
 
 interface CreatorJoinProps {
     onNext: () => void;
@@ -49,6 +51,8 @@ const Join: React.FC<CreatorJoinProps> = ({onNext, onBack, role}) => {
     const [isVerifyEnabled, setIsVerifyEnabled] = useState(false);
     const [selectedType, setSelectedType] = useState<string | null>(null);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const { setRole } = useUser();
+
 
     const isOkayEnabled =
         role === "creator"
@@ -139,10 +143,9 @@ const Join: React.FC<CreatorJoinProps> = ({onNext, onBack, role}) => {
                 });
 
                 if (result.success) {
-                    console.log('Creator signup successful');
+                    await getRole(setRole);
                     onNext();
                 } else {
-                    console.error('Creator signup failed:', result.error);
                     alert('Failed to sign up as creator. Please try again.');
                 }
             } else if (role === 'planner') {
@@ -153,10 +156,8 @@ const Join: React.FC<CreatorJoinProps> = ({onNext, onBack, role}) => {
                 });
 
                 if (result.success) {
-                    console.log('Planner signup successful');
                     onNext();
                 } else {
-                    console.error('Planner signup failed:', result.error);
                     alert('Failed to sign up as planner. Please try again.');
                 }
             } else {

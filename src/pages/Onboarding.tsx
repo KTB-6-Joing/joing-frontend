@@ -15,11 +15,27 @@ import iconStoryboard from '../assets/icons/icon_storyboard.png';
 import iconCleanbot from '../assets/icons/icon_bot.png';
 
 import '../styles/fonts.css';
+import {getRole} from "../services/userService.ts";
+import {extractAndSaveToken} from "../services/authService.ts";
 
 const Onboarding: React.FC = () => {
     const navigate = useNavigate();
-    const {role} = useUser();
+    const {role, setRole} = useUser();
     const [toggleValue, setIsToggled] = useState<string>("");
+
+    useEffect(() => {
+        extractAndSaveToken();
+
+        const fetchRole = async () => {
+            try {
+                await getRole(setRole);
+            } catch (error) {
+                console.error("Failed to fetch role:", error);
+            }
+        };
+
+        fetchRole();
+    }, [setRole]);
 
     useEffect(() => {
         if (role === "creator" || role === null) {

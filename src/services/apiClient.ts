@@ -24,10 +24,6 @@ apiClient.interceptors.request.use((
             excludedPaths.some(path => config.url?.includes(path)) ||
             (config.method === 'get' && /^\/api\/v1\/items\/[^/]+$/.test(config.url || ''));
 
-        console.log('Request URL:', config.url);
-        console.log('Excluded:', isExcluded);
-        console.log('AccessToken:', localStorage.getItem('accessToken'));
-
         if (!isExcluded) {
             const accessToken = localStorage.getItem('accessToken');
             setAuthorizationHeader(config, accessToken);
@@ -45,7 +41,6 @@ apiClient.interceptors.response.use(
         const rawData = error.response?.data || null;
 
         if (!rawData) {
-            console.error('No response data found in the error object.');
             return Promise.reject(error);
         }
 

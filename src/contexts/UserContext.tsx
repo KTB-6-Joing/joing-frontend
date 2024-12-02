@@ -1,6 +1,6 @@
 import {createContext, useContext, useState, ReactNode} from "react";
 
-type Role = 'creator' | 'planner' | null;
+export type Role = 'creator' | 'planner' | null;
 
 interface UserContextType {
     role: Role;

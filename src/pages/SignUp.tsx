@@ -4,6 +4,7 @@ import RoleSelection from "../components/modal/RoleSelection.tsx";
 import Join from "../components/modal/Join.tsx";
 import JoinCompletion from "../components/modal/JoinCompletion.tsx";
 import styled from "styled-components";
+import {extractAndSaveToken} from "../services/authService.ts";
 
 type JoinView = "roleSelection" | "Join" | "joinCompletion";
 
@@ -12,20 +13,7 @@ const SignUp = () => {
     const [selectedRole, setSelectedRole] = useState<"creator" | "planner" | null>(null);
 
     useEffect(() => {
-        const existingToken = localStorage.getItem("accessToken");
-
-        if (!existingToken) {
-            const params = new URLSearchParams(window.location.search);
-            const accessToken = params.get("token");
-
-            if (accessToken) {
-                localStorage.setItem("accessToken", accessToken);
-
-                params.delete("token");
-                const newUrl = `${window.location.origin}${window.location.pathname}`;
-                window.history.replaceState({}, document.title, newUrl);
-            }
-        }
+       extractAndSaveToken();
     }, []);
 
     const renderContent = () => {

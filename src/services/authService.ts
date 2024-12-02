@@ -10,7 +10,6 @@ export const creatorJoin = async (data: {
 }) => {
     try {
         const response = await apiClient.post('/api/v1/users/signup/creator', data);
-        console.log('API response:', response);
 
         if (response.status === 201) {
             return { success: true };
@@ -63,4 +62,17 @@ export const logout = async () => {
 
 const clearTokens = () => {
     localStorage.removeItem('accessToken');
+};
+
+export const extractAndSaveToken = (): void => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+
+    if (token) {
+        localStorage.setItem("accessToken", token);
+
+        params.delete("token");
+        const newUrl = `${window.location.origin}${window.location.pathname}`;
+        window.history.replaceState({}, document.title, newUrl);
+    }
 };
