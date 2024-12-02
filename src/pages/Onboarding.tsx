@@ -22,20 +22,20 @@ const Onboarding: React.FC = () => {
     const navigate = useNavigate();
     const {role, setRole} = useUser();
     const [toggleValue, setIsToggled] = useState<string>("");
-    //
-    // useEffect(() => {
-    //     extractAndSaveToken();
-    //
-    //     const fetchRole = async () => {
-    //         try {
-    //             await getRole(setRole);
-    //         } catch (error) {
-    //             console.error("Failed to fetch role:", error);
-    //         }
-    //     };
-    //
-    //     fetchRole();
-    // }, [setRole]);
+
+    useEffect(() => {
+        extractAndSaveToken();
+
+        // const fetchRole = async () => {
+        //     try {
+        //         await getRole(setRole);
+        //     } catch (error) {
+        //         console.error("Failed to fetch role:", error);
+        //     }
+        // };
+        //
+        // fetchRole();
+    }, [setRole]);
 
     useEffect(() => {
         if (role === "creator" || role === null) {
