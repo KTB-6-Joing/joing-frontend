@@ -57,7 +57,7 @@ const Join: React.FC<CreatorJoinProps> = ({onNext, onBack, role}) => {
     const isOkayEnabled =
         role === "creator"
             ? nickname && selectedCategory && channelID && channelLink && selectedType && isVerifyEnabled
-            : nickname && selectedType && isVerifyEnabled;
+            : nickname && selectedCategories.length > 0 && isVerifyEnabled;
 
     const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNickname(e.target.value);
@@ -143,13 +143,11 @@ const Join: React.FC<CreatorJoinProps> = ({onNext, onBack, role}) => {
                 });
 
                 if (result.success) {
-                    await getRole(setRole);
                     onNext();
                 } else {
                     alert('Failed to sign up as creator. Please try again.');
                 }
-            } else if (role === 'planner') {
-                const result = await plannerJoin({
+            } else if (role === 'planner') {const result = await plannerJoin({
                     nickname,
                     email: fullEmail,
                     favoriteCategories: selectedCategories.length > 0 ? selectedCategories : [],
@@ -285,6 +283,7 @@ const Join: React.FC<CreatorJoinProps> = ({onNext, onBack, role}) => {
                             <Category>
                                 {categories.map((category) => (
                                     <Type
+                                        type="button"
                                         key={category}
                                         onClick={() => handleCategoryClick(category)}
                                         isSelected={selectedCategories.includes(category)}

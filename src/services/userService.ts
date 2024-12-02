@@ -1,12 +1,11 @@
 import apiClient from './apiClient';
-import {Role} from '../contexts/UserContext'
 
-export const getRole = async(setRole: (role: Role) => void) => {
+export const getRole = async() => {
     try{
         const response = await apiClient.get('api/v1/users');
-        setRole(response.data.role);
+        return response.data.role;
     } catch (error) {
         console.error('Failed to fetch role:', error);
-
+        return null;
     }
 }

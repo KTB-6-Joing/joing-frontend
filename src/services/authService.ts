@@ -27,14 +27,15 @@ export const plannerJoin = async(data: {
         favoriteCategories: string[];
     }) => {
     try{
-        const response = await apiClient.post('/api/v1/users/signup/productmanager', {data});
+        console.log(data);
+        const response = await apiClient.post('/api/v1/users/signup/productmanager', data);
 
         if (response.status === 201 || response.status === 200) {
             return { success: true };
         }
         throw new Error(`Unexpected status code: ${response.status}`);
     } catch (error) {
-        console.error('Error in creatorJoin:', error);
+        console.error('Error in plannerJoin:', error);
         return { success: false, error };
     }
 };
@@ -48,11 +49,7 @@ export const logout = async () => {
     }
 
     try {
-        await apiClient.patch('/auth/v1/logout', {}, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        });
+        await apiClient.post('/auth/v1/logout');
     } catch (error) {
         console.error('Logout failed:', error);
     } finally {
