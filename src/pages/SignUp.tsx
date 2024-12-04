@@ -10,10 +10,10 @@ type JoinView = "roleSelection" | "Join" | "joinCompletion";
 
 const SignUp = () => {
     const [currentView, setCurrentView] = useState<JoinView>("roleSelection");
-    const [selectedRole, setSelectedRole] = useState<"creator" | "planner" | null>(null);
+    const [selectedRole, setSelectedRole] = useState<"CREATOR" | "PRODUCT_MANAGER" | null>(null);
 
     useEffect(() => {
-       extractAndSaveToken();
+        extractAndSaveToken();
     }, []);
 
     const renderContent = () => {
@@ -21,12 +21,12 @@ const SignUp = () => {
             case "roleSelection":
                 return (
                     <RoleSelection
-                        onSelectPlanner={() => {
-                            setSelectedRole("planner");
+                        onSelectProductManager={() => {
+                            setSelectedRole("PRODUCT_MANAGER");
                             setCurrentView("Join")
                         }}
                         onSelectCreator={() => {
-                            setSelectedRole("creator");
+                            setSelectedRole("CREATOR");
                             setCurrentView("Join")
                         }}
                     />
@@ -37,7 +37,7 @@ const SignUp = () => {
                     onNext={() => setCurrentView("joinCompletion")}
                     onBack={() => setCurrentView("roleSelection")}/>;
             case "joinCompletion":
-                return <JoinCompletion />;
+                return <JoinCompletion/>;
             default:
                 return null;
         }
@@ -62,7 +62,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+
 `;
 
 const Container = styled.div`

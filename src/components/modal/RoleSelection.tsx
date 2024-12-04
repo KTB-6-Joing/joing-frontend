@@ -5,10 +5,10 @@ import iconPlanner from "../../assets/icons/icon_planner.png";
 
 interface RoleSelectionProps {
     onSelectCreator: () => void;
-    onSelectPlanner: () => void;
+    onSelectProductManager: () => void;
 }
 
-const RoleSelection: React.FC<RoleSelectionProps> = ({ onSelectCreator, onSelectPlanner }) => {
+const RoleSelection: React.FC<RoleSelectionProps> = ({ onSelectCreator, onSelectProductManager }) => {
     return (
         <>
             <Title>회원가입</Title>
@@ -17,7 +17,7 @@ const RoleSelection: React.FC<RoleSelectionProps> = ({ onSelectCreator, onSelect
                     <img src={iconCreator} alt="Creator icon"/>
                     <RoleText>크리에이터</RoleText>
                 </Box>
-                <Box onClick={onSelectPlanner}>
+                <Box onClick={onSelectProductManager}>
                     <img src={iconPlanner} alt="Planner icon"/>
                     <RoleText>기획자</RoleText>
                 </Box>

@@ -1,14 +1,12 @@
 import React, {useState} from "react";
 import styled from "styled-components";
 import NoticeIcon from "../../assets/icons/icon_notice.png";
-import {creatorJoin, plannerJoin} from "../../services/authService.ts";
-import {getRole} from "../../services/userService.ts";
-import {useUser} from "../../contexts/UserContext.tsx";
+import {creatorJoin, productmanagerJoin} from "../../services/authService.ts";
 
-interface CreatorJoinProps {
+interface JoinProps {
     onNext: () => void;
     onBack: () => void;
-    role: "creator" | "planner" | null;
+    role: "CREATOR" | "PRODUCT_MANAGER" | null;
 }
 
 const emailDomains = [
@@ -39,7 +37,7 @@ const categories = [
     "ETC"
 ];
 
-const Join: React.FC<CreatorJoinProps> = ({onNext, onBack, role}) => {
+const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
     const [nickname, setNickname] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [channelID, setChannelID] = useState('');
@@ -51,11 +49,10 @@ const Join: React.FC<CreatorJoinProps> = ({onNext, onBack, role}) => {
     const [isVerifyEnabled, setIsVerifyEnabled] = useState(false);
     const [selectedType, setSelectedType] = useState<string | null>(null);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-    const { setRole } = useUser();
 
 
     const isOkayEnabled =
-        role === "creator"
+        role === "CREATOR"
             ? nickname && selectedCategory && channelID && channelLink && selectedType && isVerifyEnabled
             : nickname && selectedCategories.length > 0 && isVerifyEnabled;
 
@@ -132,7 +129,7 @@ const Join: React.FC<CreatorJoinProps> = ({onNext, onBack, role}) => {
         if (!isOkayEnabled) return;
 
         try {
-            if (role === 'creator') {
+            if (role === 'CREATOR') {
                 const result = await creatorJoin({
                     nickname,
                     email: fullEmail,
@@ -147,7 +144,7 @@ const Join: React.FC<CreatorJoinProps> = ({onNext, onBack, role}) => {
                 } else {
                     alert('Failed to sign up as creator. Please try again.');
                 }
-            } else if (role === 'planner') {const result = await plannerJoin({
+            } else if (role === 'PRODUCT_MANAGER') {const result = await productmanagerJoin({
                     nickname,
                     email: fullEmail,
                     favoriteCategories: selectedCategories.length > 0 ? selectedCategories : [],
@@ -156,7 +153,7 @@ const Join: React.FC<CreatorJoinProps> = ({onNext, onBack, role}) => {
                 if (result.success) {
                     onNext();
                 } else {
-                    alert('Failed to sign up as planner. Please try again.');
+                    alert('Failed to sign up as productManager. Please try again.');
                 }
             } else {
                 console.error('Invalid role:', role);
@@ -179,7 +176,7 @@ const Join: React.FC<CreatorJoinProps> = ({onNext, onBack, role}) => {
                         value={nickname}
                         onChange={handleNicknameChange}
                     />
-                    {role === "creator" &&
+                    {role === "CREATOR" &&
                         <Notice>
                             <img src={NoticeIcon} alt="Notice Icon"/>
                             채널 이름과 동일하게 설정하시는걸 추천드려요
@@ -220,7 +217,7 @@ const Join: React.FC<CreatorJoinProps> = ({onNext, onBack, role}) => {
                         상대와 연락할 때 사용할 이메일을 입력해주세요
                     </Notice>
                 </InputForm>
-                {role === "creator" && (
+                {role === "CREATOR" && (
                     <>
                         <InputForm>
                             <Label>Channel Category</Label>
@@ -276,7 +273,7 @@ const Join: React.FC<CreatorJoinProps> = ({onNext, onBack, role}) => {
                         </InputForm>
                     </>
                 )}
-                {role === "planner" && (
+                {role === "PRODUCT_MANAGER" && (
                     <>
                         <InputForm>
                             <Label>선호 카테고리</Label>

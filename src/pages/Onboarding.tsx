@@ -15,37 +15,28 @@ import iconStoryboard from '../assets/icons/icon_storyboard.png';
 import iconCleanbot from '../assets/icons/icon_bot.png';
 
 import '../styles/fonts.css';
-import {getRole} from "../services/userService.ts";
 import {extractAndSaveToken} from "../services/authService.ts";
+
+export type ToggleValue = "CREATOR" | "PRODUCT_MANAGER";
 
 const Onboarding: React.FC = () => {
     const navigate = useNavigate();
     const {role, setRole} = useUser();
-    const [toggleValue, setIsToggled] = useState<string>("");
+    const [toggleValue, setIsToggled] = useState<ToggleValue>("CREATOR");
 
     useEffect(() => {
         extractAndSaveToken();
-
-        // const fetchRole = async () => {
-        //     try {
-        //         await getRole(setRole);
-        //     } catch (error) {
-        //         console.error("Failed to fetch role:", error);
-        //     }
-        // };
-        //
-        // fetchRole();
     }, [setRole]);
 
     useEffect(() => {
-        if (role === "creator" || role === null) {
-            setIsToggled("creator");
-        } else if (role === "planner") {
-            setIsToggled("planner");
+        if (role === "CREATOR" || role === null) {
+            setIsToggled("CREATOR");
+        } else if (role === "PRODUCT_MANAGER") {
+            setIsToggled("PRODUCT_MANAGER");
         }
     }, [role]);
 
-    const handleToggleChange = (newValue: string) => {
+    const handleToggleChange = (newValue: ToggleValue) => {
         setIsToggled(newValue);
     };
 
@@ -59,7 +50,7 @@ const Onboarding: React.FC = () => {
                             <LeftBox>
                                 <Toggle value={toggleValue} onToggle={handleToggleChange} />
                                 <Slogan>
-                                    {toggleValue==="creator" ? "나는 크리에이터다!!" : "나는 기획자다!!"}
+                                    {toggleValue === "CREATOR" ? "나는 크리에이터다!!" : "나는 기획자다!!"}
                                 </Slogan>
                                 <Detail>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br/>
@@ -70,15 +61,15 @@ const Onboarding: React.FC = () => {
                                 <MainButton
                                     value={toggleValue}
                                     onClick={() => {
-                                        if (toggleValue === "planner") {
+                                        if (toggleValue === "PRODUCT_MANAGER") {
                                             navigate("/draftplan");
                                         }
-                                        else if (toggleValue === "creator") {
+                                        else if (toggleValue === "CREATOR") {
                                             navigate("/matching/draft");
                                         }
                                     }}
                                 >
-                                    {toggleValue === "creator" ? (
+                                    {toggleValue === "CREATOR" ? (
                                         <>
                                             <span>기획안 추천받기</span>
                                             <img src={iconArrow} alt="arrow icon" />
@@ -122,7 +113,7 @@ const Onboarding: React.FC = () => {
                     </CenteredSection>
                     <CenteredSection>
                         <Container3>
-                            {toggleValue === "creator" ? (
+                            {toggleValue === "CREATOR" ? (
                                 <>
                                     <Slogan>
                                         크리에이터인 당신을 위한 JOING만의 서비스 프로세스!
@@ -254,10 +245,10 @@ const MainButton = styled.button`
 
     &:hover {
         border: none;
-        background-color: ${({ value }) => (value === "creator" ? "#FF3D3D" : "#307718")};;
+        background-color: ${({ value }) => (value === "CREATOR" ? "#FF3D3D" : "#307718")};
     }
 
-    background-color: ${({ value }) => (value === "creator" ? "#FF5D5D" : "#6cbd4f")};
+    background-color: ${({ value }) => (value === "CREATOR" ? "#FF5D5D" : "#6cbd4f")};
 `;
 
 const ImgBox = styled.div`
@@ -339,9 +330,9 @@ const Num = styled.h2`
     margin-bottom: 0;
 `;
 
-const Title = styled.h2<{ value: string }>`
+const Title = styled.h2<{ value: ToggleValue }>`
     font-family: 'GongGothicMedium', serif;
     font-size: 18px;
     font-weight: bolder;
-    color: ${({ value }) => (value === "creator" ? "#FF5D5D" : "#6cbd4f")};
+    color: ${({ value }) => (value === "CREATOR" ? "#FF5D5D" : "#6cbd4f")};
 `;
