@@ -18,6 +18,7 @@ apiClient.interceptors.request.use((
     ): InternalAxiosRequestConfig => {
         const excludedPaths = [
             '/api/test',
+            '/api/v1/users/evaluation',
         ];
 
         const isExcluded =
