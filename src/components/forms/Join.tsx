@@ -2,6 +2,9 @@ import React, {useState} from "react";
 import styled from "styled-components";
 import NoticeIcon from "../../assets/icons/icon_notice.png";
 import {creatorJoin, productmanagerJoin} from "../../services/authService.ts";
+import MediaTypeSelector from "./MediaTypeSelector.tsx";
+import CategorySelector from "./CategorySelector.tsx";
+import categories from "../../data/categories";
 
 interface JoinProps {
     onNext: () => void;
@@ -16,25 +19,6 @@ const emailDomains = [
     'gmail.com',
     'nate.com',
     '직접 입력'
-];
-
-const categories = [
-    "GAME",
-    "TECH",
-    "EDUCATION",
-    "KNOWHOW_STYLE",
-    "NEWS_POLITICS",
-    "SPORTS",
-    "NONPROFIT_SOCIAL",
-    "PETS_ANIMALS",
-    "ENTERTAINMENT",
-    "TRAVEL_EVENTS",
-    "MOVIE_ANIMATION",
-    "MUSIC",
-    "PEOPLE_BLOG",
-    "AUTO_TRANSPORT",
-    "COMEDY",
-    "ETC"
 ];
 
 const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
@@ -105,24 +89,6 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
         setChannelLink(e.target.value);
     };
 
-    const handleTypeClick = (type: string) => {
-        setSelectedType(type);
-    }
-
-    const handleCategoryClick = (category: string) => {
-        setSelectedCategories((prevSelected) => {
-            if (prevSelected.includes(category)) {
-                return prevSelected.filter((type) => type !== category);
-            } else {
-                return [...prevSelected, category];
-            }
-        });
-    };
-
-    const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-    };
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -144,7 +110,8 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                 } else {
                     alert('Failed to sign up as creator. Please try again.');
                 }
-            } else if (role === 'PRODUCT_MANAGER') {const result = await productmanagerJoin({
+            } else if (role === 'PRODUCT_MANAGER') {
+                const result = await productmanagerJoin({
                     nickname,
                     email: fullEmail,
                     favoriteCategories: selectedCategories.length > 0 ? selectedCategories : [],
@@ -245,31 +212,12 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                             />
                             <Notice>
                                 <img src={NoticeIcon} alt="Notice Icon"/>
-                                유튜브, 인스타그램, 틱톡 등 프로필 아이디 및 링크를 입력해주세요
+                                유튜브 채널 아이디 및 링크를 입력해주세요
                             </Notice>
                         </InputForm>
                         <InputForm>
                             <Label>Media Type</Label>
-                            <Types>
-                                <Type
-                                    onClick={(e) => {
-                                        handleTypeClick("SHORT_FORM");
-                                        handleButtonClick(e);
-                                    }}
-                                    isSelected={selectedType === "SHORT_FORM"}
-                                >
-                                    Short-Form
-                                </Type>
-                                <Type
-                                    onClick={(e) => {
-                                        handleTypeClick("LONG_FORM");
-                                        handleButtonClick(e);
-                                    }}
-                                    isSelected={selectedType === "LONG_FORM"}
-                                >
-                                    Long-Form
-                                </Type>
-                            </Types>
+                            <MediaTypeSelector selectedType={selectedType} setSelectedType={setSelectedType}/>
                         </InputForm>
                     </>
                 )}
@@ -277,18 +225,11 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                     <>
                         <InputForm>
                             <Label>선호 카테고리</Label>
-                            <Category>
-                                {categories.map((category) => (
-                                    <Type
-                                        type="button"
-                                        key={category}
-                                        onClick={() => handleCategoryClick(category)}
-                                        isSelected={selectedCategories.includes(category)}
-                                    >
-                                        {category}
-                                    </Type>
-                                ))}
-                            </Category>
+                            <CategorySelector
+                                role={role}
+                                selectedCategories={selectedCategories}
+                                setSelectedCategories={setSelectedCategories}
+                            />
                         </InputForm>
                     </>
                 )}
@@ -354,35 +295,10 @@ const EmailContainer = styled.div`
     align-items: center;
 `;
 
-// const VerifyContainer = styled.div`
-//     display: flex;
-//     align-items: center;
-//     gap: 5px;
-//     margin-top: 5px;
-// `;
-
 const EmailSeparator = styled.span`
     padding: 0 8px;
     font-size: 14px;
 `;
-
-// const VerifyButton = styled.button`
-//     padding: 6px 15px;
-//     width: 100px;
-//     height: 30px;
-//     background-color: ${({ disabled }) => (disabled ? '#cccccc' : '#000000')};
-//     border: none;
-//     border-radius: 5px;
-//     color: white;
-//     cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-//     transition: background-color 0.3s;
-//     font-size: 12px;
-//
-//     &:hover {
-//         background-color: ${({ disabled }) => (disabled ? '#cccccc' : '#3e3e3e')};
-//         border: none;
-//     }
-// `;
 
 const ComboBox = styled.select`
     flex: 1;
@@ -411,33 +327,6 @@ const Notice = styled.div`
         height: 14px;
         margin-right: 4px;
     }
-`;
-
-const Types = styled.div`
-    display: flex;
-    gap: 8px;
-    margin-top: 8px;
-`;
-
-const Type = styled.button<{ isSelected: boolean }>`
-    padding: 6px 10px;
-    border: 1px solid ${({isSelected}) => (isSelected ? '#555' : '#ccc')};
-    border-radius: 20px;
-    background-color: ${({isSelected}) => (isSelected ? '#b6b6b6' : '#f9f9f9')};
-    cursor: pointer;
-    transition: background-color 0.1s, border-color 0.3s;
-    font-size: 0.8rem;
-
-    &:hover {
-        background-color: #bdbdbd;
-        border-color: #888;
-    }
-
-    &:focus {
-        border-color: #555;
-        outline: none;
-    }
-
 `;
 
 const Buttons = styled.div`
@@ -478,11 +367,4 @@ const OkayButton = styled.button`
         background-color: ${({disabled}) => (disabled ? '#cccccc' : '#3e3e3e')};
         border: none;
     }
-`;
-
-const Category = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 0.3rem;
 `;

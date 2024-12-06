@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 import Layout from "../components/layout/Layout.tsx";
-import RoleSelection from "../components/modal/RoleSelection.tsx";
-import Join from "../components/modal/Join.tsx";
-import JoinCompletion from "../components/modal/JoinCompletion.tsx";
+import RoleSelection from "../components/forms/RoleSelection.tsx";
+import Join from "../components/forms/Join.tsx";
+import JoinCompletion from "../components/forms/JoinCompletion.tsx";
 import styled from "styled-components";
 import {extractAndSaveToken} from "../services/authService.ts";
 

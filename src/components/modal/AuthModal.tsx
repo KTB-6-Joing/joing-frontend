@@ -2,12 +2,12 @@ import React from "react";
 import styled from "styled-components"
 
 import iconCross from '../../assets/icons/icon_cross.png';
-import LoginForm from "./LoginForm.tsx";
+import LoginForm from "../forms/LoginForm.tsx";
 interface AuthProps {
     handleClose: () => void;
 }
 
-const Auth: React.FC<AuthProps> = ({handleClose}) => {
+const AuthModal: React.FC<AuthProps> = ({handleClose}) => {
     return (
         <ModalOverlay onClick={handleClose}>
             <ModalContainer onClick={(e) => e.stopPropagation()}>
@@ -18,7 +18,7 @@ const Auth: React.FC<AuthProps> = ({handleClose}) => {
     );
 }
 
-export default Auth;
+export default AuthModal;
 
 const ModalOverlay = styled.div`
     position: fixed;

@@ -5,17 +5,13 @@ import Layout from "../components/layout/Layout.tsx";
 import '../styles/fonts.css';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import CancelModal from '../components/modal/CancelModal.tsx';
+import CancelModal from '../components/modal/Modal.tsx';
+import categories from "../data/categories";
 
 import ArrowDown from '../assets/icons/icon_arrowdown.png';
 import WarningIcon from '../assets/icons/icon_warning.png';
 import Loading from '../assets/Loading.gif';
 import NoticeIcon from "../assets/icons/icon_notice.png";
-
-const categories = [
-    "게임", "과학기술", "교육", "노하우/스타일", "뉴스/정치", "비영리/사회운동", "스포츠", "애완동물/동물",
-    "엔터테인먼트", "여행/이벤트", "영화/애니메이션", "음악", "인물/블로그", "자동차/교통", "코미디", "기타"
-];
 
 const DraftPlan: React.FC = () => {
     const [title, setTitle] = useState('');

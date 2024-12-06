@@ -13,7 +13,7 @@ const RecordBox: React.FC<RecordBoxProps> = ({title, summary, onViewDetails}) =>
 
     return (
         <BoxContainer>
-            {role === "planner" && <IconPlaceholder/>}
+            {role === "PRODUCT_MANAGER" && <IconPlaceholder/>}
             <TextContainer>
                 <Title>{title}</Title>
                 <Summary>{summary}</Summary>

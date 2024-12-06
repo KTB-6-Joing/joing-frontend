@@ -72,7 +72,7 @@ export const extractAndSaveToken = (): void => {
     }
 
     if (type) {
-        localStorage.setItem("type", type);
+        localStorage.setItem("role", type);
         params.delete("type");
     }
 

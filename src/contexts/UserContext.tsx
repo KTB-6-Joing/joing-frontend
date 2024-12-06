@@ -1,5 +1,4 @@
 import {createContext, useContext, useState, ReactNode} from "react";
-//import {getRole} from "../services/userService.ts";
 
 export type Role = 'CREATOR' | 'PRODUCT_MANAGER' | null;
 

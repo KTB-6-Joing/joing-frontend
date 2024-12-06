@@ -1,13 +1,16 @@
 import React from 'react';
-import {useUser} from "../../contexts/UserContext.tsx";
 import styled from "styled-components";
 import KakaoIcon from "../../assets/icons/icon_kakao.png";
 import EmailIcon from "../../assets/icons/icon_email.png";
 import PlayIcon from "../../assets/icons/icon_playbutton.png";
+import {ProfileInfo} from "../../pages/Mypage.tsx";
 
-const TabProfileDetail: React.FC = () => {
-    const {role} = useUser();
+interface TabProfileDetailProps {
+    role: "CREATOR" | "PRODUCT_MANAGER" | null;
+    profileInfo: ProfileInfo;
+}
 
+const TabProfileDetail: React.FC<TabProfileDetailProps> = ({ role, profileInfo }) => {
     return (
         <ProfileDetail>
             <AccountBox>
@@ -24,29 +27,32 @@ const TabProfileDetail: React.FC = () => {
                     <img src={EmailIcon} alt="email icon"/>
                 </AccountImg>
                 <InfoContainer>
-                    <Title1>abc@naver.com</Title1>
-                    <Title2>Email address for planners to contact creators</Title2>
+                    <Title1>Contact Email</Title1>
+                    <Title2>{profileInfo.email}</Title2>
                 </InfoContainer>
                 <EditButton>Edit</EditButton>
             </AccountBox>
-            {role === "creator" &&
+            {role === "CREATOR" && (
                 <>
                     <CreatorAccountBoxHeader>
-                        <Title>Ellie's Channel</Title>
-                        <Detail>Connect your YouTube, Instagram, or TikTok link</Detail>
+                        <Title>{profileInfo.nickname}'s Channel</Title>
+                        <Detail>Connect your YouTube link</Detail>
                     </CreatorAccountBoxHeader>
                     <AccountBox>
                         <AccountImg>
-                            <img src={PlayIcon} alt="Play icon"/>
+                            <img src={PlayIcon} alt="Play icon" />
                         </AccountImg>
                         <InfoContainer>
                             <Title1>Youtube</Title1>
-                            <Title2>@abcabc123</Title2>
+                            <Title2>{profileInfo.channelId || "No channel ID available"}</Title2>
                         </InfoContainer>
+                        <a href={profileInfo.channelUrl || "#"} target="_blank" rel="noopener noreferrer">
+                            <VisitButton>Visit</VisitButton>
+                        </a>
                         <EditButton>Edit</EditButton>
                     </AccountBox>
                 </>
-            }
+            )}
             <WithdrawButton>회원탈퇴</WithdrawButton>
         </ProfileDetail>
     )
@@ -124,6 +130,26 @@ const EditButton = styled.button`
         outline: none;
     }
 `;
+
+const VisitButton = styled.button`
+    font-family: 'SUITE-Bold', serif;
+    font-size: 0.8rem;
+    padding: 0.4rem 1rem;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #dadada;
+        border: none;
+    }
+
+    &:focus {
+        outline: none;
+    }
+`;
+
 
 const CreatorAccountBoxHeader = styled.div`
     width: 100%;
