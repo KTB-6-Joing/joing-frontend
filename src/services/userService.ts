@@ -55,11 +55,11 @@ export const patchCreatorInfo = async (data: {
         const response = await apiClient.patch('/api/v1/users/creator', data);
 
         if (response.status === 200) {
-            return response.data;
+            return {success: true};
         }
         throw new Error(`Unexpected status code: ${response.status}`);
     } catch (error) {
-        return error;
+        return {success: false, error};
     }
 };
 
@@ -72,10 +72,10 @@ export const patchProductManagerInfo = async (data: {
         const response = await apiClient.patch('/api/v1/users/productmanager', data);
 
         if (response.status === 200) {
-            return response.data;
+            return {success: true};
         }
         throw new Error(`Unexpected status code: ${response.status}`);
     } catch (error) {
-        return error;
+        return {success: false, error};
     }
 };

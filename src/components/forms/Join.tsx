@@ -2,8 +2,8 @@ import React, {useState} from "react";
 import styled from "styled-components";
 import NoticeIcon from "../../assets/icons/icon_notice.png";
 import {creatorJoin, productmanagerJoin} from "../../services/authService.ts";
-import MediaTypeSelector from "./MediaTypeSelector.tsx";
-import CategorySelector from "./CategorySelector.tsx";
+import MediaTypeSelector from "../elements/MediaTypeSelector.tsx";
+import {MultiCategorySelector} from "../elements/CategorySelector.tsx";
 import categories from "../../data/categories";
 
 interface JoinProps {
@@ -33,7 +33,6 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
     const [isVerifyEnabled, setIsVerifyEnabled] = useState(false);
     const [selectedType, setSelectedType] = useState<string | null>(null);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-
 
     const isOkayEnabled =
         role === "CREATOR"
@@ -217,7 +216,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                         </InputForm>
                         <InputForm>
                             <Label>Media Type</Label>
-                            <MediaTypeSelector selectedType={selectedType} setSelectedType={setSelectedType}/>
+                            <MediaTypeSelector selectedType={selectedType} setSelectedType={setSelectedType} readOnly={false}/>
                         </InputForm>
                     </>
                 )}
@@ -225,10 +224,10 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                     <>
                         <InputForm>
                             <Label>선호 카테고리</Label>
-                            <CategorySelector
-                                role={role}
+                            <MultiCategorySelector
                                 selectedCategories={selectedCategories}
                                 setSelectedCategories={setSelectedCategories}
+                                readOnly={false}
                             />
                         </InputForm>
                     </>

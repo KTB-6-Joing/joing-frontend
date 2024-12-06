@@ -1,25 +1,51 @@
 import React from "react";
 import styled from "styled-components";
-import categories from "../../data/categories";
+import categories from "../../data/categories.ts";
 
-interface CategorySelectorProps {
-    role: "CREATOR" | "PRODUCT_MANAGER";
-    selectedCategories: string[];
-    setSelectedCategories: (categories: string[]) => void;
+interface CategorySelectorProps{
+    selectedCategory: string;
+    setSelectedCategory: (category: string) => void;
+    readOnly: boolean;
 }
 
-const CategorySelector: React.FC<CategorySelectorProps> = ({role, selectedCategories, setSelectedCategories}) => {
-    const isMultiple = (role === "PRODUCT_MANAGER");
+interface MultiCategorySelectorProps {
+    selectedCategories: string[];
+    setSelectedCategories: (categories: string[]) => void;
+    readOnly: boolean;
+}
 
+export const CategorySelector: React.FC<CategorySelectorProps> = ({selectedCategory, setSelectedCategory, readOnly}) => {
     const handleCategoryClick = (category: string) => {
-        if (isMultiple) {
+        if (!readOnly) {
+            setSelectedCategory(category);
+        }
+    };
+
+    return (
+        <Category>
+            {categories.map((category) => (
+                <Type
+                    type="button"
+                    key={category}
+                    onClick={() => handleCategoryClick(category)}
+                    isSelected={selectedCategory === category}
+                    disabled={readOnly}
+                >
+                    {category}
+                </Type>
+            ))}
+        </Category>
+    );
+};
+
+export const MultiCategorySelector: React.FC<MultiCategorySelectorProps> = ({selectedCategories, setSelectedCategories, readOnly}) => {
+    const handleCategoryClick = (category: string) => {
+        if (!readOnly) {
             if (selectedCategories.includes(category)) {
                 setSelectedCategories(selectedCategories.filter((cat) => cat !== category));
             } else {
                 setSelectedCategories([...selectedCategories, category]);
             }
-        } else {
-            setSelectedCategories([category]);
         }
     };
 
@@ -31,6 +57,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({role, selectedCatego
                     key={category}
                     onClick={() => handleCategoryClick(category)}
                     isSelected={selectedCategories.includes(category)}
+                    disabled={readOnly}
                 >
                     {category}
                 </Type>
@@ -38,8 +65,6 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({role, selectedCatego
         </Category>
     );
 };
-
-export default CategorySelector;
 
 const Category = styled.div`
     display: flex;

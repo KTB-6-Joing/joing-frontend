@@ -4,12 +4,15 @@ import styled from "styled-components";
 interface MediaTypeProps {
     selectedType: string | null;
     setSelectedType: (type: string) => void;
+    readOnly: boolean;
 }
 
-const MediaTypeSelector: React.FC<MediaTypeProps> = ({ selectedType, setSelectedType }) => {
+const MediaTypeSelector: React.FC<MediaTypeProps> = ({ selectedType, setSelectedType, readOnly }) => {
     const handleTypeClick = (type: string) => {
-        setSelectedType(type);
-    }
+        if (!readOnly) {
+            setSelectedType(type);
+        }
+    };
 
     const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -23,6 +26,7 @@ const MediaTypeSelector: React.FC<MediaTypeProps> = ({ selectedType, setSelected
                     handleButtonClick(e);
                 }}
                 isSelected={selectedType === "SHORT_FORM"}
+                disabled={readOnly}
             >
                 Short-Form
             </Type>
@@ -32,6 +36,7 @@ const MediaTypeSelector: React.FC<MediaTypeProps> = ({ selectedType, setSelected
                     handleButtonClick(e);
                 }}
                 isSelected={selectedType === "LONG_FORM"}
+                disabled={readOnly}
             >
                 Long-Form
             </Type>

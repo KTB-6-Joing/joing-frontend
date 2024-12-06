@@ -18,8 +18,7 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({ role, profileInfo }
                     <img src={KakaoIcon} alt="kakao icon"/>
                 </AccountImg>
                 <InfoContainer>
-                    <Title1>Kakao 계정 연결정보</Title1>
-                    <Title2>abc@kakao.com</Title2>
+                    <Title1>Kakao 계정으로 로그인 중이에요</Title1>
                 </InfoContainer>
             </AccountBox>
             <AccountBox>
