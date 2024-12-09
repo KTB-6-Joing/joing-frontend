@@ -26,7 +26,15 @@ const Onboarding: React.FC = () => {
     const [toggleValue, setIsToggled] = useState<ToggleValue>(Role.CREATOR);
 
     useEffect(() => {
-        extractAndSaveToken();
+        const initializeRole = async () => {
+            await extractAndSaveToken();
+            const storedRole = localStorage.getItem("role");
+            if (storedRole === Role.CREATOR || storedRole === Role.PRODUCT_MANAGER) {
+                setRole(storedRole as Role);
+            }
+        };
+
+        initializeRole();
     }, [setRole]);
 
     useEffect(() => {
