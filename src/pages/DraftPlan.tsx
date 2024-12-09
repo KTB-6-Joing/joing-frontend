@@ -12,30 +12,16 @@ import ArrowDown from '../assets/icons/icon_arrowdown.png';
 import WarningIcon from '../assets/icons/icon_warning.png';
 import Loading from '../assets/Loading.gif';
 import NoticeIcon from "../assets/icons/icon_notice.png";
-<<<<<<< HEAD
 import {Evaluation, PatchDraftPlan, ReSummary, SaveDraftPlan} from "../services/draftService.ts";
-
-const categories = [
-    "게임", "과학기술", "교육", "노하우/스타일", "뉴스/정치", "비영리/사회운동", "스포츠", "애완동물/동물",
-    "엔터테인먼트", "여행/이벤트", "영화/애니메이션", "음악", "인물/블로그", "자동차/교통", "코미디", "기타"
-];
-=======
 import MediaTypeSelector from "../components/elements/MediaTypeSelector.tsx";
->>>>>>> origin/main
 
 const DraftPlan: React.FC = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [selectedType, setSelectedType] = useState<string | null>(null);
-<<<<<<< HEAD
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-    const [miscFields, setMiscFields] = useState<{ name: string; value: string }[]>([{name: '', value: ''}]);
-    const [draftId, setDraftId] = useState('');
-
-=======
     const [selectedCategory, setSelectedCategory] = useState<string>('');
     const [miscFields, setMiscFields] = useState<{ name: string; value: string }[]>([{name: '', value: ''}]);
->>>>>>> origin/main
+    const [draftId, setDraftId] = useState('');
     const [readOnly, setReadOnly] = useState(false);
     const [isSummaryClicked, setIsSummaryClicked] = useState(false);
     const [isSummarizing, setIsSummaraizing] = useState(false);
@@ -58,8 +44,6 @@ const DraftPlan: React.FC = () => {
     const closeModal = () => setIsModalOpen(false);
     const handleExit = () => navigate('/');
 
-<<<<<<< HEAD
-=======
     const saveDraftPlan = (title: string, content: string, selectedType: string, selectedCategory: string, miscFields: {
         name: string;
         value: string
@@ -78,7 +62,6 @@ const DraftPlan: React.FC = () => {
         localStorage.setItem("draftPlans", JSON.stringify(draftPlans));
     };
 
->>>>>>> origin/main
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
     }
@@ -103,10 +86,8 @@ const DraftPlan: React.FC = () => {
 
     const handleReWriteClick = () => {
         setReadOnly(false);
-<<<<<<< HEAD
         setIsEditMode(true);
-=======
->>>>>>> origin/main
+
         window.scrollTo({top: 0, behavior: 'smooth'});
     };
 
@@ -163,13 +144,7 @@ const DraftPlan: React.FC = () => {
                 console.error("Failed to handle draft plan:", error);
             } finally {
                 setIsSummaraizing(false);
-<<<<<<< HEAD
             }
-=======
-                setIsSummaryClicked(true);
-            }, 2000);
-            saveDraftPlan(title, content, selectedType, selectedCategory, miscFields)
->>>>>>> origin/main
         }
         setReadOnly(true);
     };
@@ -492,44 +467,6 @@ const CategoryForm = styled.div`
     margin-bottom: 15px;
 `;
 
-<<<<<<< HEAD
-const Category = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
-`;
-
-const Types = styled.div`
-    display: flex;
-    gap: 8px;
-    margin-top: 8px;
-`;
-
-const Type = styled.button<{ isSelected: boolean }>`
-    padding: 6px 10px;
-    border: 1px solid ${({isSelected}) => (isSelected ? '#555' : '#ccc')};
-    border-radius: 20px;
-    background-color: ${({isSelected}) => (isSelected ? '#b6b6b6' : '#f9f9f9')};
-    cursor: pointer;
-    transition: background-color 0.3s, border-color 0.3s;
-    font-size: 13px;
-    font-family: 'SUITE-Regular', serif;
-
-    &:hover {
-        background-color: #ececec;
-        border-color: #888;
-    }
-
-    &:focus {
-        background-color: #b6b6b6;
-        border-color: #555;
-        outline: none;
-    }
-`;
-
-=======
->>>>>>> origin/main
 const TypeForm = styled.div`
     display: flex;
     flex-direction: column;

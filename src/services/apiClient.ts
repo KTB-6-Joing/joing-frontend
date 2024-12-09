@@ -1,10 +1,6 @@
 import axios, {AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig} from 'axios';
 
-<<<<<<< HEAD
-const apiUrl = import.meta.env.REACT_APP_API_URL;
-=======
 const apiUrl = import.meta.env.VITE_APP_API_URL;
->>>>>>> origin/main
 
 const apiClient = axios.create({
     baseURL: apiUrl,
@@ -49,20 +45,11 @@ apiClient.interceptors.response.use(
             return Promise.reject(error);
         }
 
-<<<<<<< HEAD
-        for (const data of rawData) {
-            let responseData: { status: number; message: string };
-            try {
-                responseData = (typeof data === 'string' ? JSON.parse(data) : data);
-            } catch (error) {
-                console.error("Failed to parse JSON:", data);
-=======
         try {
             const responseData = typeof rawData === 'string' ? JSON.parse(rawData) : rawData;
 
             if (typeof responseData !== 'object') {
                 console.error('Parsed response is not a valid object:', responseData);
->>>>>>> origin/main
                 return Promise.reject(error);
             }
 

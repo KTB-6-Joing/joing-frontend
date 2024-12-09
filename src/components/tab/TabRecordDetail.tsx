@@ -1,13 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import SearchIcon from "../../assets/icons/icon_search.png";
-<<<<<<< HEAD
-import RecordBox from "../box/RecordBox.tsx";
 import {ViewDraftList} from "../../services/draftService.ts";
 import {useNavigate} from "react-router-dom";
-=======
 import RecordBox from "../forms/RecordBox.tsx";
->>>>>>> origin/main
+
 
 const TabRecordDetail: React.FC = () => {
     const [Drafts, setDrafts] = useState<{ id: string; title: string; summary: string }[]>([]);

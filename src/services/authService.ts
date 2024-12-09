@@ -9,11 +9,7 @@ export const creatorJoin = async (data: {
     category: string;
 }) => {
     try {
-<<<<<<< HEAD
-        const response = await apiClient.patch('/api/v1/reissue');
-=======
         const response = await apiClient.post('/api/v1/users/signup/creator', data);
->>>>>>> origin/main
 
         if (response.status === 201) {
             localStorage.setItem("role", response.data.type);

@@ -3,7 +3,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../components/layout/Layout.tsx";
 import {useUser} from '../contexts/UserContext.tsx'
-<<<<<<< HEAD
+import {Role} from "../constants/roles.ts";
 import {DeleteDraftPlan, ViewDraftPlan} from "../services/draftService.ts";
 import {useEffect, useState} from "react";
 
@@ -28,9 +28,6 @@ interface Draft {
     summary: string;
     keywords: string[];
 }
-=======
-import {Role} from "../constants/roles.ts";
->>>>>>> origin/main
 
 const DraftDetailView = () => {
     const { index } = useParams<{ index: string }>();
@@ -127,11 +124,7 @@ const DraftDetailView = () => {
             </Container>
             {role === Role.PRODUCT_MANAGER && (
                 <Buttons>
-<<<<<<< HEAD
                     <DeleteButton onClick={handleDelete}>삭제하기</DeleteButton>
-=======
-                    <DeleteButton>삭제하기</DeleteButton>
->>>>>>> origin/main
                 </Buttons>
            )}
         </Layout>
