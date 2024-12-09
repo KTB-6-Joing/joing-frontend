@@ -1,18 +1,20 @@
 import {createContext, useContext, useState, ReactNode} from "react";
-
-export type Role = 'CREATOR' | 'PRODUCT_MANAGER' | null;
+import {Role} from "../constants/roles.ts";
 
 interface UserContextType {
-    role: Role;
-    setRole: (role: Role) => void;
+    role: Role | null;
+    setRole: (role: Role | null) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-    const [role, setRole] = useState<Role>(() => {
+    const [role, setRole] = useState<Role | null>(() => {
         const storedRole = localStorage.getItem("role");
-        return storedRole === "CREATOR" || storedRole === "PRODUCT_MANAGER" ? storedRole : null;
+        if (storedRole === Role.CREATOR || storedRole === Role.PRODUCT_MANAGER) {
+            return storedRole as Role;
+        }
+        return null;
     });
 
     return (

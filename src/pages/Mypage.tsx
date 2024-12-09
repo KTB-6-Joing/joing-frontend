@@ -7,6 +7,7 @@ import TabRecordDetail from "../components/tab/TabRecordDetail.tsx";
 import {useEffect, useState} from "react";
 import {getCreatorInfo, getProductManagerInfo} from "../services/userService.ts";
 import {useUser} from "../contexts/UserContext.tsx";
+import {Role} from "../constants/roles.ts";
 
 export interface ProfileInfo {
     nickname: string;
@@ -40,7 +41,7 @@ const Mypage= () => {
                 setLoading(true);
                 let data;
 
-                if (role === "CREATOR") {
+                if (role === Role.CREATOR) {
                     data = await getCreatorInfo();
                     setProfileInfo({
                         ...defaultProfileInfo,
@@ -82,7 +83,7 @@ const Mypage= () => {
                         <ProfileImg src={profileInfo?.profileImage} alt={`${profileInfo?.nickname}'s profile`} />
                         <ProfileDetail>
                             <Name>{profileInfo?.nickname}</Name>
-                            {role === "CREATOR" ? (
+                            {role === Role.CREATOR ? (
                                 <>
                                     <ChannelType>Creator</ChannelType>
                                     <Hashtags>

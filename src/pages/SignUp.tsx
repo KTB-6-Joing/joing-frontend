@@ -5,12 +5,13 @@ import Join from "../components/forms/Join.tsx";
 import JoinCompletion from "../components/forms/JoinCompletion.tsx";
 import styled from "styled-components";
 import {extractAndSaveToken} from "../services/authService.ts";
+import {Role} from "../constants/roles.ts";
 
 type JoinView = "roleSelection" | "Join" | "joinCompletion";
 
 const SignUp = () => {
     const [currentView, setCurrentView] = useState<JoinView>("roleSelection");
-    const [selectedRole, setSelectedRole] = useState<"CREATOR" | "PRODUCT_MANAGER" | null>(null);
+    const [selectedRole, setSelectedRole] = useState<Role | null>(null);
 
     useEffect(() => {
         extractAndSaveToken();
@@ -22,11 +23,11 @@ const SignUp = () => {
                 return (
                     <RoleSelection
                         onSelectProductManager={() => {
-                            setSelectedRole("PRODUCT_MANAGER");
+                            setSelectedRole(Role.PRODUCT_MANAGER);
                             setCurrentView("Join")
                         }}
                         onSelectCreator={() => {
-                            setSelectedRole("CREATOR");
+                            setSelectedRole(Role.CREATOR);
                             setCurrentView("Join")
                         }}
                     />

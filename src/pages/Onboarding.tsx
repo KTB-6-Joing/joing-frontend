@@ -16,23 +16,24 @@ import iconCleanbot from '../assets/icons/icon_bot.png';
 
 import '../styles/fonts.css';
 import {extractAndSaveToken} from "../services/authService.ts";
+import {Role} from "../constants/roles.ts";
 
-export type ToggleValue = "CREATOR" | "PRODUCT_MANAGER";
+export type ToggleValue = Role;
 
 const Onboarding: React.FC = () => {
     const navigate = useNavigate();
     const {role, setRole} = useUser();
-    const [toggleValue, setIsToggled] = useState<ToggleValue>("CREATOR");
+    const [toggleValue, setIsToggled] = useState<ToggleValue>(Role.CREATOR);
 
     useEffect(() => {
         extractAndSaveToken();
     }, [setRole]);
 
     useEffect(() => {
-        if (role === "CREATOR" || role === null) {
-            setIsToggled("CREATOR");
-        } else if (role === "PRODUCT_MANAGER") {
-            setIsToggled("PRODUCT_MANAGER");
+        if (role === Role.CREATOR || role === null) {
+            setIsToggled(Role.CREATOR);
+        } else if (role === Role.PRODUCT_MANAGER) {
+            setIsToggled(Role.PRODUCT_MANAGER);
         }
     }, [role]);
 
@@ -50,7 +51,7 @@ const Onboarding: React.FC = () => {
                             <LeftBox>
                                 <Toggle value={toggleValue} onToggle={handleToggleChange} />
                                 <Slogan>
-                                    {toggleValue === "CREATOR" ? "나는 크리에이터다!!" : "나는 기획자다!!"}
+                                    {toggleValue === Role.CREATOR ? "나는 크리에이터다!!" : "나는 기획자다!!"}
                                 </Slogan>
                                 <Detail>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br/>
@@ -61,15 +62,15 @@ const Onboarding: React.FC = () => {
                                 <MainButton
                                     value={toggleValue}
                                     onClick={() => {
-                                        if (toggleValue === "PRODUCT_MANAGER") {
+                                        if (toggleValue === Role.PRODUCT_MANAGER) {
                                             navigate("/draftplan");
                                         }
-                                        else if (toggleValue === "CREATOR") {
+                                        else if (toggleValue === Role.CREATOR) {
                                             navigate("/matching/draft");
                                         }
                                     }}
                                 >
-                                    {toggleValue === "CREATOR" ? (
+                                    {toggleValue === Role.CREATOR ? (
                                         <>
                                             <span>기획안 추천받기</span>
                                             <img src={iconArrow} alt="arrow icon" />
@@ -113,7 +114,7 @@ const Onboarding: React.FC = () => {
                     </CenteredSection>
                     <CenteredSection>
                         <Container3>
-                            {toggleValue === "CREATOR" ? (
+                            {toggleValue === Role.CREATOR ? (
                                 <>
                                     <Slogan>
                                         크리에이터인 당신을 위한 JOING만의 서비스 프로세스!
@@ -245,10 +246,10 @@ const MainButton = styled.button`
 
     &:hover {
         border: none;
-        background-color: ${({ value }) => (value === "CREATOR" ? "#FF3D3D" : "#307718")};
+        background-color: ${({ value }) => (value === Role.CREATOR ? "#FF3D3D" : "#307718")};
     }
 
-    background-color: ${({ value }) => (value === "CREATOR" ? "#FF5D5D" : "#6cbd4f")};
+    background-color: ${({ value }) => (value === Role.CREATOR ? "#FF5D5D" : "#6cbd4f")};
 `;
 
 const ImgBox = styled.div`
@@ -334,5 +335,5 @@ const Title = styled.h2<{ value: ToggleValue }>`
     font-family: 'GongGothicMedium', serif;
     font-size: 18px;
     font-weight: bolder;
-    color: ${({ value }) => (value === "CREATOR" ? "#FF5D5D" : "#6cbd4f")};
+    color: ${({ value }) => (value === Role.CREATOR ? "#FF5D5D" : "#6cbd4f")};
 `;

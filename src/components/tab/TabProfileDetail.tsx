@@ -4,9 +4,10 @@ import KakaoIcon from "../../assets/icons/icon_kakao.png";
 import EmailIcon from "../../assets/icons/icon_email.png";
 import PlayIcon from "../../assets/icons/icon_playbutton.png";
 import {ProfileInfo} from "../../pages/Mypage.tsx";
+import {Role} from "../../constants/roles.ts";
 
 interface TabProfileDetailProps {
-    role: "CREATOR" | "PRODUCT_MANAGER" | null;
+    role: Role | null;
     profileInfo: ProfileInfo;
 }
 
@@ -31,7 +32,7 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({ role, profileInfo }
                 </InfoContainer>
                 <EditButton>Edit</EditButton>
             </AccountBox>
-            {role === "CREATOR" && (
+            {role === Role.CREATOR && (
                 <>
                     <CreatorAccountBoxHeader>
                         <Title>{profileInfo.nickname}'s Channel</Title>

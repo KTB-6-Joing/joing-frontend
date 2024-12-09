@@ -5,11 +5,12 @@ import {creatorJoin, productmanagerJoin} from "../../services/authService.ts";
 import MediaTypeSelector from "../elements/MediaTypeSelector.tsx";
 import {MultiCategorySelector} from "../elements/CategorySelector.tsx";
 import categories from "../../data/categories";
+import {Role} from "../../constants/roles.ts";
 
 interface JoinProps {
     onNext: () => void;
     onBack: () => void;
-    role: "CREATOR" | "PRODUCT_MANAGER" | null;
+    role: Role | null;
 }
 
 const emailDomains = [
@@ -35,7 +36,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
     const isOkayEnabled =
-        role === "CREATOR"
+        role === Role.CREATOR
             ? nickname && selectedCategory && channelID && channelLink && selectedType && isVerifyEnabled
             : nickname && selectedCategories.length > 0 && isVerifyEnabled;
 
@@ -94,7 +95,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
         if (!isOkayEnabled) return;
 
         try {
-            if (role === 'CREATOR') {
+            if (role === Role.CREATOR) {
                 const result = await creatorJoin({
                     nickname,
                     email: fullEmail,
@@ -109,7 +110,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                 } else {
                     alert('Failed to sign up as creator. Please try again.');
                 }
-            } else if (role === 'PRODUCT_MANAGER') {
+            } else if (role === Role.PRODUCT_MANAGER) {
                 const result = await productmanagerJoin({
                     nickname,
                     email: fullEmail,
@@ -122,11 +123,9 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                     alert('Failed to sign up as productManager. Please try again.');
                 }
             } else {
-                console.error('Invalid role:', role);
                 alert('Invalid role selected. Please select a valid role.');
             }
-        } catch (error) {
-            console.error('Error during signup:', error);
+        } catch (_error) {
             alert('An unexpected error occurred. Please try again.');
         }
     };
@@ -142,7 +141,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                         value={nickname}
                         onChange={handleNicknameChange}
                     />
-                    {role === "CREATOR" &&
+                    {role === Role.CREATOR &&
                         <Notice>
                             <img src={NoticeIcon} alt="Notice Icon"/>
                             채널 이름과 동일하게 설정하시는걸 추천드려요
@@ -183,7 +182,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                         상대와 연락할 때 사용할 이메일을 입력해주세요
                     </Notice>
                 </InputForm>
-                {role === "CREATOR" && (
+                {role === Role.CREATOR && (
                     <>
                         <InputForm>
                             <Label>Channel Category</Label>
@@ -220,7 +219,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                         </InputForm>
                     </>
                 )}
-                {role === "PRODUCT_MANAGER" && (
+                {role === Role.PRODUCT_MANAGER && (
                     <>
                         <InputForm>
                             <Label>선호 카테고리</Label>
@@ -254,7 +253,7 @@ const Form = styled.form`
 `;
 
 const Title = styled.h2`
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
     margin: 4rem;
