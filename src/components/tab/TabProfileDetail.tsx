@@ -1,17 +1,106 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from "styled-components";
 import KakaoIcon from "../../assets/icons/icon_kakao.png";
 import EmailIcon from "../../assets/icons/icon_email.png";
 import PlayIcon from "../../assets/icons/icon_playbutton.png";
 import {ProfileInfo} from "../../pages/Mypage.tsx";
 import {Role} from "../../constants/roles.ts";
+import EmailEditModal from '../../components/modal/Modal.tsx';
+import ChannelEditModal from '../../components/modal/Modal.tsx';
+import emailDomains from "../../data/emailDomains.ts";
+import NoticeIcon from "../../assets/icons/icon_notice.png";
 
 interface TabProfileDetailProps {
     role: Role | null;
     profileInfo: ProfileInfo;
+    onEmailUpdate: (newEmail: string) => void;
+    onChannelUpdate: (channelId: string, channelUrl: string) => void;
 }
 
-const TabProfileDetail: React.FC<TabProfileDetailProps> = ({ role, profileInfo }) => {
+const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, onEmailUpdate, onChannelUpdate}) => {
+    const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
+    const [isChannelModalOpen, setIsChannelModalOpen] = useState(false);
+    const [emailPrefix, setEmailPrefix] = useState('');
+    const [emailDomain, setEmailDomain] = useState(emailDomains[0]);
+    const [customDomain, setCustomDomain] = useState('');
+    const [fullEmail, setFullEmail] = useState(profileInfo.email);
+    const [isVerifyEnabled, setIsVerifyEnabled] = useState(true);
+    const [channelID, setChannelID] = useState('');
+    const [channelLink, setChannelLink] = useState('');
+
+    const openEmailEditModal = () => {
+        const [prefix, domain] = profileInfo.email.split('@');
+        setEmailPrefix(prefix || '');
+        setEmailDomain(domain || emailDomains[0]);
+        setCustomDomain(domain && !emailDomains.includes(domain) ? domain : '');
+        setIsEmailModalOpen(true);
+    }
+
+    const closeEmailEditModal = () => {
+        setIsEmailModalOpen(false);
+    }
+
+    const openChannelEditModal = () => {
+        setChannelID(profileInfo.channelId);
+        setChannelLink(profileInfo.channelUrl);
+        setIsChannelModalOpen(true)
+    }
+
+    const closeChannelEditModal = () => {
+        setIsChannelModalOpen(false);
+    }
+
+    const handleDomainChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedDomain = e.target.value;
+        if (selectedDomain !== '직접 입력') {
+            setCustomDomain('');
+        }
+        setEmailDomain(selectedDomain);
+        updateFullEmail(emailPrefix, selectedDomain === '직접 입력' ? customDomain : selectedDomain);
+    };
+
+    const handleEmailPrefixChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const prefix = e.target.value;
+        setEmailPrefix(prefix);
+        updateFullEmail(prefix, emailDomain === '직접 입력' ? customDomain : emailDomain);
+    };
+
+    const handleCustomDomainChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const domain = e.target.value;
+        setCustomDomain(domain);
+        updateFullEmail(emailPrefix, domain);
+    };
+
+    const updateFullEmail = (prefix: string, domain: string) => {
+        const combinedEmail = `${prefix}@${domain}`;
+        setFullEmail(combinedEmail);
+
+        const pattern = /^[A-Za-z0-9_.-]+@[A-Za-z0-9-]+\.[A-Za-z]{2,}$/;
+        if (pattern.test(combinedEmail)) {
+            setIsVerifyEnabled(true);
+        } else {
+            setIsVerifyEnabled(false);
+        }
+    };
+
+    const handleEmailConfirm = () => {
+        onEmailUpdate(fullEmail);
+        closeEmailEditModal();
+    };
+
+    const handleChannelIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setChannelID(e.target.value);
+    }
+
+    const handleChannelLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setChannelLink(e.target.value);
+    };
+
+    const handleChannelConfirm = () => {
+        onChannelUpdate(channelID, channelLink);
+        closeChannelEditModal();
+    }
+
     return (
         <ProfileDetail>
             <AccountBox>
@@ -30,7 +119,47 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({ role, profileInfo }
                     <Title1>Contact Email</Title1>
                     <Title2>{profileInfo.email}</Title2>
                 </InfoContainer>
-                <EditButton>Edit</EditButton>
+                <EditButton type="button" onClick={openEmailEditModal}>Edit</EditButton>
+                <EmailEditModal isOpen={isEmailModalOpen} onClose={closeEmailEditModal}>
+                    <InputForm>
+                        <Label>Email</Label>
+                        <EmailContainer>
+                            <InputField
+                                placeholder="Enter your new Email"
+                                value={emailPrefix}
+                                onChange={handleEmailPrefixChange}
+                            />
+                            <EmailSeparator>@</EmailSeparator>
+                            {emailDomain === '직접 입력' ? (
+                                <InputField
+                                    type="text"
+                                    value={customDomain}
+                                    onChange={handleCustomDomainChange}
+                                    placeholder="입력하세요."
+                                />
+                            ) : (
+                                <ComboBox
+                                    value={emailDomain}
+                                    onChange={handleDomainChange}
+                                >
+                                    {emailDomains.map((domain) => (
+                                        <option key={domain} value={domain}>
+                                            {domain}
+                                        </option>
+                                    ))}
+                                </ComboBox>
+                            )}
+                        </EmailContainer>
+                        <Notice>
+                            <img src={NoticeIcon} alt="Notice Icon"/>
+                            상대와 연락할 때 사용할 이메일을 입력해주세요
+                        </Notice>
+                    </InputForm>
+                    <ButtonContainer>
+                        <ExitButton onClick={closeEmailEditModal}>cancel</ExitButton>
+                        <SendButton onClick={handleEmailConfirm} disabled={!isVerifyEnabled}>확인</SendButton>
+                    </ButtonContainer>
+                </EmailEditModal>
             </AccountBox>
             {role === Role.CREATOR && (
                 <>
@@ -40,7 +169,7 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({ role, profileInfo }
                     </CreatorAccountBoxHeader>
                     <AccountBox>
                         <AccountImg>
-                            <img src={PlayIcon} alt="Play icon" />
+                            <img src={PlayIcon} alt="Play icon"/>
                         </AccountImg>
                         <InfoContainer>
                             <Title1>Youtube</Title1>
@@ -49,7 +178,30 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({ role, profileInfo }
                         <a href={profileInfo.channelUrl || "#"} target="_blank" rel="noopener noreferrer">
                             <VisitButton>Visit</VisitButton>
                         </a>
-                        <EditButton>Edit</EditButton>
+                        <EditButton type="button" onClick={openChannelEditModal}>Edit</EditButton>
+                        <ChannelEditModal isOpen={isChannelModalOpen} onClose={closeChannelEditModal}>
+                            <InputForm>
+                                <Label>Chennel ID / Link</Label>
+                                <InputField
+                                    placeholder="Enter your Channel ID"
+                                    value={channelID}
+                                    onChange={handleChannelIDChange}
+                                />
+                                <InputField
+                                    placeholder="Enter your Channel URL"
+                                    value={channelLink}
+                                    onChange={handleChannelLinkChange}
+                                />
+                                <Notice>
+                                    <img src={NoticeIcon} alt="Notice Icon"/>
+                                    유튜브 채널 아이디 및 링크를 입력해주세요
+                                </Notice>
+                            </InputForm>
+                            <ButtonContainer>
+                                <ExitButton onClick={closeChannelEditModal}>cancel</ExitButton>
+                                <SendButton onClick={handleChannelConfirm}>확인</SendButton>
+                            </ButtonContainer>
+                        </ChannelEditModal>
                     </AccountBox>
                 </>
             )}
@@ -154,7 +306,6 @@ const VisitButton = styled.button`
     }
 `;
 
-
 const CreatorAccountBoxHeader = styled.div`
     width: 100%;
 `;
@@ -179,6 +330,115 @@ const WithdrawButton = styled.button`
 
     &:hover {
         border: none;
+    }
+
+    &:focus {
+        outline: none;
+    }
+`;
+
+const InputForm = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+`;
+
+const Label = styled.label`
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+    margin-top: 0;
+    color: #333;
+`;
+
+const InputField = styled.input`
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-top: 0.3rem;
+    transition: border-color 0.3s;
+    flex: 1;
+
+    &:focus {
+        border-color: #666;
+        outline: none;
+    }
+`;
+
+const EmailContainer = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const EmailSeparator = styled.span`
+    padding: 0 8px;
+    font-size: 14px;
+`;
+
+const ComboBox = styled.select`
+    flex: 1;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-top: 3px;
+    transition: border-color 0.3s;
+
+    &:focus {
+        border-color: #666;
+        outline: none;
+    }
+`;
+
+const Notice = styled.div`
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    color: #777;
+    margin-top: 5px;
+
+    img {
+        width: 14px;
+        height: 14px;
+        margin-right: 4px;
+    }
+`;
+
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    gap: 10px;
+`;
+
+const ExitButton = styled.button`
+    background-color: #d9d9d9;
+    color: #333;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #bfbfbf;
+    }
+
+    &:focus {
+        outline: none;
+    }
+`;
+
+const SendButton = styled.button`
+    background-color: ${({disabled}) => (disabled ? '#a12f31' : '#ff595b')};
+    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
+    color: white;
+
+    &:hover {
+        background-color: ${({disabled}) => (disabled ? '#a12f31' : '#e33e3f')};
     }
 
     &:focus {
