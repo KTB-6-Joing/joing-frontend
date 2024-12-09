@@ -209,28 +209,6 @@ const Buttons = styled.div`
     gap: 10px;
 `;
 
-const EditButton = styled.button`
-    font-family: 'SUITE-Bold', serif;
-    padding: 6px 15px;
-    width: 200px;
-    height: 40px;
-    background-color: #ffffff;
-    border: 1px solid black;
-    border-radius: 10px;
-    color: black;
-    transition: background-color 0.3s;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #e0e0e0;
-        border: 1px solid #000000;
-    }
-
-    &:focus {
-        outline: none;
-    }
-`;
-
 const DeleteButton = styled.button`
     font-family: 'SUITE-Bold', serif;
     padding: 6px 15px;
