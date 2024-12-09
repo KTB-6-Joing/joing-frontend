@@ -73,16 +73,17 @@ const AccountBox = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
-    padding: 0.7rem;
     gap: 1rem;
-    background-color: #f8f8f8;
+    background-color: #ffffff;
     border-radius: 12px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
 `;
 
 const AccountImg = styled.div`
-    background-color: #e6e6e6;
+    background-color: #f1f1f1;
     display: flex;
     padding: 1rem;
+    margin: 0.7rem;
     border-radius: 10px;
 
     img {
@@ -116,14 +117,16 @@ const EditButton = styled.button`
     font-family: 'SUITE-Bold', serif;
     font-size: 0.8rem;
     padding: 0.4rem 1rem;
+    margin-right: 1rem;
     background-color: #f3f3f3;
-    border-radius: 10px;
+    border-radius: 12px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: transform 0.3s ease, background-color 0.3s ease;
 
     &:hover {
         background-color: #dadada;
         border: none;
+        transform: scale(1.1);
     }
 
     &:focus {
@@ -136,13 +139,14 @@ const VisitButton = styled.button`
     font-size: 0.8rem;
     padding: 0.4rem 1rem;
     background-color: #f3f3f3;
-    border-radius: 10px;
+    border-radius: 12px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: transform 0.3s ease, background-color 0.3s ease;
 
     &:hover {
         background-color: #dadada;
         border: none;
+        transform: scale(1.1);
     }
 
     &:focus {

@@ -192,11 +192,12 @@ const EditButton = styled.button`
     background-color: #f3f3f3;
     border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: transform 0.3s ease, background-color 0.3s ease;
 
     &:hover {
         background-color: #dadada;
         border: none;
+        transform: scale(1.1);
     }
 
     &:focus {

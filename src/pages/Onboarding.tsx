@@ -17,12 +17,14 @@ import iconCleanbot from '../assets/icons/icon_bot.png';
 import '../styles/fonts.css';
 import {extractAndSaveToken} from "../services/authService.ts";
 import {Role} from "../constants/roles.ts";
+import {useAuth} from "../contexts/AuthContext.tsx";
 
 export type ToggleValue = Role;
 
 const Onboarding: React.FC = () => {
     const navigate = useNavigate();
     const {role, setRole} = useUser();
+    const {setAccessToken} = useAuth();
     const [toggleValue, setIsToggled] = useState<ToggleValue>(Role.CREATOR);
 
     useEffect(() => {
@@ -32,6 +34,8 @@ const Onboarding: React.FC = () => {
             if (storedRole === Role.CREATOR || storedRole === Role.PRODUCT_MANAGER) {
                 setRole(storedRole as Role);
             }
+            const token = localStorage.getItem("accessToken");
+            setAccessToken(token);
         };
 
         initializeRole();
