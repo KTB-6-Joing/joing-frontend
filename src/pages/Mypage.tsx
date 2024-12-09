@@ -114,7 +114,7 @@ const Mypage = () => {
             if (selectedCategory !== profileInfo.category) dataToPatch.category = selectedCategory;
 
             if (Object.keys(dataToPatch).length > 0) {
-                const response = await patchCreatorInfo(dataToPatch as any);
+                const response = await patchCreatorInfo(dataToPatch);
                 if (response.success) {
                     setProfileInfo((prev) => ({
                         ...prev,
@@ -135,7 +135,7 @@ const Mypage = () => {
             }
 
             if (Object.keys(dataToPatch).length > 0) {
-                const response = await patchProductManagerInfo(dataToPatch as any);
+                const response = await patchProductManagerInfo(dataToPatch);
                 if (response.success) {
                     setProfileInfo((prev) => ({
                         ...prev,
@@ -164,8 +164,8 @@ const Mypage = () => {
         try {
             const response =
                 role === Role.CREATOR
-                    ? await patchCreatorInfo(dataToPatch as any)
-                    : await patchProductManagerInfo(dataToPatch as any);
+                    ? await patchCreatorInfo(dataToPatch)
+                    : await patchProductManagerInfo(dataToPatch);
 
             if (response.success) {
                 setProfileInfo((prev) => ({
@@ -194,7 +194,7 @@ const Mypage = () => {
         };
 
         try {
-            const response = await patchCreatorInfo(dataToPatch as any);
+            const response = await patchCreatorInfo(dataToPatch);
 
             if (response.success) {
                 setProfileInfo((prev) => ({

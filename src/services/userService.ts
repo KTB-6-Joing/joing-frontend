@@ -1,4 +1,5 @@
 import apiClient from "./apiClient.ts";
+import {ProfileInfo} from "../pages/Mypage.tsx";
 
 export const profileEvaluation = async (channelId: string) => {
     try {
@@ -43,14 +44,7 @@ export const getProductManagerInfo = async () => {
     }
 };
 
-export const patchCreatorInfo = async (data: {
-    nickname: string;
-    email: string;
-    channelId: string;
-    channelUrl: string;
-    mediaType: string;
-    category: string;
-}) => {
+export const patchCreatorInfo = async (data: Partial<ProfileInfo>) => {
     try {
         const response = await apiClient.patch('/api/v1/users/creator', data);
 
@@ -58,16 +52,12 @@ export const patchCreatorInfo = async (data: {
             return {success: true, data: response.data};
         }
         throw new Error(`Unexpected status code: ${response.status}`);
-    } catch (error) {
-        return {success: false, error};
+    } catch (_error) {
+        return {success: false};
     }
 };
 
-export const patchProductManagerInfo = async (data: {
-    nickname: string;
-    email: string;
-    favoriteCategories: string[];
-}) => {
+export const patchProductManagerInfo = async (data: Partial<ProfileInfo>) => {
     try {
         const response = await apiClient.patch('/api/v1/users/productmanager', data);
 
@@ -75,7 +65,7 @@ export const patchProductManagerInfo = async (data: {
             return {success: true, data: response.data};
         }
         throw new Error(`Unexpected status code: ${response.status}`);
-    } catch (error) {
-        return {success: false, error};
+    } catch (_error) {
+        return {success: false};
     }
 };
