@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../components/layout/Layout.tsx";
 import {useUser} from '../contexts/UserContext.tsx'
+import {Role} from "../constants/roles.ts";
 
 const DraftDetailView = () => {
     const { index } = useParams<{ index: string }>();
@@ -65,9 +66,8 @@ const DraftDetailView = () => {
                     </MiscView>
                 </RightBox>
             </Container>
-            {role === "planner" && (
+            {role === Role.PRODUCT_MANAGER && (
                 <Buttons>
-                    <EditButton>수정하기</EditButton>
                     <DeleteButton>삭제하기</DeleteButton>
                 </Buttons>
            )}
