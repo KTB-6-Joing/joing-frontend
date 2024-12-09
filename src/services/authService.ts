@@ -1,21 +1,46 @@
 import apiClient from './apiClient';
 
-export const refreshAccessToken = async () => {
+export const creatorJoin = async (data: {
+    nickname: string;
+    email: string;
+    channelId: string;
+    channelUrl: string;
+    mediaType: string;
+    category: string;
+}) => {
     try {
+<<<<<<< HEAD
         const response = await apiClient.patch('/api/v1/reissue');
+=======
+        const response = await apiClient.post('/api/v1/users/signup/creator', data);
+>>>>>>> origin/main
 
-        const newAccessToken = parseBearerToken(response.headers['authorization']);
-
-        if (newAccessToken) {
-            localStorage.setItem('accessToken', newAccessToken);
-            return true;
-        } else {
-            console.error("Failed to parse new access token");
-            return false;
+        if (response.status === 201) {
+            localStorage.setItem("role", response.data.type);
+            return {success: true};
         }
+        throw new Error(`Unexpected status code: ${response.status}`);
     } catch (error) {
-        console.error("Failed to refresh token:", error);
-        throw error;
+        return {success: false, error};
+    }
+};
+
+export const productmanagerJoin = async (data: {
+    nickname: string;
+    email: string;
+    favoriteCategories: string[];
+}) => {
+    try {
+        console.log(data);
+        const response = await apiClient.post('/api/v1/users/signup/productmanager', data);
+
+        if (response.status === 201) {
+            localStorage.setItem("role", response.data.type);
+            return {success: true};
+        }
+        throw new Error(`Unexpected status code: ${response.status}`);
+    } catch (error) {
+        return {success: false, error};
     }
 };
 
@@ -28,25 +53,35 @@ export const logout = async () => {
     }
 
     try {
-        await apiClient.patch('/auth/logout', {}, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        });
+        await apiClient.post('/auth/v1/logout');
+        clearTokens();
     } catch (error) {
         console.error('Logout failed:', error);
-    } finally {
-        clearTokens();
+        alert("로그아웃에 실패했습니다. 네트워크 상태를 확인해주세요.");
     }
-};
-
-const parseBearerToken = (headerValue: string) => {
-    if (headerValue && headerValue.startsWith('Bearer ')) {
-        return headerValue.split(' ')[1];
-    }
-    return null;
 };
 
 const clearTokens = () => {
     localStorage.removeItem('accessToken');
+};
+
+export const extractAndSaveToken = (): void => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    const type = params.get("type");
+
+    if (token) {
+        localStorage.setItem("accessToken", token);
+        params.delete("token");
+    }
+
+    if (type) {
+        localStorage.setItem("role", type);
+        params.delete("type");
+    }
+
+    if (token || type) {
+        const newUrl = `${window.location.origin}${window.location.pathname}`;
+        window.history.replaceState({}, document.title, newUrl);
+    }
 };

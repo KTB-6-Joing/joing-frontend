@@ -5,27 +5,37 @@ import Layout from "../components/layout/Layout.tsx";
 import '../styles/fonts.css';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import CancelModal from '../components/modal/CancelModal.tsx';
+import CancelModal from '../components/modal/Modal.tsx';
+import {CategorySelector} from "../components/elements/CategorySelector.tsx";
 
 import ArrowDown from '../assets/icons/icon_arrowdown.png';
 import WarningIcon from '../assets/icons/icon_warning.png';
 import Loading from '../assets/Loading.gif';
 import NoticeIcon from "../assets/icons/icon_notice.png";
+<<<<<<< HEAD
 import {Evaluation, PatchDraftPlan, ReSummary, SaveDraftPlan} from "../services/draftService.ts";
 
 const categories = [
     "게임", "과학기술", "교육", "노하우/스타일", "뉴스/정치", "비영리/사회운동", "스포츠", "애완동물/동물",
     "엔터테인먼트", "여행/이벤트", "영화/애니메이션", "음악", "인물/블로그", "자동차/교통", "코미디", "기타"
 ];
+=======
+import MediaTypeSelector from "../components/elements/MediaTypeSelector.tsx";
+>>>>>>> origin/main
 
 const DraftPlan: React.FC = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [selectedType, setSelectedType] = useState<string | null>(null);
+<<<<<<< HEAD
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [miscFields, setMiscFields] = useState<{ name: string; value: string }[]>([{name: '', value: ''}]);
     const [draftId, setDraftId] = useState('');
 
+=======
+    const [selectedCategory, setSelectedCategory] = useState<string>('');
+    const [miscFields, setMiscFields] = useState<{ name: string; value: string }[]>([{name: '', value: ''}]);
+>>>>>>> origin/main
     const [readOnly, setReadOnly] = useState(false);
     const [isSummaryClicked, setIsSummaryClicked] = useState(false);
     const [isSummarizing, setIsSummaraizing] = useState(false);
@@ -48,6 +58,27 @@ const DraftPlan: React.FC = () => {
     const closeModal = () => setIsModalOpen(false);
     const handleExit = () => navigate('/');
 
+<<<<<<< HEAD
+=======
+    const saveDraftPlan = (title: string, content: string, selectedType: string, selectedCategory: string, miscFields: {
+        name: string;
+        value: string
+    }[]) => {
+        const draftPlans = JSON.parse(localStorage.getItem("draftPlans") || "[]");
+
+        const newDraft = {
+            title,
+            content,
+            selectedType,
+            selectedCategory,
+            miscFields,
+        };
+
+        draftPlans.push(newDraft);
+        localStorage.setItem("draftPlans", JSON.stringify(draftPlans));
+    };
+
+>>>>>>> origin/main
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
     }
@@ -55,18 +86,6 @@ const DraftPlan: React.FC = () => {
     const handleContentChange = (content: string) => {
         setContent(content);
     }
-
-    const handleTypeClick = (type: string) => {
-        setSelectedType(type);
-    };
-
-    const handleCategoryClick = (type: string) => {
-        setSelectedCategory(type);
-    };
-
-    const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-    };
 
     const handleMiscChange = (index: number, field: 'name' | 'value', value: string) => {
         const updatedFields = [...miscFields];
@@ -84,7 +103,10 @@ const DraftPlan: React.FC = () => {
 
     const handleReWriteClick = () => {
         setReadOnly(false);
+<<<<<<< HEAD
         setIsEditMode(true);
+=======
+>>>>>>> origin/main
         window.scrollTo({top: 0, behavior: 'smooth'});
     };
 
@@ -141,7 +163,13 @@ const DraftPlan: React.FC = () => {
                 console.error("Failed to handle draft plan:", error);
             } finally {
                 setIsSummaraizing(false);
+<<<<<<< HEAD
             }
+=======
+                setIsSummaryClicked(true);
+            }, 2000);
+            saveDraftPlan(title, content, selectedType, selectedCategory, miscFields)
+>>>>>>> origin/main
         }
         setReadOnly(true);
     };
@@ -207,46 +235,15 @@ const DraftPlan: React.FC = () => {
                     <RightBox>
                         <CategoryForm>
                             <Label>카테고리</Label>
-                            <Category>
-                                {categories.map((category) => (
-                                    <Type
-                                        key={category}
-                                        onClick={(e) => {
-                                            handleCategoryClick(category);
-                                            handleButtonClick(e);
-                                        }}
-                                        isSelected={selectedCategory === category}
-                                        disabled={readOnly}
-                                    >
-                                        {category}
-                                    </Type>
-                                ))}
-                            </Category>
+                            <CategorySelector
+                                selectedCategory={selectedCategory}
+                                setSelectedCategory={setSelectedCategory}
+                                readOnly={readOnly}
+                            />
                         </CategoryForm>
                         <TypeForm>
                             <Label>Media Type</Label>
-                            <Types>
-                                <Type
-                                    onClick={(e) => {
-                                        handleTypeClick("Short-Form");
-                                        handleButtonClick(e);
-                                    }}
-                                    isSelected={selectedType === "Short-Form"}
-                                    disabled={readOnly}
-                                >
-                                    Short-Form
-                                </Type>
-                                <Type
-                                    onClick={(e) => {
-                                        handleTypeClick("Long-Form");
-                                        handleButtonClick(e);
-                                    }}
-                                    isSelected={selectedType === "Long-Form"}
-                                    disabled={readOnly}
-                                >
-                                    Long-Form
-                                </Type>
-                            </Types>
+                            <MediaTypeSelector selectedType={selectedType} setSelectedType={setSelectedType} readOnly={readOnly}/>
                         </TypeForm>
                         <MiscForm>
                             <Label>기타사항</Label>
@@ -495,6 +492,7 @@ const CategoryForm = styled.div`
     margin-bottom: 15px;
 `;
 
+<<<<<<< HEAD
 const Category = styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -530,6 +528,8 @@ const Type = styled.button<{ isSelected: boolean }>`
     }
 `;
 
+=======
+>>>>>>> origin/main
 const TypeForm = styled.div`
     display: flex;
     flex-direction: column;
