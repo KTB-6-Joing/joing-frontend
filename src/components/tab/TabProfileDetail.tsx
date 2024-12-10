@@ -75,7 +75,7 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, o
         const combinedEmail = `${prefix}@${domain}`;
         setFullEmail(combinedEmail);
 
-        const pattern = /^[A-Za-z0-9_.-]+@[A-Za-z0-9-]+\.[A-Za-z]{2,}$/;
+        const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (pattern.test(combinedEmail)) {
             setIsVerifyEnabled(true);
         } else {
