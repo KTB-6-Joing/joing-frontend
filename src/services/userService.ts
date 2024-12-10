@@ -3,11 +3,7 @@ import {ProfileInfo} from "../pages/Mypage.tsx";
 
 export const profileEvaluation = async (channelId: string) => {
     try {
-        const response = await apiClient.get('/api/v1/users/evaluation', {
-            params: {
-                channelId,
-            },
-        });
+        const response = await apiClient.get(`/api/v1/users/evaluation/${channelId}`);
 
         if (response.status === 200) {
             return response.data;

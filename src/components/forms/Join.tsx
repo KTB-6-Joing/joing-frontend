@@ -8,6 +8,9 @@ import categories from "../../data/categories";
 import {Role} from "../../constants/roles.ts";
 import emailDomains from "../../data/emailDomains.ts";
 import ChannelIdGuideModal from "../modal/ChannelIdGuideModal.tsx";
+import {profileEvaluation} from "../../services/userService.ts";
+import ResultModal from "../modal/Modal.tsx";
+
 
 interface JoinProps {
     onNext: () => void;
@@ -29,15 +32,19 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
+    const [isEditable, setIsEditable] = useState(true);
+    const [isEvalueResultModal, setIsEvalueResultModal] = useState(false);
+    const [evalueModalContent, setEvalueModalContent] = useState<string>('');
 
     const handleFocus = () => setIsFocused(true);
     const handleBlur = () => setIsFocused(false);
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
+    const closeResultModal = () => setIsEvalueResultModal(false)
 
     const isOkayEnabled =
         role === Role.CREATOR
-            ? nickname && selectedCategory && channelID && channelLink && selectedType && isVerifyEnabled
+            ? nickname && selectedCategory && channelID && channelLink && selectedType && isVerifyEnabled && !isEditable
             : nickname && selectedCategories.length > 0 && isVerifyEnabled;
 
     const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,6 +137,27 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
         }
     };
 
+    const handleEvaluation = async () => {
+        if (!channelID) return;
+
+        try {
+            const response = await profileEvaluation(channelID);
+
+            if (response.appearance) {
+                setEvalueModalContent('채널 평가에 성공했습니다. 수정이 불가능합니다.');
+                setIsEditable(false);
+            } else {
+                setEvalueModalContent(
+                    `채널 평가에 통과하지 못했습니다. 이유는 다음과 같습니다: ${response.reason || '채널 평가에 실패했습니다. 다시 시도해주세요.'}`
+                );
+            }
+
+            setIsEvalueResultModal(true);
+        } catch (_error) {
+            alert('An unexpected error occurred. Please try again.');
+        }
+    };
+
     return (
         <>
             <Form onSubmit={handleSubmit}>
@@ -215,7 +243,8 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                                 <ChannelIdGuideModal isOpen={isModalOpen} onClose={closeModal}/>
                                 <EvaluationButton
                                     type="button"
-                                    disabled={!channelID}
+                                    disabled={!channelID || !isEditable}
+                                    onClick={handleEvaluation}
                                 >
                                     평가
                                 </EvaluationButton>
@@ -232,8 +261,17 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                         </InputForm>
                         <InputForm>
                             <Label>Media Type</Label>
-                            <MediaTypeSelector selectedType={selectedType} setSelectedType={setSelectedType} readOnly={false}/>
+                            <MediaTypeSelector selectedType={selectedType} setSelectedType={setSelectedType}
+                                               readOnly={false}/>
                         </InputForm>
+                        <ResultModal isOpen={isEvalueResultModal} onClose={closeResultModal}>
+                            <div>
+                                {evalueModalContent}
+                            </div>
+                            <ButtonContainer>
+                                <ModalOkayButton onClick={closeResultModal}>확인</ModalOkayButton>
+                            </ButtonContainer>
+                        </ResultModal>
                     </>
                 )}
                 {role === Role.PRODUCT_MANAGER && (
@@ -346,21 +384,21 @@ const Notice = styled.div`
 
 const bounce = keyframes`
     0%, 100% {
-    transform: translateY(0);
+        transform: translateY(0);
     }
     50% {
-    transform: translateY(-5px);
+        transform: translateY(-5px);
     }
 `;
 
 const TipIcon = styled.img<{ isFocused: boolean }>`
     width: 1.5rem;
     height: auto;
-    ${({ isFocused }) =>
+    ${({isFocused}) =>
             isFocused &&
             css`
-            animation: ${bounce} 0.6s infinite;
-        `}
+                animation: ${bounce} 0.6s infinite;
+            `}
     transition: animation 0.3s;
 `;
 
@@ -422,6 +460,28 @@ const EvaluationButton = styled.button`
 
     &:hover {
         background-color: ${({disabled}) => (disabled ? '#cccccc' : '#3e3e3e')};
+        border: none;
+    }
+`;
+
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    gap: 10px;
+`;
+
+const ModalOkayButton = styled.button`
+    padding: 6px 12px;
+    background-color: #000000;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    transition: background-color 0.3s;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #3e3e3e;
         border: none;
     }
 `;

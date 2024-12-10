@@ -59,7 +59,7 @@ const Content = styled.div`
 `;
 
 const Paragraph = styled.p`
-    line-height: 3;
+    line-height: 2;
     
     img {
     width: 100%;
