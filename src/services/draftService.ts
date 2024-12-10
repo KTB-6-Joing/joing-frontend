@@ -22,10 +22,9 @@ export const SaveDraftPlan = async (
         if (response.status !== 200) {
             throw new Error(`Failed to send draft plan: ${response.statusText}`);
         }
-        console.log("Draft plan has been successfully Saved!");
         return response;
     } catch (error) {
-        console.error("Error sending draft plan:", error);
+        console.error("Error saving draft plan:", error);
         throw error;
     }
 };
@@ -62,18 +61,35 @@ export const PatchDraftPlan = async (
 
 export const ViewDraftList = async () => {
     try {
-        return await apiClient.get('/api/v1/items/recent');
+        const response = await apiClient.get('/api/v1/items/recent');
+
+        if (response.status !== 200) {
+            throw new Error(`Failed to fetch draft plan: ${response.statusText}`);
+        }
+        console.log("success ViewDraftList");
+        return response;
     } catch (error) {
         console.error('Failed to fetch draft list:', error);
         throw error;
     }
 };
 
-export const ViewDraftPlan = async(itemId: string) => {
-    return await apiClient.get(`/api/v1/items/${itemId}`);
+export const ViewDraftPlan = async (itemId: string) => {
+    try {
+        const response = await apiClient.get(`/api/v1/items/${itemId}`);
+
+        if (response.status !== 200) {
+            throw new Error(`Failed to fetch draft plan: ${response.statusText}`);
+        }
+        console.log("success ViewDraftPlan");
+        return response;
+    } catch (error) {
+        console.error('Failed to fetch draft:', error);
+        throw error;
+    }
 }
 
-export const DeleteDraftPlan = async(itemId: string) => {
+export const DeleteDraftPlan = async (itemId: string) => {
     try {
         const response = await apiClient.delete(`/api/v1/items/${itemId}`);
 
@@ -81,15 +97,38 @@ export const DeleteDraftPlan = async(itemId: string) => {
             throw new Error(`Failed to delete draft plan: ${response.statusText}`);
         }
         console.log("Draft plan has been successfully Deleted!");
+        return response;
     } catch (error) {
         console.error("Error deleting draft plan:", error);
     }
 }
 
-export const Evaluation = async(itemId: string) => {
-    return await apiClient.get(`/api/v1/items/${itemId}/evaluation`);
+export const Evaluation = async (itemId: string) => {
+    try {
+        const response = await apiClient.get(`/api/v1/items/${itemId}/evaluation`);
+
+        if (response.status !== 200) {
+            throw new Error(`Failed to evaluation draft plan: ${response.statusText}`);
+        }
+        console.log("success Evaluation");
+        return response;
+    } catch (error) {
+        console.error("Error Evaluation draft plan:", error);
+        throw error;
+    }
 }
 
-export const ReSummary = async(itemId: string) => {
-    return await apiClient.get(`/api/v1/items/${itemId}/summary`);
+export const ReSummary = async (itemId: string) => {
+    try {
+        const response = await apiClient.get(`/api/v1/items/${itemId}/summary`);
+
+        if (response.status !== 200) {
+            throw new Error(`Failed to evaluation draft plan: ${response.statusText}`);
+        }
+        console.log("success ReEvaluation");
+        return response;
+    } catch (error) {
+        console.error("Error ReEvaluation draft plan:", error);
+        throw error;
+    }
 }

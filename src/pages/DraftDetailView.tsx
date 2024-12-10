@@ -13,39 +13,41 @@ interface EtcItem {
     value: string;
 }
 
-interface Draft {
-    id: number;
+interface SummaryItem {
     title: string;
     content: string;
-    mediaType: string;
-    score: number;
-    category: string;
-    userName: string;
-    etcList: EtcItem[];
-    createdAt: string;
-    updatedAt: string;
-    userEmail: string;
-    summary: string;
     keywords: string[];
 }
 
+interface Draft {
+    id: number;
+    nickname: string;
+    email: string;
+    title: string;
+    content: string;
+    mediaType: string;
+    category: string;
+    etcList: EtcItem[];
+    summary: SummaryItem;
+}
+
 const DraftDetailView = () => {
-    const { index } = useParams<{ index: string }>();
+    const {id} = useParams<{ id: string }>();
     const [draft, setDraft] = useState<Draft | null>(null);
-    const { role } = useUser();
+    const {role} = useUser();
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchDraft = async () => {
             try {
-                const response = await ViewDraftPlan(index || "");
+                const response = await ViewDraftPlan(id || "");
                 setDraft(response.data);
             } catch (error) {
                 console.error("Failed to fetch draft:", error);
             }
         };
         fetchDraft();
-    }, [index]);
+    }, [id]);
 
     const handleDelete = async () => {
         try {
@@ -71,26 +73,25 @@ const DraftDetailView = () => {
             <Container>
                 <LeftBox>
                     <Title>{draft.title}</Title>
-                    <Content dangerouslySetInnerHTML={{ __html: draft.content }} />
+                    <Content dangerouslySetInnerHTML={{__html: draft.content}}/>
                 </LeftBox>
                 <RightBox>
                     <Profile>
-                        <ProfileImg />
+                        <ProfileImg/>
                         <ProfileDetail>
-                            <Name>{draft.userName}</Name>
+                            <Name>{draft.nickname}</Name>
                             <Email>soyeon_0307@naver.com</Email>
-                            <CreatedAt>생성일: {new Date(draft.createdAt).toLocaleDateString()}</CreatedAt>
                         </ProfileDetail>
                     </Profile>
                     <SummaryView>
                         <Label>Summary</Label>
-                        <Summary>{draft.summary || "No summary available"}</Summary>
+                        <Summary>{draft.summary.content || "No summary available"}</Summary>
                     </SummaryView>
                     <KeywordView>
                         <Label>Keywords</Label>
-                        {draft.keywords.length > 0 ? (
+                        {draft.summary.keywords.length > 0 ? (
                             <Keywords>
-                                {draft.keywords.map((keyword, idx) => (
+                                {draft.summary.keywords.map((keyword, idx) => (
                                     <Keyword key={idx}>{keyword}</Keyword>
                                 ))}
                             </Keywords>
@@ -126,7 +127,7 @@ const DraftDetailView = () => {
                 <Buttons>
                     <DeleteButton onClick={handleDelete}>삭제하기</DeleteButton>
                 </Buttons>
-           )}
+            )}
         </Layout>
     );
 };
@@ -153,7 +154,7 @@ const LeftBox = styled.div`
     flex: 2;
     display: flex;
     flex-direction: column;
-    
+
     height: 100%;
 `;
 
@@ -166,7 +167,7 @@ const Title = styled.h2`
 const Content = styled.article``;
 
 const Label = styled.label`
-    font-family: 'SUITE-Bold',serif;
+    font-family: 'SUITE-Bold', serif;
     font-size: 1rem;
     font-weight: 500;
     margin-bottom: 8px;
@@ -211,11 +212,6 @@ const Name = styled.h3`
 
 const Email = styled.p`
     font-family: 'SUITE-Bold', serif;
-    font-size: 0.9rem;
-`;
-
-const CreatedAt = styled.p`
-    font-family: 'SUITE-Regular', serif;
     font-size: 0.9rem;
 `;
 

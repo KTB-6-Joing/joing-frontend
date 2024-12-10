@@ -13,7 +13,7 @@ const TabRecordDetail: React.FC = () => {
     const fetchDrafts = async () => {
         try {
             const response = await ViewDraftList();
-            setDrafts(response.data || []);
+            setDrafts(response.data.items || []);
         } catch (error) {
             console.error("Error fetching items:", error);
         }
@@ -87,7 +87,7 @@ const Search = styled.input`
     border-radius: 12px;
     font-size: 16px;
     background-color: #f6f6f6;
-    
+
     &:focus {
         outline: none;
         border-color: #007bff;
