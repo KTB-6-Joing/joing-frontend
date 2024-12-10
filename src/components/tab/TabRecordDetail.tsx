@@ -5,7 +5,6 @@ import {ViewDraftList} from "../../services/draftService.ts";
 import {useNavigate} from "react-router-dom";
 import RecordBox from "../forms/RecordBox.tsx";
 
-
 const TabRecordDetail: React.FC = () => {
     const [Drafts, setDrafts] = useState<{ id: string; title: string; summary: string }[]>([]);
     const [searchKeyword, setSearchKeyword] = useState('');
@@ -28,13 +27,12 @@ const TabRecordDetail: React.FC = () => {
         navigate(`/draftplan/${id}`);
     };
 
-
     const filteredItems = Drafts.filter(item =>
         item.title.toLowerCase().includes(searchKeyword.toLowerCase())
     );
 
     return (
-        <>
+        <RecordDetail>
             <SearchBar>
                 <img src={SearchIcon} alt="search icon"/>
                 <Search
@@ -52,11 +50,20 @@ const TabRecordDetail: React.FC = () => {
                     onViewDetails={handleViewDetails}
                 />
             ))}
-        </>
+        </RecordDetail>
     );
 };
 
 export default TabRecordDetail;
+
+const RecordDetail = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    gap: 1rem;
+`;
 
 const SearchBar = styled.div`
     width: 100%;
@@ -77,7 +84,7 @@ const Search = styled.input`
     width: 100%;
     padding: 0.8rem;
     border: none;
-    border-radius: 4px;
+    border-radius: 12px;
     font-size: 16px;
     background-color: #f6f6f6;
     
