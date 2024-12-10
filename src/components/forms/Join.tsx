@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import styled from "styled-components";
+import styled, {css, keyframes} from "styled-components";
 import NoticeIcon from "../../assets/icons/icon_notice.png";
 import {creatorJoin, productmanagerJoin} from "../../services/authService.ts";
 import MediaTypeSelector from "../elements/MediaTypeSelector.tsx";
@@ -7,6 +7,7 @@ import {MultiCategorySelector} from "../elements/CategorySelector.tsx";
 import categories from "../../data/categories";
 import {Role} from "../../constants/roles.ts";
 import emailDomains from "../../data/emailDomains.ts";
+import ChannelIdGuideModal from "../modal/ChannelIdGuideModal.tsx";
 
 interface JoinProps {
     onNext: () => void;
@@ -26,6 +27,13 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
     const [isVerifyEnabled, setIsVerifyEnabled] = useState(false);
     const [selectedType, setSelectedType] = useState<string | null>(null);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleFocus = () => setIsFocused(true);
+    const handleBlur = () => setIsFocused(false);
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
 
     const isOkayEnabled =
         role === Role.CREATOR
@@ -190,11 +198,28 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                         </InputForm>
                         <InputForm>
                             <Label>Chennel ID / Link</Label>
-                            <InputField
-                                placeholder="Enter your Channel ID"
-                                value={channelID}
-                                onChange={handleChannelIDChange}
-                            />
+                            <EvaluationForm>
+                                <InputField
+                                    placeholder="Enter your Channel ID"
+                                    value={channelID}
+                                    onChange={handleChannelIDChange}
+                                    onFocus={handleFocus}
+                                    onBlur={handleBlur}
+                                />
+                                <TipIcon
+                                    src={NoticeIcon}
+                                    alt="Notice Icon"
+                                    isFocused={isFocused}
+                                    onClick={openModal}
+                                />
+                                <ChannelIdGuideModal isOpen={isModalOpen} onClose={closeModal}/>
+                                <EvaluationButton
+                                    type="button"
+                                    disabled={!channelID}
+                                >
+                                    평가
+                                </EvaluationButton>
+                            </EvaluationForm>
                             <InputField
                                 placeholder="Enter your Channel URL"
                                 value={channelLink}
@@ -248,7 +273,7 @@ const Title = styled.h2`
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
-    margin: 4rem;
+    margin: 2.5rem;
 `;
 
 const InputForm = styled.div`
@@ -319,6 +344,33 @@ const Notice = styled.div`
     }
 `;
 
+const bounce = keyframes`
+    0%, 100% {
+    transform: translateY(0);
+    }
+    50% {
+    transform: translateY(-5px);
+    }
+`;
+
+const TipIcon = styled.img<{ isFocused: boolean }>`
+    width: 1.5rem;
+    height: auto;
+    ${({ isFocused }) =>
+            isFocused &&
+            css`
+            animation: ${bounce} 0.6s infinite;
+        `}
+    transition: animation 0.3s;
+`;
+
+const EvaluationForm = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+`;
+
 const Buttons = styled.div`
     display: flex;
     justify-content: center;
@@ -346,6 +398,21 @@ const OkayButton = styled.button`
     padding: 6px 15px;
     width: 100px;
     height: 40px;
+    background-color: ${({disabled}) => (disabled ? '#cccccc' : '#000000')};
+    border: none;
+    border-radius: 10px;
+    color: white;
+    transition: background-color 0.3s;
+    cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
+
+    &:hover {
+        background-color: ${({disabled}) => (disabled ? '#cccccc' : '#3e3e3e')};
+        border: none;
+    }
+`;
+
+const EvaluationButton = styled.button`
+    padding: 6px 12px;
     background-color: ${({disabled}) => (disabled ? '#cccccc' : '#000000')};
     border: none;
     border-radius: 10px;
