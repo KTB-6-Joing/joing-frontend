@@ -6,21 +6,13 @@ import MediaTypeSelector from "../elements/MediaTypeSelector.tsx";
 import {MultiCategorySelector} from "../elements/CategorySelector.tsx";
 import categories from "../../data/categories";
 import {Role} from "../../constants/roles.ts";
+import emailDomains from "../../data/emailDomains.ts";
 
 interface JoinProps {
     onNext: () => void;
     onBack: () => void;
     role: Role | null;
 }
-
-const emailDomains = [
-    'naver.com',
-    'hanmail.net',
-    'daum.net',
-    'gmail.com',
-    'nate.com',
-    '직접 입력'
-];
 
 const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
     const [nickname, setNickname] = useState('');
