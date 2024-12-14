@@ -145,9 +145,9 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
         setIsEvaluationLoading(true);
 
         setEvalueModalContent(
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                <img src={LoadingGif} alt="Loading..." style={{ width: '50px', height: '50px' }} />
-            </div>
+            <Loading style={{  }}>
+                <img src={LoadingGif} alt="Loading..."/>
+            </Loading>
         );
 
         try {
@@ -496,5 +496,17 @@ const ModalOkayButton = styled.button`
     &:hover {
         background-color: #3e3e3e;
         border: none;
+    }
+`;
+
+const Loading = styled.div`
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: 100%;
+    
+    img{
+        width: 3rem;
+        height: auto;
     }
 `;
