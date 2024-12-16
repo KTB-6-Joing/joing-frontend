@@ -49,7 +49,7 @@ const MatchingCreator = () => {
                 </Slogan>
                 <CreatorBox>
                     <HorizontalScroll>
-                        {drafts.slice(0, 5).map((index: number) => (
+                        {recCreator.map((creator, index) => (
                             <DraftItem key={index}>
                                 <Profile>
                                     <ProfileImg></ProfileImg>
