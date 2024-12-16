@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import SearchIcon from "../../assets/icons/icon_search.png";
-import {ViewDraftList} from "../../services/draftService.ts";
+import {viewDraftList} from "../../services/draftService.ts";
 import {useNavigate} from "react-router-dom";
 import RecordBox from "../forms/RecordBox.tsx";
 
@@ -12,7 +12,7 @@ const TabRecordDetail: React.FC = () => {
 
     const fetchDrafts = async () => {
         try {
-            const response = await ViewDraftList();
+            const response = await viewDraftList();
             setDrafts(response.data || []);
         } catch (error) {
             console.error("Error fetching items:", error);

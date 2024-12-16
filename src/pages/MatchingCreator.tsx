@@ -1,21 +1,39 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import styled from "styled-components";
 import Layout from "../components/layout/Layout.tsx";
 import 'react-horizontal-scrolling-menu/dist/styles.css';
 import HorizontalScroll from "../components/HorizontalScroll.tsx";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 import MessageIcon from "../assets/icons/icon_message.png";
+import {recommendCreator} from "../services/recService.ts";
 
-// interface Draft {
-//     title: string;
-//     summary: string;
-//     keywords: string[];
-// }
+interface Creator {
+    profileImage: string;
+    nickname: string;
+    channelUrl: string;
+}
 
 const MatchingCreator = () => {
     const drafts = JSON.parse(localStorage.getItem("draftPlans") || "[]");
     const navigate = useNavigate();
+    const location = useLocation();
+    const params = new URLSearchParams(location.search);
+    const itemId = params.get("id") || '';
     const [isRequestSent, setIsRequestSent] = useState<boolean[]>(new Array(drafts.length).fill(false));
+    const [recCreator, setRecCreator] = useState<Creator[]>([]);
+
+    const fetchCreatorRecommend = async () => {
+        try {
+            const data: Creator[] = await recommendCreator(itemId);
+            setRecCreator(data);
+        } catch (error) {
+            console.error('Failed to fetch data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchCreatorRecommend();
+    })
 
     const handleMatchingRequest = (index: number) => {
         const updatedRequestSent = [...isRequestSent];

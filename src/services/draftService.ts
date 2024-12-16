@@ -1,7 +1,7 @@
 import apiClient from "./apiClient.ts";
 import {AxiosResponse} from "axios";
 
-export const SaveDraftPlan = async (
+export const saveDraftPlan = async (
     title: string,
     content: string,
     mediaType: string,
@@ -29,7 +29,7 @@ export const SaveDraftPlan = async (
     }
 };
 
-export const PatchDraftPlan = async (
+export const patchDraftPlan = async (
     itemId: string,
     title: string,
     content: string,
@@ -59,22 +59,22 @@ export const PatchDraftPlan = async (
     }
 };
 
-export const ViewDraftList = async () => {
+export const viewDraftList = async () => {
     try {
         const response = await apiClient.get('/api/v1/items/recent');
 
         if (response.status !== 200) {
-            throw new Error(`Failed to fetch draft plan: ${response.statusText}`);
+            throw new Error(`Failed to fetch draft list: ${response.statusText}`);
         }
         console.log("success ViewDraftList");
         return response;
     } catch (error) {
-        console.error('Failed to fetch draft list:', error);
+        console.error('Error to fetch draft list:', error);
         throw error;
     }
 };
 
-export const ViewDraftPlan = async (itemId: string) => {
+export const viewDraftPlan = async (itemId: string) => {
     try {
         const response = await apiClient.get(`/api/v1/items/${itemId}`);
 
@@ -89,7 +89,7 @@ export const ViewDraftPlan = async (itemId: string) => {
     }
 }
 
-export const DeleteDraftPlan = async (itemId: string) => {
+export const deleteDraftPlan = async (itemId: string) => {
     try {
         const response = await apiClient.delete(`/api/v1/items/${itemId}`);
 
@@ -103,7 +103,7 @@ export const DeleteDraftPlan = async (itemId: string) => {
     }
 }
 
-export const Evaluation = async (itemId: string) => {
+export const evaluationItem = async (itemId: string) => {
     try {
         const response = await apiClient.post(`/api/v1/items/${itemId}/evaluation`);
 
@@ -118,7 +118,7 @@ export const Evaluation = async (itemId: string) => {
     }
 }
 
-export const ReSummary = async (itemId: string) => {
+export const reSummaryItem = async (itemId: string) => {
     try {
         const response = await apiClient.post(`/api/v1/items/${itemId}/summary`);
 

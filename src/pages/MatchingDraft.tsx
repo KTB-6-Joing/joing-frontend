@@ -48,7 +48,7 @@ const MatchingDraft = () => {
                                         "매칭 요청이 전송되었습니다"
                                     ) : (
                                         <>
-                                            <img src={MessageIcon} alt="message icon" />
+                                            <img src={MessageIcon} alt="message icon"/>
                                             Matching Request
                                         </>
                                     )}
@@ -131,18 +131,18 @@ const Keyword = styled.span`
 
 const MatchingButton = styled.button`
     font-family: 'SUITE-Bold', serif;
-    background-color: ${({ disabled }) => (disabled ? "#a0a0a0" : "#000000")};
+    background-color: ${({disabled}) => (disabled ? "#a0a0a0" : "#000000")};
     border-radius: 8px;
     color: #ffffff;
     transition: background-color 0.3s;
-    cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+    cursor: ${({disabled}) => (disabled ? "not-allowed" : "pointer")};
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 1rem;
 
     &:hover {
-        background-color: ${({ disabled }) => (disabled ? "#a0a0a0" : "#424242")};
+        background-color: ${({disabled}) => (disabled ? "#a0a0a0" : "#424242")};
         border: none;
         transform: none;
     }
@@ -150,8 +150,8 @@ const MatchingButton = styled.button`
     &:focus {
         outline: none;
     }
-    
-    img{
+
+    img {
         width: 16px;
         height: auto;
     }
