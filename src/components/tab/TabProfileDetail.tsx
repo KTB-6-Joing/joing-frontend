@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import styled from "styled-components";
+import styled, {css, keyframes} from "styled-components";
 import KakaoIcon from "../../assets/icons/icon_kakao.png";
 import EmailIcon from "../../assets/icons/icon_email.png";
 import PlayIcon from "../../assets/icons/icon_playbutton.png";
@@ -9,6 +9,8 @@ import EmailEditModal from '../../components/modal/Modal.tsx';
 import ChannelEditModal from '../../components/modal/Modal.tsx';
 import emailDomains from "../../data/emailDomains.ts";
 import NoticeIcon from "../../assets/icons/icon_notice.png";
+import {profileEvaluation} from "../../services/userService.ts";
+import ChannelIdGuideModal from "../modal/ChannelIdGuideModal.tsx";
 
 interface TabProfileDetailProps {
     role: Role | null;
@@ -27,6 +29,16 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, o
     const [isVerifyEnabled, setIsVerifyEnabled] = useState(true);
     const [channelID, setChannelID] = useState('');
     const [channelLink, setChannelLink] = useState('');
+    const [isEditable, setIsEditable] = useState(true);
+    const [isEvaluationLoading, setIsEvaluationLoading] = useState(false);
+    const [isGuideModalOpen, setIsGuideModalOpen] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
+
+    const isEvaluationDisabled = !channelID || channelID === profileInfo.channelId || !isEditable || isEvaluationLoading;
+    const openGuideModal = () => setIsGuideModalOpen(true);
+    const closeGuideModal = () => setIsGuideModalOpen(false);
+    const handleFocus = () => setIsFocused(true);
+    const handleBlur = () => setIsFocused(false);
 
     const openEmailEditModal = () => {
         const [prefix, domain] = profileInfo.email.split('@');
@@ -75,7 +87,7 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, o
         const combinedEmail = `${prefix}@${domain}`;
         setFullEmail(combinedEmail);
 
-        const pattern = /^[A-Za-z0-9_.-]+@[A-Za-z0-9-]+\.[A-Za-z]{2,}$/;
+        const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (pattern.test(combinedEmail)) {
             setIsVerifyEnabled(true);
         } else {
@@ -100,6 +112,25 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, o
         onChannelUpdate(channelID, channelLink);
         closeChannelEditModal();
     }
+
+    const handleEvaluation = async () => {
+        if (!channelID) return;
+        setIsEvaluationLoading(true);
+
+        try {
+            const response = await profileEvaluation(channelID);
+
+            if (response.appearance) {
+                alert('채널 평가에 성공했습니다. 수정이 불가능합니다.');
+                setIsEditable(false);
+            } else {
+                alert(`채널 평가에 통과하지 못했습니다. 이유는 다음과 같습니다: ${response.reason || '다시 시도해주세요.'}`);
+            }
+        } catch (_error) {
+            alert(`에러가 발생했습니다. 다시 시도해주세요.'}`);
+        }
+        setIsEvaluationLoading(false);
+    };
 
     return (
         <ProfileDetail>
@@ -182,11 +213,28 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, o
                         <ChannelEditModal isOpen={isChannelModalOpen} onClose={closeChannelEditModal}>
                             <InputForm>
                                 <Label>Chennel ID / Link</Label>
-                                <InputField
-                                    placeholder="Enter your Channel ID"
-                                    value={channelID}
-                                    onChange={handleChannelIDChange}
-                                />
+                                <EvaluationForm>
+                                    <InputField
+                                        placeholder="Enter your Channel ID"
+                                        value={channelID}
+                                        onChange={handleChannelIDChange}
+                                        onFocus={handleFocus}
+                                        onBlur={handleBlur}
+                                    />
+                                    <TipIcon
+                                        src={NoticeIcon}
+                                        alt="Notice Icon"
+                                        isFocused={isFocused}
+                                        onClick={openGuideModal}
+                                    />
+                                    <EvaluationButton
+                                        type="button"
+                                        disabled={isEvaluationDisabled}
+                                        onClick={handleEvaluation}
+                                    >
+                                        평가
+                                    </EvaluationButton>
+                                </EvaluationForm>
                                 <InputField
                                     placeholder="Enter your Channel URL"
                                     value={channelLink}
@@ -199,9 +247,12 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, o
                             </InputForm>
                             <ButtonContainer>
                                 <ExitButton onClick={closeChannelEditModal}>cancel</ExitButton>
-                                <SendButton onClick={handleChannelConfirm}>확인</SendButton>
+                                <SendButton
+                                    onClick={handleChannelConfirm}
+                                    disabled={channelID !== profileInfo.channelId && isEditable}>확인</SendButton>
                             </ButtonContainer>
                         </ChannelEditModal>
+                        <ChannelIdGuideModal isOpen={isGuideModalOpen} onClose={closeGuideModal}/>
                     </AccountBox>
                 </>
             )}
@@ -430,7 +481,7 @@ const ExitButton = styled.button`
 `;
 
 const SendButton = styled.button`
-    background-color: ${({disabled}) => (disabled ? '#a12f31' : '#ff595b')};
+    background-color: ${({disabled}) => (disabled ? '#b63335' : '#ff595b')};
     padding: 8px 16px;
     border: none;
     border-radius: 10px;
@@ -438,10 +489,52 @@ const SendButton = styled.button`
     color: white;
 
     &:hover {
-        background-color: ${({disabled}) => (disabled ? '#a12f31' : '#e33e3f')};
+        background-color: ${({disabled}) => (disabled ? '#b63335' : '#e33e3f')};
     }
 
     &:focus {
         outline: none;
+    }
+`;
+
+const bounce = keyframes`
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+`;
+
+const TipIcon = styled.img<{ isFocused: boolean }>`
+    width: 1.5rem;
+    height: auto;
+    ${({isFocused}) =>
+    isFocused &&
+    css`
+                animation: ${bounce} 0.6s infinite;
+            `}
+    transition: animation 0.3s;
+`;
+
+const EvaluationForm = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+`;
+
+const EvaluationButton = styled.button`
+    padding: 6px 12px;
+    background-color: ${({disabled}) => (disabled ? '#cccccc' : '#000000')};
+    border: none;
+    border-radius: 10px;
+    color: white;
+    transition: background-color 0.3s;
+    cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
+
+    &:hover {
+        background-color: ${({disabled}) => (disabled ? '#cccccc' : '#3e3e3e')};
+        border: none;
     }
 `;
