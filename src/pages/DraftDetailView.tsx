@@ -1,4 +1,3 @@
-//import React from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../components/layout/Layout.tsx";
@@ -6,6 +5,8 @@ import {useUser} from '../contexts/UserContext.tsx'
 import {Role} from "../constants/roles.ts";
 import {deleteDraftPlan, viewDraftPlan} from "../services/draftService.ts";
 import {useEffect, useState} from "react";
+import WarningIcon from "../assets/icons/icon_warning.png";
+import CancelModal from "../components/modal/Modal.tsx";
 
 interface EtcItem {
     id: number;
@@ -23,11 +24,12 @@ interface Draft {
     id: number;
     nickname: string;
     email: string;
+    profileImage: string;
     title: string;
     content: string;
     mediaType: string;
     category: string;
-    etcList: EtcItem[];
+    etcs: EtcItem[];
     summary: SummaryItem;
 }
 
@@ -36,6 +38,10 @@ const DraftDetailView = () => {
     const [draft, setDraft] = useState<Draft | null>(null);
     const {role} = useUser();
     const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
 
     useEffect(() => {
         const fetchDraft = async () => {
@@ -53,7 +59,7 @@ const DraftDetailView = () => {
         try {
             if (draft) {
                 await deleteDraftPlan(draft.id.toString());
-                navigate("/");
+                navigate(-1);
             }
         } catch (error) {
             console.error("삭제 실패:", error);
@@ -77,7 +83,7 @@ const DraftDetailView = () => {
                 </LeftBox>
                 <RightBox>
                     <Profile>
-                        <ProfileImg/>
+                        <ProfileImg src={draft?.profileImage} alt={`${draft?.nickname}'s profile`}/>
                         <ProfileDetail>
                             <Name>{draft.nickname}</Name>
                             <Email>soyeon_0307@naver.com</Email>
@@ -85,11 +91,11 @@ const DraftDetailView = () => {
                     </Profile>
                     <SummaryView>
                         <Label>Summary</Label>
-                        <Summary>{draft.summary.content || "No summary available"}</Summary>
+                        <Summary>{draft.summary?.content ? draft.summary.content : "No summary available"}</Summary>
                     </SummaryView>
                     <KeywordView>
                         <Label>Keywords</Label>
-                        {draft.summary.keywords.length > 0 ? (
+                        {draft.summary?.keywords && draft.summary.keywords.length > 0 ? (
                             <Keywords>
                                 {draft.summary.keywords.map((keyword, idx) => (
                                     <Keyword key={idx}>{keyword}</Keyword>
@@ -109,9 +115,9 @@ const DraftDetailView = () => {
                     </CategoryView>
                     <MiscView>
                         <Label>Additional Information</Label>
-                        {draft.etcList.length > 0 ? (
+                        {draft.etcs.length > 0 ? (
                             <Miscs>
-                                {draft.etcList.map((field, idx) => (
+                                {draft.etcs.map((field, idx) => (
                                     <Misc key={idx}>
                                         {field.name}: {field.value}
                                     </Misc>
@@ -125,9 +131,20 @@ const DraftDetailView = () => {
             </Container>
             {role === Role.PRODUCT_MANAGER && (
                 <Buttons>
-                    <DeleteButton onClick={handleDelete}>삭제하기</DeleteButton>
+                    <DeleteButton onClick={openModal}>삭제하기</DeleteButton>
                 </Buttons>
             )}
+            <CancelModal isOpen={isModalOpen} onClose={closeModal}>
+                <WarningHeader>
+                    <img src={WarningIcon} alt="warning Icon"/>
+                    <h2>경고</h2>
+                </WarningHeader>
+                <p>기획안을 삭제하시겠습니까?</p>
+                <ButtonContainer>
+                    <GrayButton onClick={closeModal}>취소</GrayButton>
+                    <RedButton onClick={handleDelete}>삭제</RedButton>
+                </ButtonContainer>
+            </CancelModal>
         </Layout>
     );
 };
@@ -197,7 +214,7 @@ const Profile = styled.div`
     gap: 16px;
 `;
 
-const ProfileImg = styled.div`
+const ProfileImg = styled.img`
     width: 120px;
     height: 120px;
     border-radius: 50%;
@@ -281,6 +298,63 @@ const DeleteButton = styled.button`
     &:hover {
         background-color: #FF3D3D;
         border: none;
+    }
+
+    &:focus {
+        outline: none;
+    }
+`;
+
+const WarningHeader = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    h2 {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+
+    img {
+        width: 40px;
+        height: auto;
+    }
+`;
+
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    gap: 10px;
+`;
+
+const GrayButton = styled.button`
+    background-color: #d9d9d9;
+    color: #333;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #bfbfbf;
+    }
+
+    &:focus {
+        outline: none;
+    }
+`;
+
+const RedButton = styled.button`
+    background-color: #ff595b;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+
+    &:hover {
+        background-color: #e33e3f;
     }
 
     &:focus {
