@@ -23,7 +23,7 @@ export const recommendItem = async () => {
             throw new Error(`Failed to fetch RecommendItem: ${response.statusText}`);
         }
         console.log("success RecommendItem");
-        return response;
+        return response.data;
     } catch (error) {
         console.error('Error in fetch RecommendItem:', error);
         throw error;

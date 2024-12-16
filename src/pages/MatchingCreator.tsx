@@ -8,6 +8,7 @@ import MessageIcon from "../assets/icons/icon_message.png";
 import {recommendCreator} from "../services/recService.ts";
 
 interface Creator {
+    id: string;
     profileImage: string;
     nickname: string;
     channelUrl: string;
@@ -33,7 +34,7 @@ const MatchingCreator = () => {
 
     useEffect(() => {
         fetchCreatorRecommend();
-    })
+    }, []);
 
     const handleMatchingRequest = (index: number) => {
         const updatedRequestSent = [...isRequestSent];
@@ -49,19 +50,19 @@ const MatchingCreator = () => {
                 </Slogan>
                 <CreatorBox>
                     <HorizontalScroll>
-                        {recCreator.map((creator, index) => (
+                        {recCreator.map((creator: Creator, index: number) => (
                             <DraftItem key={index}>
                                 <Profile>
-                                    <ProfileImg></ProfileImg>
+                                    <ProfileImg src={creator.profileImage} alt={`${creator.nickname}'s profile`}/>
                                     <ProfileDetail>
-                                        <Name>Ellie Park</Name>
-                                        <Email>soyeon_0307@naver.com</Email>
+                                        <Name>{creator.nickname}</Name>
+                                        <Platform>Youtuber</Platform>
                                     </ProfileDetail>
                                 </Profile>
                                 <MatchingButtons>
-                                    <VisitButton>
-                                        Visit Channel
-                                    </VisitButton>
+                                    <a href={creator.channelUrl || "#"} target="_blank" rel="noopener noreferrer">
+                                        <VisitButton>Visit Channel</VisitButton>
+                                    </a>
                                     <MatchingButton
                                         onClick={() => handleMatchingRequest(index)}
                                         disabled={isRequestSent[index]}
@@ -70,7 +71,7 @@ const MatchingCreator = () => {
                                             "매칭 요청이 전송되었습니다"
                                         ) : (
                                             <>
-                                                <img src={MessageIcon} alt="message icon" />
+                                                <img src={MessageIcon} alt="message icon"/>
                                                 Matching Request
                                             </>
                                         )}
@@ -82,7 +83,6 @@ const MatchingCreator = () => {
                 </CreatorBox>
 
                 <Buttons>
-                    <EditButton>추천 재생성</EditButton>
                     <DeleteButton onClick={() => navigate("/")}>매칭 끝내기</DeleteButton>
                 </Buttons>
             </Container>
@@ -134,7 +134,7 @@ const Profile = styled.div`
     gap: 16px;
 `;
 
-const ProfileImg = styled.div`
+const ProfileImg = styled.img`
     width: 120px;
     height: 120px;
     border-radius: 50%;
@@ -147,7 +147,7 @@ const Name = styled.h3`
     font-family: 'GongGothicMedium', serif;
 `;
 
-const Email = styled.p`
+const Platform = styled.p`
     font-family: 'SUITE-Bold', serif;
     font-size: 0.9rem;
 `;
@@ -185,11 +185,11 @@ const VisitButton = styled.button`
 const MatchingButton = styled.button`
     font-family: 'SUITE-Bold', serif;
     font-size: 0.9rem;
-    background-color: ${({ disabled }) => (disabled ? "#a0a0a0" : "#000000")};
+    background-color: ${({disabled}) => (disabled ? "#a0a0a0" : "#000000")};
     border-radius: 8px;
     color: #ffffff;
     transition: background-color 0.3s;
-    cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+    cursor: ${({disabled}) => (disabled ? "not-allowed" : "pointer")};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -197,7 +197,7 @@ const MatchingButton = styled.button`
     flex: 2;
 
     &:hover {
-        background-color: ${({ disabled }) => (disabled ? "#a0a0a0" : "#424242")};
+        background-color: ${({disabled}) => (disabled ? "#a0a0a0" : "#424242")};
         border: none;
         transform: none;
     }
@@ -205,8 +205,8 @@ const MatchingButton = styled.button`
     &:focus {
         outline: none;
     }
-    
-    img{
+
+    img {
         width: 16px;
         height: auto;
     }
@@ -218,28 +218,6 @@ const Buttons = styled.div`
     margin: 20px 0;
     padding-bottom: 30px;
     gap: 10px;
-`;
-
-const EditButton = styled.button`
-    font-family: 'SUITE-Bold', serif;
-    padding: 6px 15px;
-    width: 200px;
-    height: 40px;
-    background-color: #ffffff;
-    border: 1px solid black;
-    border-radius: 10px;
-    color: black;
-    transition: background-color 0.3s;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #e0e0e0;
-        border: 1px solid #000000;
-    }
-
-    &:focus {
-        outline: none;
-    }
 `;
 
 const DeleteButton = styled.button`

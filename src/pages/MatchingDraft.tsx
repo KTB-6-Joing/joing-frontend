@@ -1,14 +1,16 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import styled from "styled-components";
 import Layout from "../components/layout/Layout.tsx";
 import 'react-horizontal-scrolling-menu/dist/styles.css';
 import HorizontalScroll from "../components/HorizontalScroll.tsx";
 import {useNavigate} from "react-router-dom";
 import MessageIcon from "../assets/icons/icon_message.png";
+import {recommendItem} from "../services/recService.ts";
 
 interface Draft {
+    id: string;
     title: string;
-    summary: string;
+    content: string;
     keywords: string[];
 }
 
@@ -16,6 +18,20 @@ const MatchingDraft = () => {
     const drafts = JSON.parse(localStorage.getItem("draftPlans") || "[]");
     const navigate = useNavigate();
     const [isRequestSent, setIsRequestSent] = useState<boolean[]>(new Array(drafts.length).fill(false));
+    const [recDraft, setRecDraft] = useState<Draft[]>([]);
+
+    const fetchDraftRecommend = async () => {
+        try {
+            const data: Draft[] = await recommendItem();
+            setRecDraft(data);
+        } catch (error) {
+            console.error('Failed to fetch data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchDraftRecommend();
+    }, []);
 
     const handleMatchingRequest = (index: number) => {
         const updatedRequestSent = [...isRequestSent];
@@ -27,14 +43,14 @@ const MatchingDraft = () => {
         <Layout>
             <Container>
                 <Slogan>
-                    Joing이 OOO님에게 추천하는 기획안을 가져왔어요!
+                    Joing이 회원님께 추천하는 기획안을 가져왔어요!
                 </Slogan>
                 <DraftBox>
                     <HorizontalScroll>
-                        {drafts.slice(0, 5).map((draft: Draft, index: number) => (
+                        {recDraft.map((draft: Draft, index: number) => (
                             <DraftItem key={index}>
                                 <Title>{draft.title}</Title>
-                                <Summary>{draft.summary}</Summary>
+                                <Summary>{draft.content}</Summary>
                                 <Keywords>
                                     {(draft.keywords || []).map((keyword: string, idx: number) => (
                                         <Keyword key={idx}>{keyword}</Keyword>
@@ -59,8 +75,7 @@ const MatchingDraft = () => {
                 </DraftBox>
 
                 <Buttons>
-                    <EditButton>추천 재생성</EditButton>
-                    <DeleteButton onClick={() => navigate("/")}>매칭 끝내기</DeleteButton>
+                    <ExitButton onClick={() => navigate("/")}>매칭 끝내기</ExitButton>
                 </Buttons>
             </Container>
         </Layout>
@@ -165,29 +180,7 @@ const Buttons = styled.div`
     gap: 10px;
 `;
 
-const EditButton = styled.button`
-    font-family: 'SUITE-Bold', serif;
-    padding: 6px 15px;
-    width: 200px;
-    height: 40px;
-    background-color: #ffffff;
-    border: 1px solid black;
-    border-radius: 10px;
-    color: black;
-    transition: background-color 0.3s;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #e0e0e0;
-        border: 1px solid #000000;
-    }
-
-    &:focus {
-        outline: none;
-    }
-`;
-
-const DeleteButton = styled.button`
+const ExitButton = styled.button`
     font-family: 'SUITE-Bold', serif;
     padding: 6px 15px;
     width: 200px;
