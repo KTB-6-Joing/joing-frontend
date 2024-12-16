@@ -105,7 +105,7 @@ export const DeleteDraftPlan = async (itemId: string) => {
 
 export const Evaluation = async (itemId: string) => {
     try {
-        const response = await apiClient.get(`/api/v1/items/${itemId}/evaluation`);
+        const response = await apiClient.post(`/api/v1/items/${itemId}/evaluation`);
 
         if (response.status !== 200) {
             throw new Error(`Failed to evaluation draft plan: ${response.statusText}`);
@@ -120,7 +120,7 @@ export const Evaluation = async (itemId: string) => {
 
 export const ReSummary = async (itemId: string) => {
     try {
-        const response = await apiClient.get(`/api/v1/items/${itemId}/summary`);
+        const response = await apiClient.post(`/api/v1/items/${itemId}/summary`);
 
         if (response.status !== 200) {
             throw new Error(`Failed to evaluation draft plan: ${response.statusText}`);

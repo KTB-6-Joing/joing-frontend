@@ -34,10 +34,12 @@ const DraftPlan: React.FC = () => {
     const navigate = useNavigate();
 
     const [summaryData, setSummaryData] = useState({
-        sum_title: '',
-        sum_content: '',
+        title: '',
+        content: '',
         keywords: [] as string[],
     });
+
+    const [feedbackData, setFeedbackData] = useState('');
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
@@ -113,19 +115,23 @@ const DraftPlan: React.FC = () => {
 
                 if (isSuccessful && itemId) {
                     const evaluationResponse = await Evaluation(itemId);
-                    const {sum_title, sum_content, keywords} = evaluationResponse.data.data;
 
                     if (evaluationResponse.data.type == "FEEDBACK") {
                         setIsFeedback(true);
+                        const comment = evaluationResponse.data.data.comment;
+                        setFeedbackData(comment);
                     } else {
                         setIsFeedback(false);
+                        const {title, content, keywords} = evaluationResponse.data.data;
+
+                        setSummaryData({
+                            title,
+                            content,
+                            keywords,
+                        });
                     }
 
-                    setSummaryData({
-                        sum_title,
-                        sum_content,
-                        keywords,
-                    });
+
 
                     setReadOnly(true);
                     setIsSummaryClicked(true);
@@ -139,18 +145,21 @@ const DraftPlan: React.FC = () => {
     };
 
     const handleReSummary = async (draftId: string) => {
+        setIsSummaraizing(true);
+
         try {
             const response = await ReSummary(draftId);
-            const {sum_title, sum_content, keywords} = response.data;
+            const {title, content, keywords} = response.data;
 
             setSummaryData({
-                sum_title,
-                sum_content,
+                title,
+                content,
                 keywords,
             });
         } catch (error) {
             console.error("Failed to fetch resummary:", error);
         }
+        setIsSummaraizing(false);
     }
 
     useEffect(() => {
@@ -288,9 +297,9 @@ const DraftPlan: React.FC = () => {
                     <SummaryPage>
                         <img src={ArrowDown} alt="arrow down"/>
                         <Summary>
-                            <SumTitle>{isFeedback ? 'Feedback' : summaryData.sum_title}</SumTitle>
-                            <SumSubTitle>{isFeedback ? 'Feedback Content' : 'Summary'}</SumSubTitle>
-                            <SumContent>{isFeedback ? 'This is a placeholder for feedback content.' : summaryData.sum_content}</SumContent>
+                            <SumTitle>{isFeedback ? 'Feedback' : summaryData.title}</SumTitle>
+                            <SumSubTitle>{isFeedback ? '' : 'Summary'}</SumSubTitle>
+                            <SumContent>{isFeedback ? feedbackData : summaryData.content}</SumContent>
                             {!isFeedback && (
                                 summaryData.keywords.length > 0 && (
                                     <>
