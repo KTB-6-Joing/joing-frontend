@@ -228,7 +228,7 @@ const AccountBox = styled.div`
     gap: 1rem;
     background-color: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    border: #e4e4e4 solid;
 `;
 
 const AccountImg = styled.div`

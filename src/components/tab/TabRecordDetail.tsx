@@ -13,7 +13,7 @@ const TabRecordDetail: React.FC = () => {
     const fetchDrafts = async () => {
         try {
             const response = await ViewDraftList();
-            setDrafts(response.data.items || []);
+            setDrafts(response.data || []);
         } catch (error) {
             console.error("Error fetching items:", error);
         }
@@ -63,6 +63,7 @@ const RecordDetail = styled.div`
     align-items: center;
     justify-items: center;
     gap: 1rem;
+    padding-bottom: 2rem;
 `;
 
 const SearchBar = styled.div`
