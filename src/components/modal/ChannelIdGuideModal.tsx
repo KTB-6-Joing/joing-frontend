@@ -10,7 +10,7 @@ interface ChannelGuideModalProps {
     onClose: () => void;
 }
 
-const ChannelGuideModal: React.FC<ChannelGuideModalProps> = ({ isOpen, onClose }) => {
+const ChannelGuideModal: React.FC<ChannelGuideModalProps> = ({isOpen, onClose}) => {
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <Header>
@@ -27,7 +27,7 @@ const ChannelGuideModal: React.FC<ChannelGuideModalProps> = ({ isOpen, onClose }
                 </Paragraph>
             </Content>
         </Modal>
-);
+    );
 };
 
 export default ChannelGuideModal;
@@ -60,10 +60,10 @@ const Content = styled.div`
 
 const Paragraph = styled.p`
     line-height: 2;
-    
+
     img {
-    width: 100%;
-    height: auto;
-    max-width: 100%;
+        width: 100%;
+        height: auto;
+        max-width: 100%;
     }
 `;

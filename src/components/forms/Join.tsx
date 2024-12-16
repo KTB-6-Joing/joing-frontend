@@ -10,6 +10,7 @@ import emailDomains from "../../data/emailDomains.ts";
 import ChannelIdGuideModal from "../modal/ChannelIdGuideModal.tsx";
 import {profileEvaluation} from "../../services/userService.ts";
 import ResultModal from "../modal/Modal.tsx";
+import LoadingGif from "../../assets/Loading.gif";
 
 
 interface JoinProps {
@@ -34,13 +35,14 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isEditable, setIsEditable] = useState(true);
     const [isEvalueResultModal, setIsEvalueResultModal] = useState(false);
-    const [evalueModalContent, setEvalueModalContent] = useState<string>('');
+    const [evalueModalContent, setEvalueModalContent] = useState<React.ReactNode>(null);
+    const [isEvaluationLoading, setIsEvaluationLoading] = useState(false);
 
     const handleFocus = () => setIsFocused(true);
     const handleBlur = () => setIsFocused(false);
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
-    const closeResultModal = () => setIsEvalueResultModal(false)
+    const closeResultModal = () => setIsEvalueResultModal(false);
 
     const isOkayEnabled =
         role === Role.CREATOR
@@ -139,6 +141,14 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
 
     const handleEvaluation = async () => {
         if (!channelID) return;
+        setIsEvalueResultModal(true);
+        setIsEvaluationLoading(true);
+
+        setEvalueModalContent(
+            <Loading>
+                <img src={LoadingGif} alt="Loading..."/>
+            </Loading>
+        );
 
         try {
             const response = await profileEvaluation(channelID);
@@ -148,14 +158,15 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                 setIsEditable(false);
             } else {
                 setEvalueModalContent(
-                    `채널 평가에 통과하지 못했습니다. 이유는 다음과 같습니다: ${response.reason || '채널 평가에 실패했습니다. 다시 시도해주세요.'}`
+                    `채널 평가에 통과하지 못했습니다. 이유는 다음과 같습니다: ${response.reason || '다시 시도해주세요.'}`
                 );
             }
-
-            setIsEvalueResultModal(true);
         } catch (_error) {
-            alert('An unexpected error occurred. Please try again.');
+            setEvalueModalContent(
+                '에러가 발생했습니다. 다시 시도해주세요.'
+            );
         }
+        setIsEvaluationLoading(false);
     };
 
     return (
@@ -268,9 +279,11 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                             <div>
                                 {evalueModalContent}
                             </div>
-                            <ButtonContainer>
-                                <ModalOkayButton onClick={closeResultModal}>확인</ModalOkayButton>
-                            </ButtonContainer>
+                            {!isEvaluationLoading && (
+                                <ButtonContainer>
+                                    <ModalOkayButton onClick={closeResultModal}>확인</ModalOkayButton>
+                                </ButtonContainer>
+                            )}
                         </ResultModal>
                     </>
                 )}
@@ -483,5 +496,17 @@ const ModalOkayButton = styled.button`
     &:hover {
         background-color: #3e3e3e;
         border: none;
+    }
+`;
+
+const Loading = styled.div`
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: 100%;
+
+    img {
+        width: 3rem;
+        height: auto;
     }
 `;
