@@ -131,8 +131,6 @@ const DraftPlan: React.FC = () => {
                         });
                     }
 
-
-
                     setReadOnly(true);
                     setIsSummaryClicked(true);
                 }

@@ -1,11 +1,10 @@
-//import React from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../components/layout/Layout.tsx";
 import {useUser} from '../contexts/UserContext.tsx'
 import {Role} from "../constants/roles.ts";
 import {DeleteDraftPlan, ViewDraftPlan} from "../services/draftService.ts";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import WarningIcon from "../assets/icons/icon_warning.png";
 import CancelModal from "../components/modal/Modal.tsx";
 
