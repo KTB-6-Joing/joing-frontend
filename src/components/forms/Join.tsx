@@ -145,7 +145,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
         setIsEvaluationLoading(true);
 
         setEvalueModalContent(
-            <Loading style={{  }}>
+            <Loading>
                 <img src={LoadingGif} alt="Loading..."/>
             </Loading>
         );
@@ -163,7 +163,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
             }
         } catch (_error) {
             setEvalueModalContent(
-                `에러가 발생했습니다. 다시 시도해주세요.'}`
+                '에러가 발생했습니다. 다시 시도해주세요.'
             );
         }
         setIsEvaluationLoading(false);
@@ -504,8 +504,8 @@ const Loading = styled.div`
     justify-content: center;
     align-content: center;
     height: 100%;
-    
-    img{
+
+    img {
         width: 3rem;
         height: auto;
     }
