@@ -22,8 +22,11 @@ apiClient.interceptors.request.use((
         ];
 
         const isExcluded =
-            excludedPaths.some(path => config.url?.includes(path)) ||
-            (config.method === 'get' && /^\/api\/v1\/items\/\d+$/.test(config.url || ''));
+            excludedPaths.some(path => config.url?.includes(path));
+
+        // const isExcluded =
+        //     excludedPaths.some(path => config.url?.includes(path)) ||
+        //     (config.method === 'get' && /^\/api\/v1\/items\/\d+$/.test(config.url || ''));
 
         if (!isExcluded) {
             const accessToken = localStorage.getItem('accessToken');
