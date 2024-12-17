@@ -6,8 +6,9 @@ import {useNavigate} from "react-router-dom";
 import RecordBox from "../forms/RecordBox.tsx";
 
 const TabRecordDetail: React.FC = () => {
-    const [Drafts, setDrafts] = useState<{ id: string; title: string; summary: string }[]>([]);
+    const [drafts, setDrafts] = useState<{ id: string; title: string; summary: string }[]>([]);
     const [searchKeyword, setSearchKeyword] = useState('');
+    const [throttledKeyword, setThrottledKeyword] = useState('');
     const navigate = useNavigate();
 
     const fetchDrafts = async () => {
@@ -23,12 +24,20 @@ const TabRecordDetail: React.FC = () => {
         fetchDrafts();
     }, []);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setThrottledKeyword(searchKeyword);
+        }, 300);
+
+        return () => clearInterval(interval);
+    }, [searchKeyword]);
+
     const handleViewDetails = (id: string) => {
         navigate(`/draftplan/${id}`);
     };
 
-    const filteredItems = Drafts.filter(item =>
-        item.title.toLowerCase().includes(searchKeyword.toLowerCase())
+    const filteredItems = drafts.filter(item =>
+        item.title.toLowerCase().includes(throttledKeyword.toLowerCase())
     );
 
     return (
