@@ -87,7 +87,7 @@ export const viewDraftPlan = async (itemId: string) => {
         console.error('Failed to fetch draft:', error);
         throw error;
     }
-}
+};
 
 export const deleteDraftPlan = async (itemId: number) => {
     try {
@@ -101,7 +101,7 @@ export const deleteDraftPlan = async (itemId: number) => {
     } catch (error) {
         console.error("Error deleting draft plan:", error);
     }
-}
+};
 
 export const evaluationItem = async (itemId: number) => {
     try {
@@ -116,7 +116,7 @@ export const evaluationItem = async (itemId: number) => {
         console.error("Error Evaluation draft plan:", error);
         throw error;
     }
-}
+};
 
 export const reSummaryItem = async (itemId: number) => {
     try {
@@ -131,4 +131,4 @@ export const reSummaryItem = async (itemId: number) => {
         console.error("Error ReEvaluation draft plan:", error);
         throw error;
     }
-}
+};

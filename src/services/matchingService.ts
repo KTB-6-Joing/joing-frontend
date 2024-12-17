@@ -17,11 +17,9 @@ export const matchingRequestToCreator = async (data: {
     }
 };
 
-export const matchingRequestToItem = async (data: {
-    itemId: number;
-}) => {
+export const matchingRequestToItem = async (itemId: number) => {
     try {
-        const response = await apiClient.post('/api/v1/matching', data);
+        const response = await apiClient.post('/api/v1/matching', itemId);
 
         if (response.status === 201) {
             return {success: true};
@@ -43,9 +41,9 @@ export const deleteMatching = async (matchingId: number) => {
     } catch (error) {
         return {success: false, error};
     }
-}
+};
 
-export const matchingStatus = async (
+export const matchingStatusUpdate = async (
     matchingId: number,
     status: ItemStatus,
 ) => {
@@ -59,4 +57,17 @@ export const matchingStatus = async (
     } catch (error) {
         return {success: false, error};
     }
-}
+};
+
+export const matchingStatus = async(matchingId: number) => {
+    try {
+        const response = await apiClient.get(`/api/v1/matching/${matchingId}`);
+
+        if (response.status === 200) {
+            return {success: true};
+        }
+        throw new Error(`Failed to fetch MatchingStatus: ${response.status}`);
+    } catch (error) {
+        return {success: false, error};
+    }
+};
