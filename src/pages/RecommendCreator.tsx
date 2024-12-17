@@ -8,7 +8,7 @@ import MessageIcon from "../assets/icons/icon_message.png";
 import {recommendCreator} from "../services/recService.ts";
 
 interface Creator {
-    id: string;
+    id: number;
     profileImage: string;
     nickname: string;
     channelUrl: string;

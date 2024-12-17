@@ -8,7 +8,7 @@ import MessageIcon from "../assets/icons/icon_message.png";
 import {recommendItem} from "../services/recService.ts";
 
 interface Draft {
-    id: string;
+    id: number;
     title: string;
     content: string;
     keywords: string[];
