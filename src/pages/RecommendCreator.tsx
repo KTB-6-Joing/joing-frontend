@@ -14,7 +14,7 @@ interface Creator {
     channelUrl: string;
 }
 
-const MatchingCreator = () => {
+const RecommendCreator = () => {
     const drafts = JSON.parse(localStorage.getItem("draftPlans") || "[]");
     const navigate = useNavigate();
     const location = useLocation();
@@ -90,7 +90,7 @@ const MatchingCreator = () => {
     )
 };
 
-export default MatchingCreator;
+export default RecommendCreator;
 
 const Container = styled.section`
     display: flex;

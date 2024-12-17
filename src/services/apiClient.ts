@@ -23,7 +23,7 @@ apiClient.interceptors.request.use((
 
         const isExcluded =
             excludedPaths.some(path => config.url?.includes(path));
-        
+
         if (!isExcluded) {
             const accessToken = localStorage.getItem('accessToken');
             setAuthorizationHeader(config, accessToken);

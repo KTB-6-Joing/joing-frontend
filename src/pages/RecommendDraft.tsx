@@ -14,7 +14,7 @@ interface Draft {
     keywords: string[];
 }
 
-const MatchingDraft = () => {
+const RecommendDraft = () => {
     const drafts = JSON.parse(localStorage.getItem("draftPlans") || "[]");
     const navigate = useNavigate();
     const [isRequestSent, setIsRequestSent] = useState<boolean[]>(new Array(drafts.length).fill(false));
@@ -82,7 +82,7 @@ const MatchingDraft = () => {
     )
 };
 
-export default MatchingDraft;
+export default RecommendDraft;
 
 const Container = styled.section`
     display: flex;
