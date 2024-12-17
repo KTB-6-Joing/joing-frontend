@@ -30,7 +30,7 @@ export const saveDraftPlan = async (
 };
 
 export const patchDraftPlan = async (
-    itemId: string,
+    itemId: number,
     title: string,
     content: string,
     mediaType: string,
@@ -89,7 +89,7 @@ export const viewDraftPlan = async (itemId: string) => {
     }
 }
 
-export const deleteDraftPlan = async (itemId: string) => {
+export const deleteDraftPlan = async (itemId: number) => {
     try {
         const response = await apiClient.delete(`/api/v1/items/${itemId}`);
 
@@ -103,7 +103,7 @@ export const deleteDraftPlan = async (itemId: string) => {
     }
 }
 
-export const evaluationItem = async (itemId: string) => {
+export const evaluationItem = async (itemId: number) => {
     try {
         const response = await apiClient.post(`/api/v1/items/${itemId}/evaluation`);
 
@@ -118,7 +118,7 @@ export const evaluationItem = async (itemId: string) => {
     }
 }
 
-export const reSummaryItem = async (itemId: string) => {
+export const reSummaryItem = async (itemId: number) => {
     try {
         const response = await apiClient.post(`/api/v1/items/${itemId}/summary`);
 
