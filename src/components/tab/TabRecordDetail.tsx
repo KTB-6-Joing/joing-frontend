@@ -5,8 +5,18 @@ import {viewDraftList} from "../../services/draftService.ts";
 import {useNavigate} from "react-router-dom";
 import RecordBox from "../forms/RecordBox.tsx";
 
+interface Item {
+    id: number;
+    title: string;
+    summary: {
+        title: string;
+        content: string;
+        keywords: string[];
+    } | null;
+}
+
 const TabRecordDetail: React.FC = () => {
-    const [Drafts, setDrafts] = useState<{ id: string; title: string; summary: string }[]>([]);
+    const [Drafts, setDrafts] = useState<Item[]>([]);
     const [searchKeyword, setSearchKeyword] = useState('');
     const navigate = useNavigate();
 
@@ -23,7 +33,7 @@ const TabRecordDetail: React.FC = () => {
         fetchDrafts();
     }, []);
 
-    const handleViewDetails = (id: string) => {
+    const handleViewDetails = (id: number) => {
         navigate(`/draftplan/${id}`);
     };
 
@@ -46,7 +56,7 @@ const TabRecordDetail: React.FC = () => {
                     key={item.id}
                     id={item.id}
                     title={item.title}
-                    summary={item.summary}
+                    summary={item.summary?.content ?? ''}
                     onViewDetails={handleViewDetails}
                 />
             ))}
