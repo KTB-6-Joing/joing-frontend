@@ -16,8 +16,9 @@ interface Item {
 }
 
 const TabRecordDetail: React.FC = () => {
-    const [Drafts, setDrafts] = useState<Item[]>([]);
+    const [drafts, setDrafts] = useState<Item[]>([]);
     const [searchKeyword, setSearchKeyword] = useState('');
+    const [throttledKeyword, setThrottledKeyword] = useState('');
     const navigate = useNavigate();
 
     const fetchDrafts = async () => {
@@ -33,12 +34,20 @@ const TabRecordDetail: React.FC = () => {
         fetchDrafts();
     }, []);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setThrottledKeyword(searchKeyword);
+        }, 300);
+
+        return () => clearInterval(interval);
+    }, [searchKeyword]);
+
     const handleViewDetails = (id: number) => {
         navigate(`/draftplan/${id}`);
     };
 
-    const filteredItems = Drafts.filter(item =>
-        item.title.toLowerCase().includes(searchKeyword.toLowerCase())
+    const filteredItems = drafts.filter(item =>
+        item.title.toLowerCase().includes(throttledKeyword.toLowerCase())
     );
 
     return (
