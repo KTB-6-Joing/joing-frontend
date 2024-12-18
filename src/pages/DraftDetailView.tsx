@@ -58,7 +58,7 @@ const DraftDetailView = () => {
     const handleDelete = async () => {
         try {
             if (draft) {
-                await deleteDraftPlan(draft.id.toString());
+                await deleteDraftPlan(draft.id);
                 navigate(-1);
             }
         } catch (error) {
