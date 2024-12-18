@@ -32,6 +32,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
     const [selectedType, setSelectedType] = useState<string | null>(null);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [profileImage, setProfileImage] = useState<string>('');
+    const [subscribers, setSubscribers] = useState<number>(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
     const [isEditable, setIsEditable] = useState(true);
@@ -112,6 +113,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                     channelId: channelID,
                     channelUrl: channelLink,
                     profileImage: profileImage,
+                    subscribers: subscribers,
                     mediaType: selectedType || '',
                     category: selectedCategory || '',
                 });
@@ -158,6 +160,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
             if (response.evaluationStatus) {
                 setEvalueModalContent('채널 평가에 성공했습니다. 수정이 불가능합니다.');
                 setProfileImage(response.channelImage);
+                setSubscribers(response.subscribers);
                 setIsEditable(false);
             } else {
                 setEvalueModalContent(

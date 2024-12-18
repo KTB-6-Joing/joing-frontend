@@ -23,6 +23,7 @@ export interface ProfileInfo {
     nickname: string;
     email: string;
     profileImage: string;
+    subscribers: number;
     channelId: string;
     channelUrl: string;
     mediaType: string;
@@ -34,6 +35,7 @@ const defaultProfileInfo: ProfileInfo = {
     nickname: "",
     email: "",
     profileImage: "",
+    subscribers: 0,
     channelId: "",
     channelUrl: "",
     mediaType: "",
@@ -74,6 +76,7 @@ const Mypage = () => {
                     nickname: data.nickname,
                     email: data.email,
                     profileImage: data.profileImage,
+                    subscribers: data.subscribers,
                     channelId: data.channelId,
                     channelUrl: data.channelUrl,
                     mediaType: data.mediaType,
@@ -182,7 +185,7 @@ const Mypage = () => {
         }
     };
 
-    const updateChannel = async (newChannelId: string, newChannelUrl: string, newProfileImage: string) => {
+    const updateChannel = async (newChannelId: string, newChannelUrl: string, newProfileImage: string, newSubscribers: number) => {
         if (newChannelId === profileInfo.channelId && newChannelUrl === profileInfo.channelUrl && newProfileImage === profileInfo.profileImage) {
             alert("수정된 내용이 없습니다.");
             setIsModalOpen(false);
@@ -192,7 +195,8 @@ const Mypage = () => {
         const dataToPatch: Partial<ProfileInfo> = {
             channelId: newChannelId,
             channelUrl: newChannelUrl,
-            profileImage: newProfileImage
+            profileImage: newProfileImage,
+            subscribers: newSubscribers,
         };
 
         try {
