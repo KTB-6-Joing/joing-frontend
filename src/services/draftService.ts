@@ -6,7 +6,7 @@ export const saveDraftPlan = async (
     content: string,
     mediaType: string,
     category: string,
-    etcList: { name: string; value: string }[]
+    etcs: { name: string; value: string }[]
 ): Promise<AxiosResponse> => {
     try {
         const draftPlan = {
@@ -14,7 +14,7 @@ export const saveDraftPlan = async (
             content,
             mediaType, // "SHORT_FORM" 또는 "LONG_FORM"
             category,  // [GAME, TECH, EDUCATION 등]
-            etcList,   // [{ name: "참고링크", value: "https://example.com" }]
+            etcs,   // [{ name: "참고링크", value: "https://example.com" }]
         };
 
         const response = await apiClient.post('/api/v1/items', draftPlan);
