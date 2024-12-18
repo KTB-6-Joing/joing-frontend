@@ -16,7 +16,7 @@ interface TabProfileDetailProps {
     role: Role | null;
     profileInfo: ProfileInfo;
     onEmailUpdate: (newEmail: string) => void;
-    onChannelUpdate: (channelId: string, channelUrl: string, profileImage: string) => void;
+    onChannelUpdate: (channelId: string, channelUrl: string, profileImage: string, subscribers: number) => void;
 }
 
 const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, onEmailUpdate, onChannelUpdate}) => {
@@ -30,6 +30,7 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, o
     const [channelID, setChannelID] = useState('');
     const [channelLink, setChannelLink] = useState('');
     const [profileImage, setProfileImage] = useState('');
+    const [subscribers, setSubscribers] = useState<number>(0);
     const [isEditable, setIsEditable] = useState(true);
     const [isEvaluationLoading, setIsEvaluationLoading] = useState(false);
     const [isGuideModalOpen, setIsGuideModalOpen] = useState(false);
@@ -110,7 +111,7 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, o
     };
 
     const handleChannelConfirm = () => {
-        onChannelUpdate(channelID, channelLink, profileImage);
+        onChannelUpdate(channelID, channelLink, profileImage, subscribers);
         closeChannelEditModal();
     }
 
@@ -124,6 +125,7 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, o
             if (response.evaluationStatus) {
                 alert('채널 평가에 성공했습니다. 수정이 불가능합니다.');
                 setProfileImage(response.channelImage);
+                setSubscribers(response.subscribers);
                 setIsEditable(false);
             } else {
                 alert(`채널 평가에 통과하지 못했습니다. 이유는 다음과 같습니다: ${response.reason || '다시 시도해주세요.'}`);
