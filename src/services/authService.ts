@@ -6,6 +6,7 @@ export const creatorJoin = async (data: {
     channelId: string;
     channelUrl: string;
     profileImage: string;
+    subscribers: number;
     mediaType: string;
     category: string;
 }) => {
