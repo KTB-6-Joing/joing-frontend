@@ -17,6 +17,7 @@ import {CategorySelector, MultiCategorySelector} from "../components/elements/Ca
 import ProfileEditModal from '../components/modal/Modal.tsx';
 import MediaTypeSelector from "../components/elements/MediaTypeSelector.tsx";
 import NoticeIcon from "../assets/icons/icon_notice.png";
+import TabMatchingDetail from "../components/tab/TabMatchingDetail.tsx";
 
 export interface ProfileInfo {
     nickname: string;
@@ -159,7 +160,7 @@ const Mypage = () => {
             return;
         }
 
-        const dataToPatch: Partial<ProfileInfo> = { email: newEmail };
+        const dataToPatch: Partial<ProfileInfo> = {email: newEmail};
 
         try {
             const response =
@@ -254,14 +255,14 @@ const Mypage = () => {
                                 value={nickname}
                                 onChange={handleNicknameChange}
                             />
-                            {role === "CREATOR" &&
+                            {role === Role.CREATOR &&
                                 <Notice>
                                     <img src={NoticeIcon} alt="Notice Icon"/>
                                     채널 이름과 동일하게 설정하시는걸 추천드려요
                                 </Notice>
                             }
                         </InputForm>
-                        {role === "CREATOR" && (
+                        {role === Role.CREATOR && (
                             <>
                                 <InputForm>
                                     <Label>Media Type</Label>
@@ -278,7 +279,7 @@ const Mypage = () => {
                                 </InputForm>
                             </>
                         )}
-                        {role === "PRODUCT_MANAGER" && (
+                        {role === Role.PRODUCT_MANAGER && (
                             <>
                                 <InputForm>
                                     <Label>선호 카테고리</Label>
@@ -296,14 +297,30 @@ const Mypage = () => {
                         </ButtonContainer>
                     </ProfileEditModal>
                 </HeaderComponent>
-                <Tabs>
-                    <TabPanel label="Profile">
-                        <TabProfileDetail role={role} profileInfo={profileInfo} onEmailUpdate={updateEmail} onChannelUpdate={updateChannel}/>
-                    </TabPanel>
-                    <TabPanel label="Record">
-                        <TabRecordDetail/>
-                    </TabPanel>
-                </Tabs>
+                {role === Role.PRODUCT_MANAGER ? (
+                    <Tabs>
+                        <TabPanel label="Profile">
+                            <TabProfileDetail role={role} profileInfo={profileInfo} onEmailUpdate={updateEmail}
+                                              onChannelUpdate={updateChannel}/>
+                        </TabPanel>
+                        <TabPanel label="Record">
+                            <TabRecordDetail/>
+                        </TabPanel>
+                        <TabPanel label="Matching">
+                            <TabMatchingDetail/>
+                        </TabPanel>
+                    </Tabs>
+                ) : (
+                    <Tabs>
+                        <TabPanel label="Profile">
+                            <TabProfileDetail role={role} profileInfo={profileInfo} onEmailUpdate={updateEmail}
+                                              onChannelUpdate={updateChannel}/>
+                        </TabPanel>
+                        <TabPanel label="Matching">
+                            <TabMatchingDetail/>
+                        </TabPanel>
+                    </Tabs>
+                )}
             </Container>
         </Layout>
     );

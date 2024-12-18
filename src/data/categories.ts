@@ -14,6 +14,8 @@ const categories = [
     "PEOPLE_BLOG",
     "AUTO_TRANSPORT",
     "COMEDY",
+    "KIDS",
+    "FOOD_COOKING",
     "ETC"
 ];
 

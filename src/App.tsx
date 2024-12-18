@@ -7,7 +7,7 @@ import DraftPlan from "./pages/DraftPlan.tsx";
 import DraftDetailView from "./pages/DraftDetailView.tsx";
 import MatchingDraft from "./pages/RecommendDraft.tsx";
 import RecommendCreator from "./pages/RecommendCreator.tsx";
-import Message from "./pages/Message.tsx";
+import Matching from "./pages/Matching.tsx";
 import Mypage from "./pages/Mypage.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import {AuthProvider} from "./contexts/AuthContext.tsx";
@@ -25,7 +25,7 @@ const App = () => {
                             <Route path="/draftplan/:id" element={<DraftDetailView/>}/>
                             <Route path="/recommendation/draft" element={<MatchingDraft/>}/>
                             <Route path="/recommendation/creator" element={<RecommendCreator/>}/>
-                            <Route path="/message" element={<Message/>}/>
+                            <Route path="/matching/:matchingid" element={<Matching/>}/>
                             <Route path="/mypage" element={<Mypage/>}/>
                         </Routes>
                     </Router>

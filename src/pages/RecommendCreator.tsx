@@ -5,7 +5,8 @@ import 'react-horizontal-scrolling-menu/dist/styles.css';
 import HorizontalScroll from "../components/HorizontalScroll.tsx";
 import {useNavigate, useLocation} from "react-router-dom";
 import MessageIcon from "../assets/icons/icon_message.png";
-import {recommendCreator} from "../services/recService.ts";
+import {recommendCreator} from "../services/recommendService.ts";
+import {matchingRequestToCreator} from "../services/matchingService.ts";
 
 interface Creator {
     id: number;
@@ -19,7 +20,7 @@ const RecommendCreator = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const params = new URLSearchParams(location.search);
-    const itemId = params.get("id") || '';
+    const itemId = Number(params.get("id")) || 0;
     const [isRequestSent, setIsRequestSent] = useState<boolean[]>(new Array(drafts.length).fill(false));
     const [recCreator, setRecCreator] = useState<Creator[]>([]);
 
@@ -36,10 +37,19 @@ const RecommendCreator = () => {
         fetchCreatorRecommend();
     }, []);
 
-    const handleMatchingRequest = (index: number) => {
-        const updatedRequestSent = [...isRequestSent];
-        updatedRequestSent[index] = true;
-        setIsRequestSent(updatedRequestSent);
+    const handleMatchingRequest = async (itemId: number, creatorId: number, index: number) => {
+        try {
+            const response = await matchingRequestToCreator({itemId, creatorId});
+            if (!response.success) {
+                alert('매칭 요청에 실패했습니다');
+                return;
+            }
+            const updatedRequestSent = [...isRequestSent];
+            updatedRequestSent[index] = true;
+            setIsRequestSent(updatedRequestSent);
+        } catch (_error) {
+            alert('매칭 요청에 오류가 발생했습니다');
+        }
     };
 
     return (
@@ -64,7 +74,7 @@ const RecommendCreator = () => {
                                         <VisitButton>Visit Channel</VisitButton>
                                     </a>
                                     <MatchingButton
-                                        onClick={() => handleMatchingRequest(index)}
+                                        onClick={() => handleMatchingRequest(itemId, creator.id, index)}
                                         disabled={isRequestSent[index]}
                                     >
                                         {isRequestSent[index] ? (
