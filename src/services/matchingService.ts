@@ -6,7 +6,7 @@ export const matchingRequestToCreator = async (data: {
     creatorId: number;
 }) => {
     try {
-        const response = await apiClient.post('/api/v1/matching', data);
+        const response = await apiClient.post('/api/v1/matching/creator', data);
 
         if (response.status === 201) {
             return {success: true};
@@ -19,7 +19,7 @@ export const matchingRequestToCreator = async (data: {
 
 export const matchingRequestToItem = async (itemId: number) => {
     try {
-        const response = await apiClient.post('/api/v1/matching', itemId);
+        const response = await apiClient.post('/api/v1/matching/item', {itemId});
 
         if (response.status === 201) {
             return {success: true};
@@ -32,7 +32,7 @@ export const matchingRequestToItem = async (itemId: number) => {
 
 export const deleteMatching = async (matchingId: number) => {
     try {
-        const response = await apiClient.delete(`/api/v1/items/${matchingId}`);
+        const response = await apiClient.delete(`/api/v1/matching/${matchingId}`);
 
         if (response.status === 204) {
             return {success: true};
@@ -48,7 +48,7 @@ export const matchingStatusUpdate = async (
     status: ItemStatus,
 ) => {
     try {
-        const response = await apiClient.patch(`/api/v1/matching/${matchingId}/status`, status);
+        const response = await apiClient.patch(`/api/v1/matching/${matchingId}/status`, {status});
 
         if (response.status === 200) {
             return response;

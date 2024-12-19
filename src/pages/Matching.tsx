@@ -9,31 +9,18 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useUser} from "../contexts/UserContext.tsx";
 
 interface MatchingInfo {
+    productManageNickname: string;
+    productManagerEmail: string;
+    itemId: number;
+    itemTitle: string;
+    itemContent: string;
+    itemKeyword: string;
+    creatorNickname: string;
+    creatorProfileImage: string;
+    creatorEmail: string;
+    creatorChannelUrl: string;
     status: ItemStatus;
     sender: Role;
-    itemId: number;
-    productManage: ProductManager;
-    summary: Summary;
-    creator: Creator;
-}
-
-interface ProductManager {
-    profileImage: string;
-    nickname: string;
-    email: string;
-}
-
-interface Summary {
-    title: string;
-    content: string;
-    keyword: string[];
-}
-
-interface Creator {
-    nickname: string;
-    profileImage: string;
-    email: string;
-    channelUrl: string;
 }
 
 const Matching = () => {
@@ -116,18 +103,18 @@ const Matching = () => {
                 <CreatorContainer>
                     <Title>Creator Profile</Title>
                     <Profile>
-                        <ProfileImg src={matchingInfo.creator.profileImage}
-                                    alt={`${matchingInfo.creator.nickname}'s profile`}/>
+                        <ProfileImg src={matchingInfo.creatorProfileImage}
+                                    alt={`${matchingInfo.creatorNickname}'s profile`}/>
                         <ProfileDetail>
-                            <Name>{matchingInfo.creator.nickname}</Name>
+                            <Name>{matchingInfo.creatorNickname}</Name>
                             <Platform>Youtuber</Platform>
                         </ProfileDetail>
                     </Profile>
-                    <a href={matchingInfo.creator.channelUrl || "#"} target="_blank" rel="noopener noreferrer">
+                    <a href={matchingInfo.creatorChannelUrl || "#"} target="_blank" rel="noopener noreferrer">
                         <VisitButton>Visit Channel</VisitButton>
                     </a>
                     {(matchingInfo.status === ItemStatus.ACCEPTED) &&
-                        <Email>{matchingInfo.creator.email}</Email>
+                        <Email>{matchingInfo.creatorEmail}</Email>
                     }
                 </CreatorContainer>
 
@@ -135,17 +122,18 @@ const Matching = () => {
 
                 <ItemContainer>
                     <Title>Item Summary</Title>
-                    <SumTitle>{matchingInfo.summary.title}</SumTitle>
-                    <Summary>{matchingInfo.summary.content}</Summary>
+                    <SumTitle>{matchingInfo.itemTitle}</SumTitle>
+                    <Summary>{matchingInfo.itemContent}</Summary>
                     <Keywords>
-                        {(matchingInfo.summary.keyword || []).map((keyword: string, idx: number) => (
-                            <Keyword key={idx}>{keyword}</Keyword>
-                        ))}
+                        {/*{(matchingInfo.itemKeyword || []).map((keyword: string, idx: number) => (*/}
+                        {/*    <Keyword key={idx}>{keyword}</Keyword>*/}
+                        {/*))}*/}
+                        <Keyword>{matchingInfo.itemKeyword}</Keyword>
                     </Keywords>
                     {(matchingInfo.status === ItemStatus.ACCEPTED) &&
                         <>
-                            <Name>{matchingInfo.productManage.nickname}</Name>
-                            <Email>{matchingInfo.productManage.email}</Email>
+                            <Name>{matchingInfo.productManageNickname}</Name>
+                            <Email>{matchingInfo.productManagerEmail}</Email>
                         </>
                     }
                 </ItemContainer>

@@ -1,4 +1,3 @@
-//import React from 'react';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import styled from 'styled-components';
 import {UserProvider} from './contexts/UserContext.tsx';
@@ -25,7 +24,7 @@ const App = () => {
                             <Route path="/draftplan/:id" element={<DraftDetailView/>}/>
                             <Route path="/recommendation/draft" element={<RecommendDraft/>}/>
                             <Route path="/recommendation/creator" element={<RecommendCreator/>}/>
-                            <Route path="/matching/:matchingid" element={<Matching/>}/>
+                            <Route path="/matching/:matchingId" element={<Matching/>}/>
                             <Route path="/mypage" element={<Mypage/>}/>
                         </Routes>
                     </Router>
