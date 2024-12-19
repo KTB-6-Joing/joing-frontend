@@ -7,6 +7,7 @@ import {useNavigate, useLocation} from "react-router-dom";
 import MessageIcon from "../assets/icons/icon_message.png";
 import {recommendCreator} from "../services/recommendService.ts";
 import {matchingRequestToCreator} from "../services/matchingService.ts";
+import Loading from "../assets/Loading.gif";
 
 interface Creator {
     id: number;
@@ -20,17 +21,22 @@ const RecommendCreator = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const params = new URLSearchParams(location.search);
-    const itemId = Number(params.get("id")) || 0;
+    const id = params.get("itemId") || '';
+    const itemId = Number(id);
+
     const [isRequestSent, setIsRequestSent] = useState<boolean[]>(new Array(drafts.length).fill(false));
     const [recCreator, setRecCreator] = useState<Creator[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const fetchCreatorRecommend = async () => {
         try {
+            setIsLoading(true);
             const data: Creator[] = await recommendCreator(itemId);
             setRecCreator(data);
         } catch (error) {
             console.error('Failed to fetch data:', error);
         }
+        setIsLoading(false);
     };
 
     useEffect(() => {
@@ -91,6 +97,14 @@ const RecommendCreator = () => {
                         ))}
                     </HorizontalScroll>
                 </CreatorBox>
+
+                {isLoading && (
+                    <Modal>
+                        <img src={Loading} alt="loading img"/>
+                        <p>Joing이 기획안과 잘 맞는 크리에이터를 찾고있어요...</p>
+                    </Modal>
+                )}
+
 
                 <Buttons>
                     <DeleteButton onClick={() => navigate("/")}>매칭 끝내기</DeleteButton>
@@ -250,4 +264,21 @@ const DeleteButton = styled.button`
     &:focus {
         outline: none;
     }
+`;
+
+const Modal = styled.div`
+    position: fixed;
+    top: 65px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 18px;
+    font-family: 'SUITE-Bold', serif;
+    z-index: 1000;
 `;

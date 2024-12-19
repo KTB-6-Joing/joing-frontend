@@ -7,6 +7,8 @@ import {useNavigate} from "react-router-dom";
 import MessageIcon from "../assets/icons/icon_message.png";
 import {recommendItem} from "../services/recommendService.ts";
 import {matchingRequestToItem} from "../services/matchingService.ts";
+import Loading from "../assets/Loading.gif";
+
 
 interface Draft {
     id: number;
@@ -19,15 +21,17 @@ const RecommendDraft = () => {
     const navigate = useNavigate();
     const [recDraft, setRecDraft] = useState<Draft[]>([]);
     const [isRequestSent, setIsRequestSent] = useState<boolean[]>(new Array(recDraft.length).fill(false));
-
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const fetchDraftRecommend = async () => {
         try {
+            setIsLoading(true);
             const data: Draft[] = await recommendItem();
             setRecDraft(data);
         } catch (error) {
             console.error('Failed to fetch data:', error);
         }
+        setIsLoading(false);
     };
 
     useEffect(() => {
@@ -83,6 +87,13 @@ const RecommendDraft = () => {
                         ))}
                     </HorizontalScroll>
                 </DraftBox>
+
+                {isLoading && (
+                    <Modal>
+                        <img src={Loading} alt="loading img"/>
+                        <p>Joing이 회원님께 추천할 기획안을 찾고 있어요...</p>
+                    </Modal>
+                )}
 
                 <Buttons>
                     <ExitButton onClick={() => navigate("/")}>매칭 끝내기</ExitButton>
@@ -210,4 +221,21 @@ const ExitButton = styled.button`
     &:focus {
         outline: none;
     }
+`;
+
+const Modal = styled.div`
+    position: fixed;
+    top: 65px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 18px;
+    font-family: 'SUITE-Bold', serif;
+    z-index: 1000;
 `;
