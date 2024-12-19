@@ -320,7 +320,7 @@ const DraftPlan: React.FC = () => {
                                     요약 재생성
                                 </ReSumButton>
                                 <MatchingButton
-                                    onClick={() => navigate(`/matching/creator?itemId=${id}`)}
+                                    onClick={() => navigate(`/recommendation/creator?itemId=${id}`)}
                                 >
                                     크리에이터 매칭하기
                                 </MatchingButton>
