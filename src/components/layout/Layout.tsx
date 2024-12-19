@@ -4,6 +4,8 @@ import AuthModal from "../modal/AuthModal.tsx";
 import React, {useCallback, useEffect, useState} from "react";
 import NoticeModal, {Notice} from "../modal/NoticeModal.tsx";
 
+const apiUrl = import.meta.env.VITE_APP_API_URL;
+
 const Layout = (props: {
     children: React.ReactNode
 }) => {
@@ -14,7 +16,7 @@ const Layout = (props: {
     const [isShaking, setIsShaking] = useState<boolean>(false);
 
     useEffect(() => {
-        const eventSource = new EventSource("/api/v1/matching/subscribe");
+        const eventSource = new EventSource(`${apiUrl}/api/v1/matching/subscribe`);
 
         eventSource.onmessage = (event) => {
             const data: Notice = JSON.parse(event.data);
