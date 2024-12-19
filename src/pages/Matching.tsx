@@ -14,7 +14,7 @@ interface MatchingInfo {
     itemId: number;
     itemTitle: string;
     itemContent: string;
-    itemKeyword: string;
+    itemKeyword: string[];
     creatorNickname: string;
     creatorProfileImage: string;
     creatorEmail: string;
@@ -125,10 +125,9 @@ const Matching = () => {
                     <SumTitle>{matchingInfo.itemTitle}</SumTitle>
                     <Summary>{matchingInfo.itemContent}</Summary>
                     <Keywords>
-                        {/*{(matchingInfo.itemKeyword || []).map((keyword: string, idx: number) => (*/}
-                        {/*    <Keyword key={idx}>{keyword}</Keyword>*/}
-                        {/*))}*/}
-                        <Keyword>{matchingInfo.itemKeyword}</Keyword>
+                        {(matchingInfo.itemKeyword || []).map((keyword: string, idx: number) => (
+                            <Keyword key={idx}>{keyword}</Keyword>
+                        ))}
                     </Keywords>
                     {(matchingInfo.status === ItemStatus.ACCEPTED) &&
                         <>
