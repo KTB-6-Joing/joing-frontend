@@ -2,20 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface RecordBoxProps {
-    id: string;
+    id: number;
     title: string;
     summary: string;
-    onViewDetails: (id: string) => void;
+    onViewDetails: (id: number) => void;
 }
 
 const RecordBox: React.FC<RecordBoxProps> = ({id, title, summary, onViewDetails}) => {
     return (
         <BoxContainer>
-            <TextContainer>
+            <TextContainer onClick={() => onViewDetails(id)}>
                 <Title>{title}</Title>
                 <Summary>{summary}</Summary>
             </TextContainer>
-            <DetailsButton onClick={() => onViewDetails(id)}>View details</DetailsButton>
         </BoxContainer>
     );
 };
@@ -29,15 +28,24 @@ const BoxContainer = styled.div`
     background-color: #ffffff;
     border-radius: 12px;
     border: #e4e4e4 solid;
+
+    &:hover {
+        cursor: pointer;
+        transform: scale(1.02);
+        transition: transform 0.2s ease-in-out;
+    }
 `;
 
 const TextContainer = styled.div`
     flex-grow: 1;
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 `;
 
 const Title = styled.h4`
-    font-size: 16px;
+    font-size: 1rem;
     margin: 0;
     font-weight: 600;
 `;
@@ -46,25 +54,4 @@ const Summary = styled.p`
     font-size: 14px;
     color: #6c6c6c;
     margin: 0;
-`;
-
-const DetailsButton = styled.button`
-    padding: 0.5rem 1rem;
-    margin: 1rem;
-    font-size: 14px;
-    border: none;
-    border-radius: 12px;
-    background-color: #f3f3f3;
-    cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-
-    &:hover {
-        background-color: #c8c8c8;
-        border: none;
-        transform: scale(1.05);
-    }
-
-    &:focus {
-        outline: none;
-    }
 `;

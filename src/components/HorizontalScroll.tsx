@@ -10,7 +10,7 @@ const HorizontalScroll = ({children}: {
 
     const updateButtonVisibility = () => {
         if (scrollRef.current) {
-            const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+            const {scrollLeft, scrollWidth, clientWidth} = scrollRef.current;
             setShowLeftButton(scrollLeft > 0);
             setShowRightButton(scrollLeft + clientWidth < scrollWidth - 1);
         }
@@ -18,23 +18,27 @@ const HorizontalScroll = ({children}: {
 
     const scrollLeft = () => {
         if (scrollRef.current) {
-            scrollRef.current.scrollBy({ left: -550, behavior: "smooth" });
+            scrollRef.current.scrollBy({left: -550, behavior: "smooth"});
         }
     };
 
     const scrollRight = () => {
         if (scrollRef.current) {
-            scrollRef.current.scrollBy({ left: 550, behavior: "smooth" });
+            scrollRef.current.scrollBy({left: 550, behavior: "smooth"});
         }
     };
 
     useEffect(() => {
-        updateButtonVisibility();
+        const timer = setTimeout(() => {
+            updateButtonVisibility();
+        }, 0);
+
         if (scrollRef.current) {
             scrollRef.current.addEventListener("scroll", updateButtonVisibility);
         }
 
         return () => {
+            clearTimeout(timer);
             if (scrollRef.current) {
                 scrollRef.current.removeEventListener("scroll", updateButtonVisibility);
             }
@@ -54,7 +58,7 @@ const HorizontalScroll = ({children}: {
                     →
                 </ScrollButton>
             )}
-       </Container>
+        </Container>
     )
 }
 
@@ -93,5 +97,5 @@ const ScrollButton = styled.button<{ position: string }>`
 
     &:focus {
         outline: none;
-     }
+    }
 `;
