@@ -1,21 +1,44 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import styled from "styled-components";
 import Layout from "../components/layout/Layout.tsx";
 import 'react-horizontal-scrolling-menu/dist/styles.css';
 import HorizontalScroll from "../components/HorizontalScroll.tsx";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 import MessageIcon from "../assets/icons/icon_message.png";
+import {recommendCreator} from "../services/recService.ts";
+import Loading from "../assets/Loading.gif";
 
-// interface Draft {
-//     title: string;
-//     summary: string;
-//     keywords: string[];
-// }
+interface Creator {
+    id: number;
+    profileImage: string;
+    nickname: string;
+    channelUrl: string;
+}
 
-const MatchingCreator = () => {
+const RecommendCreator = () => {
     const drafts = JSON.parse(localStorage.getItem("draftPlans") || "[]");
     const navigate = useNavigate();
+    const location = useLocation();
+    const params = new URLSearchParams(location.search);
+    const itemId = params.get("itemId") || '';
     const [isRequestSent, setIsRequestSent] = useState<boolean[]>(new Array(drafts.length).fill(false));
+    const [recCreator, setRecCreator] = useState<Creator[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const fetchCreatorRecommend = async () => {
+        try {
+            setIsLoading(true);
+            const data: Creator[] = await recommendCreator(itemId);
+            setRecCreator(data);
+        } catch (error) {
+            console.error('Failed to fetch data:', error);
+        }
+        setIsLoading(false);
+    };
+
+    useEffect(() => {
+        fetchCreatorRecommend();
+    }, []);
 
     const handleMatchingRequest = (index: number) => {
         const updatedRequestSent = [...isRequestSent];
@@ -31,19 +54,19 @@ const MatchingCreator = () => {
                 </Slogan>
                 <CreatorBox>
                     <HorizontalScroll>
-                        {drafts.slice(0, 5).map((index: number) => (
+                        {recCreator.map((creator: Creator, index: number) => (
                             <DraftItem key={index}>
                                 <Profile>
-                                    <ProfileImg></ProfileImg>
+                                    <ProfileImg src={creator.profileImage} alt={`${creator.nickname}'s profile`}/>
                                     <ProfileDetail>
-                                        <Name>Ellie Park</Name>
-                                        <Email>soyeon_0307@naver.com</Email>
+                                        <Name>{creator.nickname}</Name>
+                                        <Platform>Youtuber</Platform>
                                     </ProfileDetail>
                                 </Profile>
                                 <MatchingButtons>
-                                    <VisitButton>
-                                        Visit Channel
-                                    </VisitButton>
+                                    <a href={creator.channelUrl || "#"} target="_blank" rel="noopener noreferrer">
+                                        <VisitButton>Visit Channel</VisitButton>
+                                    </a>
                                     <MatchingButton
                                         onClick={() => handleMatchingRequest(index)}
                                         disabled={isRequestSent[index]}
@@ -52,7 +75,7 @@ const MatchingCreator = () => {
                                             "매칭 요청이 전송되었습니다"
                                         ) : (
                                             <>
-                                                <img src={MessageIcon} alt="message icon" />
+                                                <img src={MessageIcon} alt="message icon"/>
                                                 Matching Request
                                             </>
                                         )}
@@ -63,8 +86,15 @@ const MatchingCreator = () => {
                     </HorizontalScroll>
                 </CreatorBox>
 
+                {isLoading && (
+                    <Modal>
+                        <img src={Loading} alt="loading img"/>
+                        <p>Joing이 기획안과 잘 맞는 크리에이터를 찾고있어요...</p>
+                    </Modal>
+                )}
+
+
                 <Buttons>
-                    <EditButton>추천 재생성</EditButton>
                     <DeleteButton onClick={() => navigate("/")}>매칭 끝내기</DeleteButton>
                 </Buttons>
             </Container>
@@ -72,7 +102,7 @@ const MatchingCreator = () => {
     )
 };
 
-export default MatchingCreator;
+export default RecommendCreator;
 
 const Container = styled.section`
     display: flex;
@@ -116,7 +146,7 @@ const Profile = styled.div`
     gap: 16px;
 `;
 
-const ProfileImg = styled.div`
+const ProfileImg = styled.img`
     width: 120px;
     height: 120px;
     border-radius: 50%;
@@ -129,7 +159,7 @@ const Name = styled.h3`
     font-family: 'GongGothicMedium', serif;
 `;
 
-const Email = styled.p`
+const Platform = styled.p`
     font-family: 'SUITE-Bold', serif;
     font-size: 0.9rem;
 `;
@@ -167,11 +197,11 @@ const VisitButton = styled.button`
 const MatchingButton = styled.button`
     font-family: 'SUITE-Bold', serif;
     font-size: 0.9rem;
-    background-color: ${({ disabled }) => (disabled ? "#a0a0a0" : "#000000")};
+    background-color: ${({disabled}) => (disabled ? "#a0a0a0" : "#000000")};
     border-radius: 8px;
     color: #ffffff;
     transition: background-color 0.3s;
-    cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+    cursor: ${({disabled}) => (disabled ? "not-allowed" : "pointer")};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -179,7 +209,7 @@ const MatchingButton = styled.button`
     flex: 2;
 
     &:hover {
-        background-color: ${({ disabled }) => (disabled ? "#a0a0a0" : "#424242")};
+        background-color: ${({disabled}) => (disabled ? "#a0a0a0" : "#424242")};
         border: none;
         transform: none;
     }
@@ -187,8 +217,8 @@ const MatchingButton = styled.button`
     &:focus {
         outline: none;
     }
-    
-    img{
+
+    img {
         width: 16px;
         height: auto;
     }
@@ -200,28 +230,6 @@ const Buttons = styled.div`
     margin: 20px 0;
     padding-bottom: 30px;
     gap: 10px;
-`;
-
-const EditButton = styled.button`
-    font-family: 'SUITE-Bold', serif;
-    padding: 6px 15px;
-    width: 200px;
-    height: 40px;
-    background-color: #ffffff;
-    border: 1px solid black;
-    border-radius: 10px;
-    color: black;
-    transition: background-color 0.3s;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #e0e0e0;
-        border: 1px solid #000000;
-    }
-
-    &:focus {
-        outline: none;
-    }
 `;
 
 const DeleteButton = styled.button`
@@ -244,4 +252,21 @@ const DeleteButton = styled.button`
     &:focus {
         outline: none;
     }
+`;
+
+const Modal = styled.div`
+    position: fixed;
+    top: 65px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 18px;
+    font-family: 'SUITE-Bold', serif;
+    z-index: 1000;
 `;

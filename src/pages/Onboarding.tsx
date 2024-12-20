@@ -96,7 +96,7 @@ const Onboarding: React.FC = () => {
                                             if (toggleValue === Role.PRODUCT_MANAGER) {
                                                 navigate("/draftplan");
                                             } else if (toggleValue === Role.CREATOR) {
-                                                navigate("/matching/draft");
+                                                navigate("/recommendation/draft");
                                             }
                                         }
                                     }}

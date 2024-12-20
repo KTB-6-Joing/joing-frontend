@@ -1,19 +1,29 @@
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import SearchIcon from "../../assets/icons/icon_search.png";
-import {ViewDraftList} from "../../services/draftService.ts";
+import {viewDraftList} from "../../services/draftService.ts";
 import {useNavigate} from "react-router-dom";
 import RecordBox from "../forms/RecordBox.tsx";
 
+interface Item {
+    id: number;
+    title: string;
+    summary: {
+        title: string;
+        content: string;
+        keywords: string[];
+    } | null;
+}
+
 const TabRecordDetail: React.FC = () => {
-    const [drafts, setDrafts] = useState<{ id: string; title: string; summary: string }[]>([]);
+    const [drafts, setDrafts] = useState<Item[]>([]);
     const [searchKeyword, setSearchKeyword] = useState('');
     const [throttledKeyword, setThrottledKeyword] = useState('');
     const navigate = useNavigate();
 
     const fetchDrafts = async () => {
         try {
-            const response = await ViewDraftList();
+            const response = await viewDraftList();
             setDrafts(response.data || []);
         } catch (error) {
             console.error("Error fetching items:", error);
@@ -32,7 +42,7 @@ const TabRecordDetail: React.FC = () => {
         return () => clearInterval(interval);
     }, [searchKeyword]);
 
-    const handleViewDetails = (id: string) => {
+    const handleViewDetails = (id: number) => {
         navigate(`/draftplan/${id}`);
     };
 
@@ -55,7 +65,7 @@ const TabRecordDetail: React.FC = () => {
                     key={item.id}
                     id={item.id}
                     title={item.title}
-                    summary={item.summary}
+                    summary={item.summary?.content ?? ''}
                     onViewDetails={handleViewDetails}
                 />
             ))}

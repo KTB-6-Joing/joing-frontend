@@ -12,7 +12,7 @@ import ArrowDown from '../assets/icons/icon_arrowdown.png';
 import WarningIcon from '../assets/icons/icon_warning.png';
 import Loading from '../assets/Loading.gif';
 import NoticeIcon from "../assets/icons/icon_notice.png";
-import {Evaluation, PatchDraftPlan, ReSummary, SaveDraftPlan} from "../services/draftService.ts";
+import {evaluationItem, patchDraftPlan, reSummaryItem, saveDraftPlan} from "../services/draftService.ts";
 import MediaTypeSelector from "../components/elements/MediaTypeSelector.tsx";
 
 const DraftPlan: React.FC = () => {
@@ -84,7 +84,7 @@ const DraftPlan: React.FC = () => {
                 let isSuccessful = false;
 
                 if (!isEditMode) {
-                    const response = await SaveDraftPlan(
+                    const response = await saveDraftPlan(
                         title,
                         content,
                         selectedType,
@@ -97,7 +97,7 @@ const DraftPlan: React.FC = () => {
                         isSuccessful = true;
                     }
                 } else {
-                    const response = await PatchDraftPlan(
+                    const response = await patchDraftPlan(
                         id,
                         title,
                         content,
@@ -114,7 +114,7 @@ const DraftPlan: React.FC = () => {
                 console.log(itemId);
 
                 if (isSuccessful && itemId) {
-                    const evaluationResponse = await Evaluation(itemId);
+                    const evaluationResponse = await evaluationItem(itemId);
 
                     if (evaluationResponse.data.type == "FEEDBACK") {
                         setIsFeedback(true);
@@ -146,7 +146,7 @@ const DraftPlan: React.FC = () => {
         setIsSummaraizing(true);
 
         try {
-            const response = await ReSummary(draftId);
+            const response = await reSummaryItem(draftId);
             const {title, content, keywords} = response.data;
 
             setSummaryData({
@@ -320,7 +320,7 @@ const DraftPlan: React.FC = () => {
                                     요약 재생성
                                 </ReSumButton>
                                 <MatchingButton
-                                    onClick={() => navigate("/matching/creator")}
+                                    onClick={() => navigate(`/recommendation/creator?itemId=${id}`)}
                                 >
                                     크리에이터 매칭하기
                                 </MatchingButton>
