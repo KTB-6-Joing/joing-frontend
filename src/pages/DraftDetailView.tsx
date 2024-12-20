@@ -255,7 +255,9 @@ const Span = styled.span`
     font-family: 'SUITE-Regular', serif;
 `;
 
-const Keyword = styled(Span)``;
+const Keyword = styled(Span)`
+    white-space: nowrap;
+`;
 
 const TypeView = styled(View)``;
 

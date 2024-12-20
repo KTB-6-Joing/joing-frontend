@@ -1,6 +1,6 @@
 import apiClient from "./apiClient.ts";
 
-export const recommendCreator = async (itemId: string) => {
+export const recommendCreator = async (itemId: number) => {
     try {
         const response = await apiClient.get(`/api/v1/recommendations/items/${itemId}`);
 

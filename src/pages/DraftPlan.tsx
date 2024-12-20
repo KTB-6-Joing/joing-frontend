@@ -21,7 +21,7 @@ const DraftPlan: React.FC = () => {
     const [selectedType, setSelectedType] = useState<string | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<string>('');
     const [miscFields, setMiscFields] = useState<{ name: string; value: string }[]>([{name: '', value: ''}]);
-    const [id, setId] = useState('');
+    const [id, setId] = useState<number>(0);
     const [readOnly, setReadOnly] = useState(false);
     const [isSummaryClicked, setIsSummaryClicked] = useState(false);
     const [isSummarizing, setIsSummaraizing] = useState(false);
@@ -111,8 +111,6 @@ const DraftPlan: React.FC = () => {
                     }
                 }
 
-                console.log(itemId);
-
                 if (isSuccessful && itemId) {
                     const evaluationResponse = await evaluationItem(itemId);
 
@@ -142,7 +140,7 @@ const DraftPlan: React.FC = () => {
         }
     };
 
-    const handleReSummary = async (draftId: string) => {
+    const handleReSummary = async (draftId: number) => {
         setIsSummaraizing(true);
 
         try {

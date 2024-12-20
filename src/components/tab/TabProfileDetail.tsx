@@ -57,7 +57,8 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, o
     const openChannelEditModal = () => {
         setChannelID(profileInfo.channelId);
         setChannelLink(profileInfo.channelUrl);
-        setIsChannelModalOpen(true)
+        setIsChannelModalOpen(true);
+        setIsEditable(true);
     }
 
     const closeChannelEditModal = () => {

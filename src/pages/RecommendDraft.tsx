@@ -5,8 +5,10 @@ import 'react-horizontal-scrolling-menu/dist/styles.css';
 import HorizontalScroll from "../components/HorizontalScroll.tsx";
 import {useNavigate} from "react-router-dom";
 import MessageIcon from "../assets/icons/icon_message.png";
-import {recommendItem} from "../services/recService.ts";
+import {recommendItem} from "../services/recommendService.ts";
+import {matchingRequestToItem} from "../services/matchingService.ts";
 import Loading from "../assets/Loading.gif";
+
 
 interface Draft {
     id: number;
@@ -16,10 +18,9 @@ interface Draft {
 }
 
 const RecommendDraft = () => {
-    const drafts = JSON.parse(localStorage.getItem("draftPlans") || "[]");
     const navigate = useNavigate();
-    const [isRequestSent, setIsRequestSent] = useState<boolean[]>(new Array(drafts.length).fill(false));
     const [recDraft, setRecDraft] = useState<Draft[]>([]);
+    const [isRequestSent, setIsRequestSent] = useState<boolean[]>(new Array(recDraft.length).fill(false));
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const fetchDraftRecommend = async () => {
@@ -37,10 +38,19 @@ const RecommendDraft = () => {
         fetchDraftRecommend();
     }, []);
 
-    const handleMatchingRequest = (index: number) => {
-        const updatedRequestSent = [...isRequestSent];
-        updatedRequestSent[index] = true;
-        setIsRequestSent(updatedRequestSent);
+    const handleMatchingRequest = async (id: number, index: number) => {
+        try {
+            const response = await matchingRequestToItem(id);
+            if (!response.success) {
+                alert('매칭 요청에 실패했습니다');
+                return;
+            }
+            const updatedRequestSent = [...isRequestSent];
+            updatedRequestSent[index] = true;
+            setIsRequestSent(updatedRequestSent);
+        } catch (_error) {
+            alert('매칭 요청에 오류가 발생했습니다');
+        }
     };
 
     return (
@@ -61,7 +71,7 @@ const RecommendDraft = () => {
                                     ))}
                                 </Keywords>
                                 <MatchingButton
-                                    onClick={() => handleMatchingRequest(index)}
+                                    onClick={() => handleMatchingRequest(draft.id, index)}
                                     disabled={isRequestSent[index]}
                                 >
                                     {isRequestSent[index] ? (
