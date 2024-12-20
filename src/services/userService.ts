@@ -64,4 +64,21 @@ export const patchProductManagerInfo = async (data: Partial<ProfileInfo>) => {
     } catch (_error) {
         return {success: false};
     }
+}
+
+export const existNickname = async (nickname: string) => {
+    try{
+        const response = await apiClient.get('/api/v1/users/exists', {
+            params:{
+                nickname: nickname,
+            },
+        });
+
+        if (response.status === 200) {
+            return response.data;
+        }
+        throw new Error(`Unexpected status code: ${response.status}`);
+    } catch (error) {
+        return error;
+    }
 };

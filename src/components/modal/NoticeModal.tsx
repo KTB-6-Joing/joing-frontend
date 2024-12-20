@@ -105,6 +105,7 @@ const NoticeDescription = styled.div`
 const DeleteButton = styled.button`
     border: none;
     padding: 4px;
+    margin-left: 1rem;
     cursor: pointer;
     background-color: transparent;
 

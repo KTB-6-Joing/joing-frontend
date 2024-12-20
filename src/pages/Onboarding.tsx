@@ -82,7 +82,7 @@ const Onboarding: React.FC = () => {
                                     </Detail>
                                 ) : (
                                     <Detail>
-                                        나와 잘 맞는 크레이에터를 찾고 싶은 <strong>"예비"</strong> 기획자<br/>
+                                        나와 잘 맞는 크레에이터를 찾고 싶은 <strong>"예비"</strong> 기획자<br/>
                                         나와 잘 맞는 크리에이터와 함께 성장하고 싶은 <strong>"신입"</strong> 기획자<br/>
                                         새로운 도전을 함께할 크리에이터가 필요한 <strong>"전문"</strong> 기획자
                                     </Detail>
