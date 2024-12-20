@@ -9,7 +9,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useUser} from "../contexts/UserContext.tsx";
 
 interface MatchingInfo {
-    productManageNickname: string;
+    productManagerNickname: string;
     productManagerEmail: string;
     itemId: number;
     itemTitle: string;
@@ -114,11 +114,13 @@ const Matching = () => {
                         <VisitButton>Visit Channel</VisitButton>
                     </a>
                     {(matchingInfo.status === ItemStatus.ACCEPTED) &&
-                        <Email>{matchingInfo.creatorEmail}</Email>
+                        <Email>contact: {matchingInfo.creatorEmail}</Email>
                     }
                 </CreatorContainer>
 
-                <Link src={link} alt="link"/>
+                <LinkContainer>
+                    <Link src={link} alt="link"/>
+                </LinkContainer>
 
                 <ItemContainer>
                     <Title>Item Summary</Title>
@@ -131,37 +133,41 @@ const Matching = () => {
                     </Keywords>
                     {(matchingInfo.status === ItemStatus.ACCEPTED) &&
                         <>
-                            <Name>{matchingInfo.productManageNickname}</Name>
-                            <Email>{matchingInfo.productManagerEmail}</Email>
+                            <Title>Product Manager Profile</Title>
+                            <Name>{matchingInfo.productManagerNickname}</Name>
+                            <Email>contacnt: {matchingInfo.productManagerEmail}</Email>
                         </>
                     }
                 </ItemContainer>
             </Wrapper>
 
-            {(matchingInfo.status === ItemStatus.PENDING) &&
-                <>
-                    {matchingInfo.sender === role ? (
-                        <ButtonGroup>
-                            <CancelButton onClick={() => handleCancel(id)}>취소</CancelButton>
-                            <ItemViewButton onClick={() => handleItemView(matchingInfo.itemId)}>기획안 보기</ItemViewButton>
-                        </ButtonGroup>
-                    ) : (
-                        <ButtonGroup>
-                            <RejectButton onClick={() => handleReject(id)}>거절</RejectButton>
-                            <AcceptButton onClick={() => handleAccept(id)}>수락</AcceptButton>
-                        </ButtonGroup>
-                    )}
-                </>
-            }
-            {(matchingInfo.status === ItemStatus.ACCEPTED) &&
-                <ItemViewButton onClick={() => handleItemView(matchingInfo.itemId)}>기획안 상세보기</ItemViewButton>
-            }
-            {(matchingInfo.status === ItemStatus.REJECTED) &&
-                <p>거절된 요청입니다</p>
-            }
-            {(matchingInfo.status === ItemStatus.CANCELED) &&
-                <p>취소된 요청입니다</p>
-            }
+            <ButtonGroup>
+                {(matchingInfo.status === ItemStatus.PENDING) &&
+                    <>
+                        {matchingInfo.sender === role ? (
+                            <>
+                                <CancelButton onClick={() => handleCancel(id)}>취소</CancelButton>
+                                <ItemViewButton onClick={() => handleItemView(matchingInfo.itemId)}>기획안
+                                    보기</ItemViewButton>
+                            </>
+                        ) : (
+                            <>
+                                <RejectButton onClick={() => handleReject(id)}>거절</RejectButton>
+                                <AcceptButton onClick={() => handleAccept(id)}>수락</AcceptButton>
+                            </>
+                        )}
+                    </>
+                }
+                {(matchingInfo.status === ItemStatus.ACCEPTED) &&
+                    <ItemViewButton onClick={() => handleItemView(matchingInfo.itemId)}>기획안 상세보기</ItemViewButton>
+                }
+                {(matchingInfo.status === ItemStatus.REJECTED) &&
+                    <p>거절된 요청입니다</p>
+                }
+                {(matchingInfo.status === ItemStatus.CANCELED) &&
+                    <p>취소된 요청입니다</p>
+                }
+            </ButtonGroup>
 
         </Layout>
     )
@@ -173,7 +179,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 100%;
+    height: 80%;
 `;
 
 const CreatorContainer = styled.div`
@@ -184,9 +190,16 @@ const ItemContainer = styled.div`
     flex: 1;
 `;
 
+const LinkContainer = styled.div`
+    display: flex;
+    height: 100%;
+    align-items: center;
+`;
+
 const Link = styled.img`
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: 70px;
+    margin: 4rem;
 `;
 
 const Title = styled.h2`
@@ -240,13 +253,11 @@ const VisitButton = styled.button`
 const SumTitle = styled.h2`
     font-family: 'SUITE-Bold', serif;
     font-size: 1.2rem;
-    margin: 30px 0 0 0;
 `;
 
 const Summary = styled.p`
     font-family: 'SUITE-Regular', serif;
     font-size: 1rem;
-    margin: 0;
     flex: 1;
 `;
 
@@ -275,7 +286,11 @@ const Platform = styled.p`
 
 const Email = styled.p``;
 
-const ButtonGroup = styled.div``;
+const ButtonGroup = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+`;
 
 const CancelButton = styled.button``;
 

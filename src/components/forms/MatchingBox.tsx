@@ -41,7 +41,8 @@ const TextContainer = styled.div`
     flex-grow: 1;
     padding: 1rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     gap: 0.5rem;
 `;
 

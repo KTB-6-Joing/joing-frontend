@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import AuthModal from "../modal/AuthModal.tsx";
 import React, {useCallback, useEffect, useState} from "react";
 import NoticeModal, {Notice} from "../modal/NoticeModal.tsx";
+import {EventSourcePolyfill} from "event-source-polyfill";
 
 const apiUrl = import.meta.env.VITE_APP_API_URL;
 
@@ -16,27 +17,53 @@ const Layout = (props: {
     const [isShaking, setIsShaking] = useState<boolean>(false);
 
     useEffect(() => {
-        const eventSource = new EventSource(`${apiUrl}/api/v1/matching/subscribe`);
+        const token = localStorage.getItem('accessToken') || '';
+
+        const eventSource = new EventSourcePolyfill(`${apiUrl}/api/v1/notification/subscribe`, {
+            headers: {
+                access: token,
+            },
+        });
 
         eventSource.onmessage = (event) => {
-            const data: Notice = JSON.parse(event.data);
+            const isJSON = (str: string) => {
+                try {
+                    JSON.parse(str);
+                    return true;
+                } catch {
+                    return false;
+                }
+            };
 
-            const storedNotices = localStorage.getItem('notices');
-            const updatedNotices = storedNotices ? [...JSON.parse(storedNotices), data] : [data];
-            localStorage.setItem('notices', JSON.stringify(updatedNotices));
+            if (isJSON(event.data)) {
+                const data: Notice = JSON.parse(event.data);
 
-            setNotices(updatedNotices);
-            setUnreadMessages((prev) => prev + 1);
+                const storedNotices = localStorage.getItem('notices');
+                const updatedNotices = storedNotices
+                    ? [...JSON.parse(storedNotices), data]
+                    : [data];
+                const sortedNotices = updatedNotices.sort((a: Notice, b: Notice) => b.notificationId - a.notificationId);
 
-            setIsShaking(true);
-            setTimeout(() => {
-                setIsShaking(false);
-            }, 2000);
+                localStorage.setItem('notices', JSON.stringify(sortedNotices));
+                setNotices(updatedNotices);
+                setUnreadMessages((prev) => prev + 1);
+
+                setIsShaking(true);
+                setTimeout(() => {
+                    setIsShaking(false);
+                }, 5000);
+            }
         };
 
         eventSource.onerror = () => {
-            console.error("SSE connection error");
             eventSource.close();
+            setTimeout(() => {
+                new EventSourcePolyfill(`${apiUrl}/api/v1/notification/subscribe`, {
+                    headers: {
+                        access: token,
+                    },
+                });
+            }, 1000);
         };
 
         return () => {
@@ -47,7 +74,10 @@ const Layout = (props: {
     useEffect(() => {
         const storedNotices = localStorage.getItem('notices');
         if (storedNotices) {
-            setNotices(JSON.parse(storedNotices));
+            const parsedNotices = JSON.parse(storedNotices);
+            const sortedNotices = parsedNotices.sort((a: Notice, b: Notice) => b.notificationId - a.notificationId);
+
+            setNotices(sortedNotices);
         }
     }, []);
 
