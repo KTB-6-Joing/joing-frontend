@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Layout from "../components/layout/Layout.tsx";
 import {useUser} from '../contexts/UserContext.tsx'
 import {Role} from "../constants/roles.ts";
-import {DeleteDraftPlan, ViewDraftPlan} from "../services/draftService.ts";
+import {deleteDraftPlan, viewDraftPlan} from "../services/draftService.ts";
 import {useEffect, useState} from "react";
 import WarningIcon from "../assets/icons/icon_warning.png";
 import CancelModal from "../components/modal/Modal.tsx";
@@ -46,7 +46,7 @@ const DraftDetailView = () => {
     useEffect(() => {
         const fetchDraft = async () => {
             try {
-                const response = await ViewDraftPlan(id || "");
+                const response = await viewDraftPlan(id || "");
                 setDraft(response.data);
             } catch (error) {
                 console.error("Failed to fetch draft:", error);
@@ -58,7 +58,7 @@ const DraftDetailView = () => {
     const handleDelete = async () => {
         try {
             if (draft) {
-                await DeleteDraftPlan(draft.id.toString());
+                await deleteDraftPlan(draft.id);
                 navigate(-1);
             }
         } catch (error) {
@@ -255,7 +255,9 @@ const Span = styled.span`
     font-family: 'SUITE-Regular', serif;
 `;
 
-const Keyword = styled(Span)``;
+const Keyword = styled(Span)`
+    white-space: nowrap;
+`;
 
 const TypeView = styled(View)``;
 

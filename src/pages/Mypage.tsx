@@ -6,6 +6,7 @@ import TabProfileDetail from "../components/tab/TabProfileDetail.tsx";
 import TabRecordDetail from "../components/tab/TabRecordDetail.tsx";
 import React, {useEffect, useState} from "react";
 import {
+    existNickname,
     getCreatorInfo,
     getProductManagerInfo,
     patchCreatorInfo,
@@ -17,11 +18,13 @@ import {CategorySelector, MultiCategorySelector} from "../components/elements/Ca
 import ProfileEditModal from '../components/modal/Modal.tsx';
 import MediaTypeSelector from "../components/elements/MediaTypeSelector.tsx";
 import NoticeIcon from "../assets/icons/icon_notice.png";
+import TabMatchingDetail from "../components/tab/TabMatchingDetail.tsx";
 
 export interface ProfileInfo {
     nickname: string;
     email: string;
     profileImage: string;
+    subscribers: number;
     channelId: string;
     channelUrl: string;
     mediaType: string;
@@ -33,6 +36,7 @@ const defaultProfileInfo: ProfileInfo = {
     nickname: "",
     email: "",
     profileImage: "",
+    subscribers: 0,
     channelId: "",
     channelUrl: "",
     mediaType: "",
@@ -49,6 +53,8 @@ const Mypage = () => {
     const [selectedCategory, setSelectedCategory] = useState<string>(profileInfo.category);
     const [selectedType, setSelectedType] = useState<string>(profileInfo.mediaType);
     const [selectedCategories, setSelectedCategories] = useState<string[]>(profileInfo.favoriteCategories);
+    const [isAvailable, setIsAvailable] = useState(false);
+    const [debouncedNickname, setDebouncedNickname] = useState(nickname);
 
     const openModal = () => {
         setNickname(profileInfo.nickname);
@@ -73,6 +79,7 @@ const Mypage = () => {
                     nickname: data.nickname,
                     email: data.email,
                     profileImage: data.profileImage,
+                    subscribers: data.subscribers,
                     channelId: data.channelId,
                     channelUrl: data.channelUrl,
                     mediaType: data.mediaType,
@@ -101,6 +108,36 @@ const Mypage = () => {
 
     const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNickname(e.target.value);
+    };
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedNickname(nickname);
+        }, 500);
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [nickname]);
+
+    useEffect(() => {
+        if (debouncedNickname) {
+            handleNicknameExist(debouncedNickname);
+        }
+    }, [debouncedNickname]);
+
+    const handleNicknameExist = async(nickname: string) => {
+        try{
+            const response = await existNickname(nickname);
+
+            if (response.available) {
+                setIsAvailable(true);
+            } else{
+                setIsAvailable(false);
+            }
+        }catch (_error) {
+            console.log('Error in fetch nickname exists');
+        }
     };
 
     if (loading) return <p>Loading...</p>;
@@ -159,7 +196,7 @@ const Mypage = () => {
             return;
         }
 
-        const dataToPatch: Partial<ProfileInfo> = { email: newEmail };
+        const dataToPatch: Partial<ProfileInfo> = {email: newEmail};
 
         try {
             const response =
@@ -181,7 +218,7 @@ const Mypage = () => {
         }
     };
 
-    const updateChannel = async (newChannelId: string, newChannelUrl: string, newProfileImage: string) => {
+    const updateChannel = async (newChannelId: string, newChannelUrl: string, newProfileImage: string, newSubscribers: number) => {
         if (newChannelId === profileInfo.channelId && newChannelUrl === profileInfo.channelUrl && newProfileImage === profileInfo.profileImage) {
             alert("수정된 내용이 없습니다.");
             setIsModalOpen(false);
@@ -191,7 +228,8 @@ const Mypage = () => {
         const dataToPatch: Partial<ProfileInfo> = {
             channelId: newChannelId,
             channelUrl: newChannelUrl,
-            profileImage: newProfileImage
+            profileImage: newProfileImage,
+            subscribers: newSubscribers,
         };
 
         try {
@@ -254,14 +292,20 @@ const Mypage = () => {
                                 value={nickname}
                                 onChange={handleNicknameChange}
                             />
-                            {role === "CREATOR" &&
+                            {!isAvailable &&
+                                <RedNotice>
+                                    <img src={NoticeIcon} alt="Notice Icon"/>
+                                    중복되는 닉네임입니다
+                                </RedNotice>
+                            }
+                            {role === Role.CREATOR &&
                                 <Notice>
                                     <img src={NoticeIcon} alt="Notice Icon"/>
                                     채널 이름과 동일하게 설정하시는걸 추천드려요
                                 </Notice>
                             }
                         </InputForm>
-                        {role === "CREATOR" && (
+                        {role === Role.CREATOR && (
                             <>
                                 <InputForm>
                                     <Label>Media Type</Label>
@@ -278,7 +322,7 @@ const Mypage = () => {
                                 </InputForm>
                             </>
                         )}
-                        {role === "PRODUCT_MANAGER" && (
+                        {role === Role.PRODUCT_MANAGER && (
                             <>
                                 <InputForm>
                                     <Label>선호 카테고리</Label>
@@ -292,18 +336,34 @@ const Mypage = () => {
                         )}
                         <ButtonContainer>
                             <ExitButton onClick={closeModal}>cancel</ExitButton>
-                            <SendButton onClick={handleSubmit}>확인</SendButton>
+                            <SendButton onClick={handleSubmit} disabled={!isAvailable}>확인</SendButton>
                         </ButtonContainer>
                     </ProfileEditModal>
                 </HeaderComponent>
-                <Tabs>
-                    <TabPanel label="Profile">
-                        <TabProfileDetail role={role} profileInfo={profileInfo} onEmailUpdate={updateEmail} onChannelUpdate={updateChannel}/>
-                    </TabPanel>
-                    <TabPanel label="Record">
-                        <TabRecordDetail/>
-                    </TabPanel>
-                </Tabs>
+                {role === Role.PRODUCT_MANAGER ? (
+                    <Tabs>
+                        <TabPanel label="Profile">
+                            <TabProfileDetail role={role} profileInfo={profileInfo} onEmailUpdate={updateEmail}
+                                              onChannelUpdate={updateChannel}/>
+                        </TabPanel>
+                        <TabPanel label="Record">
+                            <TabRecordDetail/>
+                        </TabPanel>
+                        <TabPanel label="Matching">
+                            <TabMatchingDetail/>
+                        </TabPanel>
+                    </Tabs>
+                ) : (
+                    <Tabs>
+                        <TabPanel label="Profile">
+                            <TabProfileDetail role={role} profileInfo={profileInfo} onEmailUpdate={updateEmail}
+                                              onChannelUpdate={updateChannel}/>
+                        </TabPanel>
+                        <TabPanel label="Matching">
+                            <TabMatchingDetail/>
+                        </TabPanel>
+                    </Tabs>
+                )}
             </Container>
         </Layout>
     );
@@ -433,6 +493,10 @@ const Notice = styled.div`
     }
 `;
 
+const RedNotice = styled(Notice)`
+    color: red;
+`;
+
 const ButtonContainer = styled.div`
     display: flex;
     justify-content: flex-end;
@@ -458,15 +522,15 @@ const ExitButton = styled.button`
 `;
 
 const SendButton = styled.button`
-    background-color: #ff595b;
+    background-color: ${({disabled}) => (disabled ? '#b63335' : '#ff595b')};
     padding: 8px 16px;
     border: none;
     border-radius: 10px;
-    cursor: pointer;
+    cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
     color: white;
 
     &:hover {
-        background-color: #e33e3f;
+        background-color: ${({disabled}) => (disabled ? '#b63335' : '#e33e3f')};
     }
 
     &:focus {

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styled, {css, keyframes} from "styled-components";
 import NoticeIcon from "../../assets/icons/icon_notice.png";
 import {creatorJoin, productmanagerJoin} from "../../services/authService.ts";
@@ -8,7 +8,7 @@ import categories from "../../data/categories";
 import {Role} from "../../constants/roles.ts";
 import emailDomains from "../../data/emailDomains.ts";
 import ChannelIdGuideModal from "../modal/ChannelIdGuideModal.tsx";
-import {profileEvaluation} from "../../services/userService.ts";
+import {existNickname, profileEvaluation} from "../../services/userService.ts";
 import ResultModal from "../modal/Modal.tsx";
 import LoadingGif from "../../assets/Loading.gif";
 
@@ -32,12 +32,15 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
     const [selectedType, setSelectedType] = useState<string | null>(null);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [profileImage, setProfileImage] = useState<string>('');
+    const [subscribers, setSubscribers] = useState<number>(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
     const [isEditable, setIsEditable] = useState(true);
     const [isEvalueResultModal, setIsEvalueResultModal] = useState(false);
     const [evalueModalContent, setEvalueModalContent] = useState<React.ReactNode>(null);
     const [isEvaluationLoading, setIsEvaluationLoading] = useState(false);
+    const [isAvailable, setIsAvailable] = useState(false);
+    const [debouncedNickname, setDebouncedNickname] = useState(nickname);
 
     const handleFocus = () => setIsFocused(true);
     const handleBlur = () => setIsFocused(false);
@@ -47,12 +50,46 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
 
     const isOkayEnabled =
         role === Role.CREATOR
-            ? nickname && selectedCategory && channelID && channelLink && selectedType && isVerifyEnabled && !isEditable && profileImage
-            : nickname && selectedCategories.length > 0 && isVerifyEnabled;
+            ? nickname && selectedCategory && channelID && channelLink && selectedType && isVerifyEnabled && !isEditable && profileImage && isAvailable
+            : nickname && selectedCategories.length > 0 && isVerifyEnabled && isAvailable;
 
     const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNickname(e.target.value);
     };
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedNickname(nickname);
+        }, 3000);
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [nickname]);
+
+    useEffect(() => {
+        if (debouncedNickname) {
+            handleNicknameExist(debouncedNickname);
+        }
+    }, [debouncedNickname]);
+
+    const handleNicknameExist = async(nickname: string) => {
+        try{
+            const response = await existNickname(nickname);
+
+            if (response.available) {
+                setIsAvailable(true);
+            } else{
+                setIsAvailable(false);
+            }
+        }catch (_error) {
+            console.log('Error in fetch nickname exists');
+        }
+    };
+
+    useEffect(() => {
+        handleNicknameExist(nickname);
+    }, [nickname]);
 
     const handleDomainChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedDomain = e.target.value;
@@ -112,6 +149,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                     channelId: channelID,
                     channelUrl: channelLink,
                     profileImage: profileImage,
+                    subscribers: subscribers,
                     mediaType: selectedType || '',
                     category: selectedCategory || '',
                 });
@@ -158,6 +196,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
             if (response.evaluationStatus) {
                 setEvalueModalContent('채널 평가에 성공했습니다. 수정이 불가능합니다.');
                 setProfileImage(response.channelImage);
+                setSubscribers(response.subscribers);
                 setIsEditable(false);
             } else {
                 setEvalueModalContent(
@@ -183,6 +222,12 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                         value={nickname}
                         onChange={handleNicknameChange}
                     />
+                    {!isAvailable &&
+                        <RedNotice>
+                            <img src={NoticeIcon} alt="Notice Icon"/>
+                            중복되는 닉네임입니다
+                        </RedNotice>
+                    }
                     {role === Role.CREATOR &&
                         <Notice>
                             <img src={NoticeIcon} alt="Notice Icon"/>
@@ -396,6 +441,10 @@ const Notice = styled.div`
         height: 14px;
         margin-right: 4px;
     }
+`;
+
+const RedNotice = styled(Notice)`
+    color: red;
 `;
 
 const bounce = keyframes`

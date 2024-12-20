@@ -1,25 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
+import {ItemStatus} from "../../constants/itemStatus.ts";
 
-interface RecordBoxProps {
+interface MatchingBoxProps {
     id: number;
     title: string;
-    summary: string;
+    status: ItemStatus;
     onViewDetails: (id: number) => void;
 }
 
-const RecordBox: React.FC<RecordBoxProps> = ({id, title, summary, onViewDetails}) => {
+const MatchingBox: React.FC<MatchingBoxProps> = ({id, title, status, onViewDetails}) => {
     return (
         <BoxContainer>
             <TextContainer onClick={() => onViewDetails(id)}>
                 <Title>{title}</Title>
-                <Summary>{summary}</Summary>
+                <Status>{status}</Status>
             </TextContainer>
         </BoxContainer>
     );
 };
 
-export default RecordBox;
+export default MatchingBox;
 
 const BoxContainer = styled.div`
     display: flex;
@@ -40,7 +41,8 @@ const TextContainer = styled.div`
     flex-grow: 1;
     padding: 1rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     gap: 0.5rem;
 `;
 
@@ -50,7 +52,7 @@ const Title = styled.h4`
     font-weight: 600;
 `;
 
-const Summary = styled.p`
+const Status = styled.p`
     font-size: 14px;
     color: #6c6c6c;
     margin: 0;

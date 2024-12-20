@@ -1,29 +1,128 @@
 import Header from "./Header.tsx";
 import styled from 'styled-components';
 import AuthModal from "../modal/AuthModal.tsx";
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
+import NoticeModal, {Notice} from "../modal/NoticeModal.tsx";
+import {EventSourcePolyfill} from "event-source-polyfill";
+
+const apiUrl = import.meta.env.VITE_APP_API_URL;
 
 const Layout = (props: {
     children: React.ReactNode
 }) => {
-    const [isOpenModal, setOpenModal] = useState<boolean>(false);
+    const [isOpenAuthModal, setOpenAuthModal] = useState<boolean>(false);
+    const [isOpenNoticeModal, setOpenNoticeModal] = useState<boolean>(false);
+    const [notices, setNotices] = useState<Notice[]>([]);
+    const [unreadMessages, setUnreadMessages] = useState<number>(0);
+    const [isShaking, setIsShaking] = useState<boolean>(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem('accessToken') || '';
+
+        const eventSource = new EventSourcePolyfill(`${apiUrl}/api/v1/notification/subscribe`, {
+            headers: {
+                access: token,
+            },
+        });
+
+        eventSource.onmessage = (event) => {
+            const isJSON = (str: string) => {
+                try {
+                    JSON.parse(str);
+                    return true;
+                } catch {
+                    return false;
+                }
+            };
+
+            if (isJSON(event.data)) {
+                const data: Notice = JSON.parse(event.data);
+
+                const storedNotices = localStorage.getItem('notices');
+                const updatedNotices = storedNotices
+                    ? [...JSON.parse(storedNotices), data]
+                    : [data];
+                const sortedNotices = updatedNotices.sort((a: Notice, b: Notice) => b.notificationId - a.notificationId);
+
+                localStorage.setItem('notices', JSON.stringify(sortedNotices));
+                setNotices(updatedNotices);
+                setUnreadMessages((prev) => prev + 1);
+
+                setIsShaking(true);
+                setTimeout(() => {
+                    setIsShaking(false);
+                }, 5000);
+            }
+        };
+
+        eventSource.onerror = () => {
+            eventSource.close();
+            setTimeout(() => {
+                new EventSourcePolyfill(`${apiUrl}/api/v1/notification/subscribe`, {
+                    headers: {
+                        access: token,
+                    },
+                });
+            }, 1000);
+        };
+
+        return () => {
+            eventSource.close(); // 컴포넌트 언마운트 시 연결 종료
+        };
+    }, []);
+
+    useEffect(() => {
+        const storedNotices = localStorage.getItem('notices');
+        if (storedNotices) {
+            const parsedNotices = JSON.parse(storedNotices);
+            const sortedNotices = parsedNotices.sort((a: Notice, b: Notice) => b.notificationId - a.notificationId);
+
+            setNotices(sortedNotices);
+        }
+    }, []);
+
+    const handleDeleteNotice = (id: number) => {
+        const updatedNotices = notices.filter((notice) => notice.notificationId !== id);
+        setNotices(updatedNotices);
+        localStorage.setItem('notices', JSON.stringify(updatedNotices));
+    };
 
     const handleLoginClick = useCallback(() => {
-        setOpenModal(!isOpenModal);
-    }, [isOpenModal]);
+        setOpenAuthModal(!isOpenAuthModal);
+    }, [isOpenAuthModal]);
 
-    const handleClose = useCallback(() => {
-        setOpenModal(false);
+    const handleNoticeClick = useCallback(() => {
+        setOpenNoticeModal((prev) => !prev);
+        if (!isOpenNoticeModal) {
+            setUnreadMessages(0);
+        }
+    }, []);
+
+    const handleCloseAuthModal = useCallback(() => {
+        setOpenAuthModal(false);
+    }, []);
+
+    const handleCloseNoticeModal = useCallback(() => {
+        setOpenNoticeModal(false);
     }, []);
 
     return (
         <>
-            <Header onLoginClick={handleLoginClick}/>
+            <Header
+                onLoginClick={handleLoginClick}
+                onNoticeClick={handleNoticeClick}
+                isNoticeModalOpen={isOpenNoticeModal}
+                unreadMessages={unreadMessages}
+                isShaking={isShaking}
+            />
             <Main>
                 {props.children}
             </Main>
-            {isOpenModal && (
-                <AuthModal handleClose={handleClose}/>
+            {isOpenAuthModal && (
+                <AuthModal handleClose={handleCloseAuthModal}/>
+            )}
+            {isOpenNoticeModal && (
+                <NoticeModal notices={notices} onClose={handleCloseNoticeModal} onDelete={handleDeleteNotice}/>
             )}
         </>
     )
