@@ -110,12 +110,13 @@ const Matching = () => {
                             <Platform>Youtuber</Platform>
                         </ProfileDetail>
                     </Profile>
-                    <a href={matchingInfo.creatorChannelUrl || "#"} target="_blank" rel="noopener noreferrer">
-                        <VisitButton>Visit Channel</VisitButton>
-                    </a>
                     {(matchingInfo.status === ItemStatus.ACCEPTED) &&
                         <Email>contact: {matchingInfo.creatorEmail}</Email>
                     }
+                    <a href={matchingInfo.creatorChannelUrl || "#"} target="_blank" rel="noopener noreferrer">
+                        <VisitButton>Visit Channel</VisitButton>
+                    </a>
+
                 </CreatorContainer>
 
                 <LinkContainer>
@@ -179,27 +180,27 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 80%;
 `;
 
 const CreatorContainer = styled.div`
     flex: 1;
+    padding: 3rem 0;
 `;
 
 const ItemContainer = styled.div`
     flex: 1;
+    padding: 3rem 0;
 `;
 
 const LinkContainer = styled.div`
     display: flex;
     height: 100%;
-    align-items: center;
 `;
 
 const Link = styled.img`
     width: 70px;
     height: 70px;
-    margin: 4rem;
+    margin: 15rem 5rem;
 `;
 
 const Title = styled.h2`
@@ -230,8 +231,8 @@ const ProfileDetail = styled.div``;
 const VisitButton = styled.button`
     font-family: 'SUITE-Bold', serif;
     font-size: 0.8rem;
-    padding: 6px 15px;
-    height: 40px;
+    padding: 12px;
+    width: 100%;
     background-color: #ffffff;
     border: 1px solid black;
     border-radius: 10px;
@@ -243,6 +244,8 @@ const VisitButton = styled.button`
     &:hover {
         background-color: #e0e0e0;
         border: 1px solid #000000;
+        transform: scale(1.02);
+        transition: transform 0.2s ease-in-out;
     }
 
     &:focus {
@@ -265,6 +268,7 @@ const Keywords = styled.div`
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
+    margin: 2rem 0;
 `;
 
 const Keyword = styled.span`
@@ -290,12 +294,97 @@ const ButtonGroup = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
+    gap: 1rem;
 `;
 
-const CancelButton = styled.button``;
+const CancelButton = styled.button`
+    font-family: 'SUITE-Bold', serif;
+    padding: 12px;
+    width: 10rem;
+    background-color: #ffffff;
+    border: black solid 1px;
+    border-radius: 10px;
+    color: #000000;
+    transition: background-color 0.3s;
+    cursor: pointer;
 
-const ItemViewButton = styled.button``;
+    &:hover {
+        background-color: #e0e0e0;
+        border: 1px solid #000000;
+        transform: scale(1.02);
+        transition: transform 0.2s ease-in-out;
+    }
 
-const RejectButton = styled.button``;
+    &:focus {
+        outline: none;
+    }
+`;
 
-const AcceptButton = styled.button``;
+const ItemViewButton = styled.button`
+    font-family: 'SUITE-Bold', serif;
+    padding: 12px;
+    width: 10rem;
+    background-color: #000000;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    transition: background-color 0.3s;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #3e3e3e;
+        border: none;
+        transform: scale(1.02);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    &:focus {
+        outline: none;
+    }
+`;
+
+const RejectButton = styled.button`
+    font-family: 'SUITE-Bold', serif;
+    padding: 12px;
+    width: 10rem;
+    background-color: #ffffff;
+    border: black solid 1px;
+    border-radius: 10px;
+    color: #000000;
+    transition: background-color 0.3s;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #e0e0e0;
+        border: 1px solid #000000;
+        transform: scale(1.02);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    &:focus {
+        outline: none;
+    }
+`;
+
+const AcceptButton = styled.button`
+    font-family: 'SUITE-Bold', serif;
+    padding: 12px;
+    width: 10rem;
+    background-color: #000000;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    transition: background-color 0.3s;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #3e3e3e;
+        border: none;
+        transform: scale(1.02);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    &:focus {
+        outline: none;
+    }
+`;
