@@ -19,6 +19,7 @@ import ProfileEditModal from '../components/modal/Modal.tsx';
 import MediaTypeSelector from "../components/elements/MediaTypeSelector.tsx";
 import NoticeIcon from "../assets/icons/icon_notice.png";
 import TabMatchingDetail from "../components/tab/TabMatchingDetail.tsx";
+import categories from "../data/categories.ts";
 
 export interface ProfileInfo {
     nickname: string;
@@ -262,10 +263,7 @@ const Mypage = () => {
                                     <ChannelType>Creator</ChannelType>
                                     <Hashtags>
                                         <Hashtag>
-                                            #{profileInfo.mediaType}
-                                        </Hashtag>
-                                        <Hashtag>
-                                            #{profileInfo.category}
+                                            #{(categories as Record<string, { id: string; name: string }>)[profileInfo.category]?.name || profileInfo.category}
                                         </Hashtag>
                                     </Hashtags>
                                 </>
@@ -274,8 +272,8 @@ const Mypage = () => {
                                     <RoleType>Product Manager</RoleType>
                                     <Hashtags>
                                         {profileInfo.favoriteCategories.map((category) => (
-                                            <Hashtag>
-                                                #{category}
+                                            <Hashtag key={category}>
+                                                #{(categories as Record<string, { id: string; name: string }>)[category]?.name || category}
                                             </Hashtag>
                                         ))}
                                     </Hashtags>
