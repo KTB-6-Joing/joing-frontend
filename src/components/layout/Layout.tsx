@@ -27,6 +27,7 @@ const Layout = (props: {
             eventSource = new EventSourcePolyfill(`${apiUrl}/api/v1/notification/subscribe`, {
                 headers: {
                     access: token,
+                    heartbeatTimeout: `${5 * 60 * 1000}`
                 },
             });
 
