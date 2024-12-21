@@ -508,6 +508,7 @@ const InputField = styled.input`
 const RemoveButton = styled.button`
     color: #ff5d5d;
     padding: 10px;
+    background-color: #f3f3f3;
 
     &:hover {
         border-color: #ff5d5d;
@@ -521,6 +522,7 @@ const RemoveButton = styled.button`
 const AddButton = styled.button`
     flex: 1;
     font-size: 14px;
+    background-color: #f3f3f3;
 
     &:hover {
         border-color: #c6c6c6;
