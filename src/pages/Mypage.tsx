@@ -429,7 +429,9 @@ const Hashtags = styled.div`
     gap: 1rem;
 `;
 
-const Hashtag = styled.p``;
+const Hashtag = styled.p`
+    white-space: nowrap;
+`;
 
 const EditButton = styled.button`
     font-family: 'SUITE-Bold', serif;
