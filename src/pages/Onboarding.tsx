@@ -292,6 +292,10 @@ const MainButton = styled.button`
         height: 2rem;
     }
 
+    span {
+        color: white;
+    }
+
     &:focus {
         outline: none;
     }
@@ -301,7 +305,6 @@ const MainButton = styled.button`
         background-color: ${({value}) => (value === Role.CREATOR ? "#FF3D3D" : "#307718")};
         transform: scale(1.05);
     }
-
 `;
 
 const ImgBox = styled.div`
