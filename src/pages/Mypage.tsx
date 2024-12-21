@@ -263,6 +263,9 @@ const Mypage = () => {
                                     <ChannelType>Creator</ChannelType>
                                     <Hashtags>
                                         <Hashtag>
+                                            #{profileInfo.mediaType}
+                                        </Hashtag>
+                                        <Hashtag>
                                             #{(categories as Record<string, { id: string; name: string }>)[profileInfo.category]?.name || profileInfo.category}
                                         </Hashtag>
                                     </Hashtags>
