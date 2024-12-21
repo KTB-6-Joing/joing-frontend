@@ -130,7 +130,7 @@ const Mypage = () => {
         try{
             const response = await existNickname(nickname);
 
-            if (response.available) {
+            if (response.available || nickname === profileInfo.nickname) {
                 setIsAvailable(true);
             } else{
                 setIsAvailable(false);
