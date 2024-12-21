@@ -4,6 +4,7 @@ import AuthModal from "../modal/AuthModal.tsx";
 import React, {useCallback, useEffect, useState} from "react";
 import NoticeModal, {Notice} from "../modal/NoticeModal.tsx";
 import {EventSourcePolyfill} from "event-source-polyfill";
+import {useUser} from "../../contexts/UserContext.tsx";
 
 const apiUrl = import.meta.env.VITE_APP_API_URL;
 
@@ -15,8 +16,11 @@ const Layout = (props: {
     const [notices, setNotices] = useState<Notice[]>([]);
     const [unreadMessages, setUnreadMessages] = useState<number>(0);
     const [isShaking, setIsShaking] = useState<boolean>(false);
+    const {role} = useUser();
 
     useEffect(() => {
+        if (role === null) return;
+
         const token = localStorage.getItem('accessToken') || '';
 
         const eventSource = new EventSourcePolyfill(`${apiUrl}/api/v1/notification/subscribe`, {
@@ -67,9 +71,9 @@ const Layout = (props: {
         };
 
         return () => {
-            eventSource.close(); // 컴포넌트 언마운트 시 연결 종료
+            eventSource.close();
         };
-    }, []);
+    }, [role]);
 
     useEffect(() => {
         const storedNotices = localStorage.getItem('notices');

@@ -7,6 +7,7 @@ interface UserContextType {
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
+let globalSetRole: ((role: Role | null) => void) | null = null;
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [role, setRole] = useState<Role | null>(() => {
@@ -16,6 +17,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         }
         return null;
     });
+
+    globalSetRole = setRole;
 
     return (
         <UserContext.Provider value={{ role, setRole }}>
@@ -30,4 +33,10 @@ export const useUser = () => {
         throw new Error('useUser must be used within a UserProvider');
     }
     return context;
+};
+
+export const resetUserRole = () => {
+    if (globalSetRole) {
+        globalSetRole(null);
+    }
 };
