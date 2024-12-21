@@ -1,4 +1,5 @@
 import apiClient from './apiClient';
+import {resetUserRole} from "../contexts/UserContext.tsx";
 
 export const creatorJoin = async (data: {
     nickname: string;
@@ -52,6 +53,7 @@ export const logout = async () => {
 
     try {
         await apiClient.post('/logout');
+        resetUserRole();
         clearTokens();
     } catch (error) {
         console.error('Logout failed:', error);
@@ -61,6 +63,8 @@ export const logout = async () => {
 
 const clearTokens = () => {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('role');
+    localStorage.removeItem('notices');
 };
 
 export const extractAndSaveToken = (): void => {
