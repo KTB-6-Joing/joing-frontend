@@ -363,6 +363,10 @@ const Modal = styled.div`
     font-size: 18px;
     font-family: 'SUITE-Bold', serif;
     z-index: 1000;
+
+    p{
+        color: white;
+    }
 `;
 
 const Title = styled.h2`

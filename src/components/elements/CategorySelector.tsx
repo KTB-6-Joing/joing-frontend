@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import categories from "../../data/categories.ts";
+import categories from "../../data/categories";
 
 interface CategorySelectorProps{
     selectedCategory: string;
-    setSelectedCategory: (category: string) => void;
+    setSelectedCategory: (Category: string) => void;
     readOnly: boolean;
 }
 
@@ -23,15 +23,15 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({selectedCateg
 
     return (
         <Category>
-            {categories.map((category) => (
+            {Object.values(categories).map((category) => (
                 <Type
                     type="button"
-                    key={category}
-                    onClick={() => handleCategoryClick(category)}
-                    isSelected={selectedCategory === category}
+                    key={category.id}
+                    onClick={() => handleCategoryClick(category.id)}
+                    isSelected={selectedCategory === category.id}
                     disabled={readOnly}
                 >
-                    {category}
+                    {category.name}
                 </Type>
             ))}
         </Category>
@@ -51,15 +51,15 @@ export const MultiCategorySelector: React.FC<MultiCategorySelectorProps> = ({sel
 
     return (
         <Category>
-            {categories.map((category) => (
+            {Object.values(categories).map((category) => (
                 <Type
                     type="button"
-                    key={category}
-                    onClick={() => handleCategoryClick(category)}
-                    isSelected={selectedCategories.includes(category)}
+                    key={category.id}
+                    onClick={() => handleCategoryClick(category.id)}
+                    isSelected={selectedCategories.includes(category.id)}
                     disabled={readOnly}
                 >
-                    {category}
+                    {category.name}
                 </Type>
             ))}
         </Category>

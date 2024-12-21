@@ -19,59 +19,65 @@ const Layout = (props: {
     const {role} = useUser();
 
     useEffect(() => {
-        if (role === null) return;
+        let eventSource: EventSourcePolyfill | null = null;
 
-        const token = localStorage.getItem('accessToken') || '';
+        if (role !== null) {
+            const token = localStorage.getItem('accessToken') || '';
 
-        const eventSource = new EventSourcePolyfill(`${apiUrl}/api/v1/notification/subscribe`, {
-            headers: {
-                access: token,
-            },
-        });
+            eventSource = new EventSourcePolyfill(`${apiUrl}/api/v1/notification/subscribe`, {
+                headers: {
+                    access: token,
+                },
+            });
 
-        eventSource.onmessage = (event) => {
-            const isJSON = (str: string) => {
-                try {
-                    JSON.parse(str);
-                    return true;
-                } catch {
-                    return false;
+            eventSource.onmessage = (event) => {
+                const isJSON = (str: string) => {
+                    try {
+                        JSON.parse(str);
+                        return true;
+                    } catch {
+                        return false;
+                    }
+                };
+
+                if (isJSON(event.data)) {
+                    const data: Notice = JSON.parse(event.data);
+
+                    const storedNotices = localStorage.getItem('notices');
+                    const updatedNotices = storedNotices
+                        ? [...JSON.parse(storedNotices), data]
+                        : [data];
+                    const sortedNotices = updatedNotices.sort((a: Notice, b: Notice) => b.notificationId - a.notificationId);
+
+                    localStorage.setItem('notices', JSON.stringify(sortedNotices));
+                    setNotices(updatedNotices);
+                    setUnreadMessages((prev) => prev + 1);
+
+                    setIsShaking(true);
+                    setTimeout(() => {
+                        setIsShaking(false);
+                    }, 3000);
                 }
             };
 
-            if (isJSON(event.data)) {
-                const data: Notice = JSON.parse(event.data);
-
-                const storedNotices = localStorage.getItem('notices');
-                const updatedNotices = storedNotices
-                    ? [...JSON.parse(storedNotices), data]
-                    : [data];
-                const sortedNotices = updatedNotices.sort((a: Notice, b: Notice) => b.notificationId - a.notificationId);
-
-                localStorage.setItem('notices', JSON.stringify(sortedNotices));
-                setNotices(updatedNotices);
-                setUnreadMessages((prev) => prev + 1);
-
-                setIsShaking(true);
+            eventSource.onerror = () => {
+                eventSource?.close();
                 setTimeout(() => {
-                    setIsShaking(false);
-                }, 5000);
-            }
-        };
-
-        eventSource.onerror = () => {
-            eventSource.close();
-            setTimeout(() => {
-                new EventSourcePolyfill(`${apiUrl}/api/v1/notification/subscribe`, {
-                    headers: {
-                        access: token,
-                    },
-                });
-            }, 1000);
-        };
+                    if (role !== null) {
+                        eventSource = new EventSourcePolyfill(`${apiUrl}/api/v1/notification/subscribe`, {
+                            headers: {
+                                access: token,
+                            },
+                        });
+                    }
+                }, 1000);
+            };
+        }
 
         return () => {
-            eventSource.close();
+            if (eventSource) {
+                eventSource.close();
+            }
         };
     }, [role]);
 

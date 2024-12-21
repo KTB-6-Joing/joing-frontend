@@ -86,7 +86,7 @@ const DraftDetailView = () => {
                         <ProfileImg src={draft?.profileImage} alt={`${draft?.nickname}'s profile`}/>
                         <ProfileDetail>
                             <Name>{draft.nickname}</Name>
-                            <Email>soyeon_0307@naver.com</Email>
+                            <Email>{draft.email}</Email>
                         </ProfileDetail>
                     </Profile>
                     <SummaryView>

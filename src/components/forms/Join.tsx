@@ -278,8 +278,8 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                                 onChange={handleCategoryChange}
                             >
                                 <option value="" disabled selected>Choose your channel Category</option>
-                                {categories.map((category, index) => (
-                                    <option key={index} value={category}>{category}</option>
+                                {Object.values(categories).map((category) => (
+                                    <option key={category.id} value={category.id}>{category.name}</option>
                                 ))}
                             </ComboBox>
                         </InputForm>
