@@ -51,7 +51,7 @@ export const logout = async () => {
     }
 
     try {
-        await apiClient.post('/auth/v1/logout');
+        await apiClient.post('/logout');
         clearTokens();
     } catch (error) {
         console.error('Logout failed:', error);
