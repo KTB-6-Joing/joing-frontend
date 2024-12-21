@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import crossIcon from '../../assets/icons/icon_cross.png';
+import {useNavigate} from "react-router-dom";
 
 export interface Notice {
     notificationId: number;
@@ -15,6 +16,8 @@ interface NoticeModalProps {
 }
 
 const NoticeModal: React.FC<NoticeModalProps> = ({notices, onClose, onDelete}) => {
+    const navigate = useNavigate();
+
     return (
         <ModalContainer onClick={onClose}>
             <ModalContent onClick={(e) => e.stopPropagation()}>
@@ -24,7 +27,7 @@ const NoticeModal: React.FC<NoticeModalProps> = ({notices, onClose, onDelete}) =
                 <NoticeList>
                     {notices.map((notice) => (
                         <NoticeItem key={notice.notificationId}
-                                    onClick={() => window.open(notice.relatedUrl, '_blank')}>
+                                    onClick={() => navigate(notice.relatedUrl)}>
                             <NoticeDescription>
                                 {notice.content}
                             </NoticeDescription>

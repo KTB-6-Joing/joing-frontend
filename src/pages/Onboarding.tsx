@@ -62,6 +62,14 @@ const Onboarding: React.FC = () => {
         setIsToggled(newValue);
     };
 
+    useEffect(() => {
+        return () => {
+            if (Fullpage.fullpageRef?.current) {
+                Fullpage.fullpageRef.current = null;
+            }
+        };
+    }, []);
+
     return (
         <Layout>
             <Fullpage>

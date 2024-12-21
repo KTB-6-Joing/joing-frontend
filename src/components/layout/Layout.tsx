@@ -56,7 +56,7 @@ const Layout = (props: {
                     setIsShaking(true);
                     setTimeout(() => {
                         setIsShaking(false);
-                    }, 3000);
+                    }, 5000);
                 }
             };
 
