@@ -1,5 +1,6 @@
 import apiClient from './apiClient';
 import {resetUserRole} from "../contexts/UserContext.tsx";
+import {resetAccessToken} from "../contexts/AuthContext.tsx";
 
 export const creatorJoin = async (data: {
     nickname: string;
@@ -54,6 +55,7 @@ export const logout = async () => {
     try {
         await apiClient.post('/logout');
         resetUserRole();
+        resetAccessToken();
         clearTokens();
     } catch (error) {
         console.error('Logout failed:', error);

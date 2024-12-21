@@ -6,11 +6,14 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+let globalSetAccessToken: ((token: string | null) => void) | null = null;
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [accessToken, setAccessToken] = useState<string | null>(
         localStorage.getItem("accessToken")
     );
+
+    globalSetAccessToken = setAccessToken;
 
     return (
         <AuthContext.Provider value={{ accessToken, setAccessToken }}>
@@ -25,4 +28,10 @@ export const useAuth = () => {
         throw new Error("useAuth must be used within an AuthProvider");
     }
     return context;
+};
+
+export const resetAccessToken = () => {
+    if (globalSetAccessToken) {
+        globalSetAccessToken(null);
+    }
 };
