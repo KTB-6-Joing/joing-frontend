@@ -66,7 +66,6 @@ export const viewDraftList = async () => {
         if (response.status !== 200) {
             throw new Error(`Failed to fetch draft list: ${response.statusText}`);
         }
-        console.log("success ViewDraftList");
         return response;
     } catch (error) {
         console.error('Error to fetch draft list:', error);
@@ -81,7 +80,6 @@ export const viewDraftPlan = async (itemId: string) => {
         if (response.status !== 200) {
             throw new Error(`Failed to fetch draft plan: ${response.statusText}`);
         }
-        console.log("success ViewDraftPlan");
         return response;
     } catch (error) {
         console.error('Failed to fetch draft:', error);
@@ -96,7 +94,6 @@ export const deleteDraftPlan = async (itemId: number) => {
         if (response.status !== 200) {
             throw new Error(`Failed to delete draft plan: ${response.statusText}`);
         }
-        console.log("Draft plan has been successfully Deleted!");
         return response;
     } catch (error) {
         console.error("Error deleting draft plan:", error);
@@ -110,7 +107,6 @@ export const evaluationItem = async (itemId: number) => {
         if (response.status !== 200) {
             throw new Error(`Failed to evaluation draft plan: ${response.statusText}`);
         }
-        console.log("success Evaluation");
         return response;
     } catch (error) {
         console.error("Error Evaluation draft plan:", error);
@@ -125,7 +121,6 @@ export const reSummaryItem = async (itemId: number) => {
         if (response.status !== 200) {
             throw new Error(`Failed to evaluation draft plan: ${response.statusText}`);
         }
-        console.log("success ReEvaluation");
         return response;
     } catch (error) {
         console.error("Error ReEvaluation draft plan:", error);

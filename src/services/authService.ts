@@ -31,7 +31,6 @@ export const productmanagerJoin = async (data: {
     favoriteCategories: string[];
 }) => {
     try {
-        console.log(data);
         const response = await apiClient.post('/api/v1/users/signup/productmanager', data);
 
         if (response.status === 201) {

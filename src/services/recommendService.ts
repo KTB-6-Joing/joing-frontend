@@ -7,7 +7,6 @@ export const recommendCreator = async (itemId: number) => {
         if (response.status !== 200) {
             throw new Error(`Failed to fetch RecommendCreator: ${response.statusText}`);
         }
-        console.log("success RecommendCreator");
         return response.data;
     } catch (error) {
         console.error('Error in fetch RecommendCreator:', error);
@@ -22,7 +21,6 @@ export const recommendItem = async () => {
         if (response.status !== 200) {
             throw new Error(`Failed to fetch RecommendItem: ${response.statusText}`);
         }
-        console.log("success RecommendItem");
         return response.data;
     } catch (error) {
         console.error('Error in fetch RecommendItem:', error);
