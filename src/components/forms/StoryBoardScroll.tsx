@@ -70,8 +70,8 @@ const ScrollContainer = styled.div`
 const ScrollItem = styled.div`
     flex: 0 0 auto;
     scroll-snap-align: start;
-    width: 150px; /* 아이템 너비 */
-    height: 150px; /* 아이템 높이 */
+    width: 10rem;
+    height: 10rem;
     background: #f0f0f0;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
