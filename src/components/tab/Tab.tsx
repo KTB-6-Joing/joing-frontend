@@ -3,18 +3,18 @@ import styled from "styled-components";
 
 interface TabProps{
     label: string;
-    activeTab: string;
+    isActive: boolean;
     onClick: (label: string) => void;
 }
 
-const Tab: React.FC<TabProps> = ({label, activeTab, onClick}) => {
+const Tab: React.FC<TabProps> = ({label, isActive, onClick}) => {
     const handleClick = () => {
         onClick(label);
     };
 
     return (
         <TabButton
-            isActive={activeTab === label}
+            isActive={isActive}
             onClick={handleClick}
         >
             {label}

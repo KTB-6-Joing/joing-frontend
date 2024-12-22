@@ -32,7 +32,12 @@ const Header: React.FC<HeaderProps> = ({onLoginClick, onNoticeClick, isNoticeMod
     return (
         <HeaderContainer>
             <Content>
-                <Logo onClick={() => navigate("/")}>
+                <Logo
+                    onClick={() => {
+                        localStorage.removeItem("activeTab");
+                        navigate("/");
+                    }}
+                >
                     <img src={LogoImg} alt="arrow icon"/>
                     Joing
                 </Logo>

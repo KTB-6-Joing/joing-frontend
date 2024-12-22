@@ -1,29 +1,29 @@
-import React, { useState, ReactElement } from 'react';
+import React, {ReactElement} from 'react';
 import Tab from './Tab';
 import styled from "styled-components";
 
 interface TabsProps {
+    activeTab: string;
+    onTabChange: (tab: string) => void;
     children: ReactElement[];
 }
 
-const Tabs: React.FC<TabsProps> = ({ children }) => {
-    const [activeTab, setActiveTab] = useState(children[0].props.label);
-
+const Tabs: React.FC<TabsProps> = ({activeTab, onTabChange, children}) => {
     const handleTabClick = (tabLabel: string) => {
-        setActiveTab(tabLabel);
+        onTabChange(tabLabel);
     };
 
     return (
         <TabsContainer>
             <TabList>
-            {children.map((child) => (
-                <Tab
-                    key={child.props.label}
-                    label={child.props.label}
-                    onClick={() => handleTabClick(child.props.label)}
-                    activeTab={activeTab}
-                />
-            ))}
+                {children.map((child) => (
+                    <Tab
+                        key={child.props.label}
+                        label={child.props.label}
+                        onClick={() => handleTabClick(child.props.label)}
+                        isActive={child.props.label === activeTab}
+                    />
+                ))}
             </TabList>
             <TabContent>
                 {children.map((child) =>

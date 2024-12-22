@@ -56,6 +56,18 @@ const Mypage = () => {
     const [selectedCategories, setSelectedCategories] = useState<string[]>(profileInfo.favoriteCategories);
     const [isAvailable, setIsAvailable] = useState(false);
     const [debouncedNickname, setDebouncedNickname] = useState(nickname);
+    const [activeTab, setActiveTab] = useState<string>("Profile");
+
+    useEffect(() => {
+        const savedTab = localStorage.getItem("activeTab");
+        if (savedTab) {
+            setActiveTab(savedTab);
+        } else {
+            const defaultTab = "Profile";
+            setActiveTab(defaultTab);
+            localStorage.setItem("activeTab", defaultTab);
+        }
+    }, []);
 
     const openModal = () => {
         setNickname(profileInfo.nickname);
@@ -250,6 +262,13 @@ const Mypage = () => {
         }
     };
 
+    const handleTabChange = (tab: string) => {
+        setActiveTab(tab);
+        localStorage.setItem("activeTab", tab);
+    };
+
+    if (!activeTab) return null;
+
     return (
         <Layout>
             <Container>
@@ -342,7 +361,7 @@ const Mypage = () => {
                     </ProfileEditModal>
                 </HeaderComponent>
                 {role === Role.PRODUCT_MANAGER ? (
-                    <Tabs>
+                    <Tabs activeTab={activeTab} onTabChange={handleTabChange}>
                         <TabPanel label="Profile">
                             <TabProfileDetail role={role} profileInfo={profileInfo} onEmailUpdate={updateEmail}
                                               onChannelUpdate={updateChannel}/>
@@ -355,7 +374,7 @@ const Mypage = () => {
                         </TabPanel>
                     </Tabs>
                 ) : (
-                    <Tabs>
+                    <Tabs activeTab={activeTab} onTabChange={handleTabChange}>
                         <TabPanel label="Profile">
                             <TabProfileDetail role={role} profileInfo={profileInfo} onEmailUpdate={updateEmail}
                                               onChannelUpdate={updateChannel}/>
