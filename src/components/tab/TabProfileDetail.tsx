@@ -217,7 +217,7 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, o
                         <EditButton type="button" onClick={openChannelEditModal}>Edit</EditButton>
                         <ChannelEditModal isOpen={isChannelModalOpen} onClose={closeChannelEditModal}>
                             <InputForm>
-                                <Label>Chennel ID / Link</Label>
+                                <Label>Channel ID / Link</Label>
                                 <EvaluationForm>
                                     <InputField
                                         placeholder="Enter your Channel ID"

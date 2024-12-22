@@ -22,6 +22,7 @@ import {extractAndSaveToken} from "../services/authService.ts";
 import {Role} from "../constants/roles.ts";
 import {useAuth} from "../contexts/AuthContext.tsx";
 import AuthModal from "../components/modal/AuthModal.tsx";
+import StoryBoardScroll from "../components/forms/StoryBoardScroll.tsx";
 
 export type ToggleValue = Role;
 
@@ -134,6 +135,7 @@ const Onboarding: React.FC = () => {
                                 )}
                             </ImgBox>
                         </Container1>
+                        <StoryBoardScroll/>
                     </CenteredSection>
                     <CenteredSection>
                         <Container2>
@@ -239,8 +241,11 @@ export default Onboarding;
 
 const CenteredSection = styled(FullpageSection)`
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    height: 100vh;
+    padding-top: 2rem 0;
 `;
 
 const Container1 = styled.div`
@@ -248,6 +253,7 @@ const Container1 = styled.div`
     align-items: center;
     justify-content: space-between;
     width: 70%;
+    margin-top: 7rem;
 `;
 
 const LeftBox = styled.div`
@@ -364,7 +370,7 @@ const ServBox = styled.div`
     img {
         width: 130px;
         height: auto;
-        filter: drop-shadow(-6px 6px 1px rgba(0, 0, 0, 0.2)); /* drop-shadow 사용 */
+        filter: drop-shadow(-6px 6px 1px rgba(0, 0, 0, 0.2));
     }
 `;
 
@@ -372,6 +378,8 @@ const Container3 = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    margin-top: 10rem;
     width: 100%;
 `;
 

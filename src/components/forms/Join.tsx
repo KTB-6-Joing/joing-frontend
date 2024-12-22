@@ -284,7 +284,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                             </ComboBox>
                         </InputForm>
                         <InputForm>
-                            <Label>Chennel ID / Link</Label>
+                            <Label>Channel ID / Link</Label>
                             <EvaluationForm>
                                 <InputField
                                     placeholder="Enter your Channel ID"
