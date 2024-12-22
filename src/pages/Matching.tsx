@@ -143,13 +143,16 @@ const Matching = () => {
             </Wrapper>
 
             <ButtonGroup>
-                {(matchingInfo.status === ItemStatus.PENDING) &&
+                {matchingInfo.status === ItemStatus.PENDING &&
                     <>
                         {matchingInfo.sender === role ? (
                             <>
                                 <CancelButton onClick={() => handleCancel(id)}>취소</CancelButton>
-                                <ItemViewButton onClick={() => handleItemView(matchingInfo.itemId)}>기획안
-                                    보기</ItemViewButton>
+                                {role === Role.PRODUCT_MANAGER && (
+                                    <ItemViewButton onClick={() => handleItemView(matchingInfo.itemId)}>
+                                        기획안 보기
+                                    </ItemViewButton>
+                                )}
                             </>
                         ) : (
                             <>
