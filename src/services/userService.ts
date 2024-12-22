@@ -7,6 +7,8 @@ export const profileEvaluation = async (channelId: string) => {
 
         if (response.status === 200) {
             return response.data;
+        } else if(response.status === 422) {
+            return response.data;
         }
         throw new Error(`Unexpected status code: ${response.status}`);
     } catch (error) {

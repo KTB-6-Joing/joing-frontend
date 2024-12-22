@@ -77,7 +77,7 @@ const RecommendCreator = () => {
                                 </Profile>
                                 <MatchingButtons>
                                     <a href={creator.channelUrl || "#"} target="_blank" rel="noopener noreferrer">
-                                        <VisitButton>Visit Channel</VisitButton>
+                                        <VisitButton>채널 방문하기</VisitButton>
                                     </a>
                                     <MatchingButton
                                         onClick={() => handleMatchingRequest(itemId, creator.id, index)}
@@ -88,7 +88,7 @@ const RecommendCreator = () => {
                                         ) : (
                                             <>
                                                 <img src={MessageIcon} alt="message icon"/>
-                                                Matching Request
+                                                매칭 요청
                                             </>
                                         )}
                                     </MatchingButton>

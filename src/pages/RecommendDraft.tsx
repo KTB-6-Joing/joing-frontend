@@ -79,7 +79,7 @@ const RecommendDraft = () => {
                                     ) : (
                                         <>
                                             <img src={MessageIcon} alt="message icon"/>
-                                            Matching Request
+                                            매칭 요청
                                         </>
                                     )}
                                 </MatchingButton>

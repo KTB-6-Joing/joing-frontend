@@ -114,7 +114,7 @@ const Matching = () => {
                         <Email>contact: {matchingInfo.creatorEmail}</Email>
                     }
                     <a href={matchingInfo.creatorChannelUrl || "#"} target="_blank" rel="noopener noreferrer">
-                        <VisitButton>Visit Channel</VisitButton>
+                        <VisitButton>채널 방문하기</VisitButton>
                     </a>
 
                 </CreatorContainer>

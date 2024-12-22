@@ -194,13 +194,13 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
             const response = await profileEvaluation(channelID);
 
             if (response.evaluationStatus) {
-                setEvalueModalContent('채널 평가에 성공했습니다. 수정이 불가능합니다.');
+                setEvalueModalContent('채널 평가에 성공했습니다.');
                 setProfileImage(response.channelImage);
                 setSubscribers(response.subscribers);
                 setIsEditable(false);
             } else {
                 setEvalueModalContent(
-                    `채널 평가에 통과하지 못했습니다. 이유는 다음과 같습니다: ${response.reason || '다시 시도해주세요.'}`
+                    `채널 평가에 통과하지 못했습니다. 이유는 다음과 같습니다: ${response.message || '다시 시도해주세요.'}`
                 );
             }
         } catch (_error) {
@@ -218,7 +218,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                 <InputForm>
                     <Label>Nickname</Label>
                     <InputField
-                        placeholder="Enter your Nickname"
+                        placeholder="닉네임을 입력해주세요"
                         value={nickname}
                         onChange={handleNicknameChange}
                     />
@@ -240,7 +240,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                     <Label>Email</Label>
                     <EmailContainer>
                         <InputField
-                            placeholder="Enter your Email"
+                            placeholder="이메일을 입력해주세요"
                             onChange={handleEmailPrefixChange}
                         />
                         <EmailSeparator>@</EmailSeparator>
@@ -287,7 +287,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                             <Label>Channel ID / Link</Label>
                             <EvaluationForm>
                                 <InputField
-                                    placeholder="Enter your Channel ID"
+                                    placeholder="채널 ID를 입력해주세요"
                                     value={channelID}
                                     onChange={handleChannelIDChange}
                                     onFocus={handleFocus}
@@ -309,7 +309,7 @@ const Join: React.FC<JoinProps> = ({onNext, onBack, role}) => {
                                 </EvaluationButton>
                             </EvaluationForm>
                             <InputField
-                                placeholder="Enter your Channel URL"
+                                placeholder="채널 URL을 입력해주세요"
                                 value={channelLink}
                                 onChange={handleChannelLinkChange}
                             />
