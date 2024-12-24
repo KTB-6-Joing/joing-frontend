@@ -74,6 +74,40 @@ const Switch = styled.div<{ value: ToggleValue; role: string | null }>`
                         : "transform: translateX(2px);"
         }
     }
+
+    @media (max-width: 768px) {
+        width: ${({role}) => (role === null ? "260px" : "130px")};
+        height: 36px;
+
+        span {
+            width: 124px;
+            height: 32px;
+
+            ${({value, role}) =>
+                    role === null
+                            ? value === Role.CREATOR
+                                    ? "transform: translateX(1px);"
+                                    : "transform: translateX(131px);"
+                            : "transform: translateX(1px);"}
+        }
+    }
+
+    @media (max-width: 480px) {
+        width: ${({role}) => (role === null ? "200px" : "100px")};
+        height: 30px;
+
+        span {
+            width: 96px;
+            height: 26px;
+
+            ${({value, role}) =>
+                    role === null
+                            ? value === Role.CREATOR
+                                    ? "transform: translateX(-2px);"
+                                    : "transform: translateX(98px);"
+                            : "transform: translateX(-2px);"}
+        }
+    }
 `;
 
 const Button = styled.button<{ value: ToggleValue }>`
@@ -92,6 +126,18 @@ const Button = styled.button<{ value: ToggleValue }>`
 
     &:hover {
         border: none;
+    }
+
+    @media (max-width: 768px) {
+        width: 128px;
+        height: 36px;
+        font-size: 12px;
+    }
+
+    @media (max-width: 480px) {
+        width: 96px;
+        height: 30px;
+        font-size: 10px;
     }
 `;
 

@@ -295,11 +295,8 @@ const Slogan = styled.h2`
 
     @media (max-width: 768px) {
         font-size: 1.2rem;
-
         .highlight {
-            font-size: 1.4rem;
-        }
-
+            font-size: 1.3rem;
         .highlight2 {
             font-size: 1.3rem;
         }
@@ -307,11 +304,9 @@ const Slogan = styled.h2`
     
     @media (max-width: 480px) {
         font-size: 1.0rem;
-
         .highlight {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
-
         .highlight2 {
             font-size: 1.1rem;
         }

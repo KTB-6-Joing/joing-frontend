@@ -120,29 +120,47 @@ const Content = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    @media (max-width: 768px) {
+        width: 90%;
+    }
 `;
 
 const Logo = styled.div`
     font-family: 'SaenggeoJincheon', serif;
     letter-spacing: -0.03em;
-    font-size: 28px;
+    font-size: 1.8rem;
     font-weight: bold;
     color: black;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0.5rem;
     cursor: pointer;
 
     img {
-        width: 44px;
+        width: 3rem;
         height: auto;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 1.5rem;
+        img {
+            width: 2.2rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        font-size: 1.25rem;
+        img {
+            width: 1.8rem;
+        }
     }
 `;
 
 const Button = styled.button`
     font-family: 'SUITE-Regular', serif;
     border: none;
-    font-size: 16px;
+    font-size: 1rem;
     cursor: pointer;
     background-color: white;
 
@@ -155,8 +173,22 @@ const Button = styled.button`
     }
 
     img {
-        width: 24px;
-        height: 24px;
+        width: 1.5rem;
+        height: auto;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 0.9rem;
+        img {
+            width: 1.25rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        font-size: 0.8rem;
+        img {
+            width: 1.1rem;
+        }
     }
 `;
 
@@ -175,12 +207,24 @@ const NoticeButton = styled.button<{ isShaking: boolean }>`
     }
 
     img {
-        width: 24px;
-        height: 24px;
+        width: 1.5rem;
+        height: auto;
         animation: ${({isShaking}) =>
                 isShaking
                         ? css`${shakeAnimation} 1s infinite`
                         : "none"};
+    }
+
+    @media (max-width: 768px) {
+        img {
+            width: 1.25rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        img {
+            width: 1.1rem;
+        }
     }
 `;
 
@@ -192,8 +236,31 @@ const NotificationDot = styled.div`
     height: 8px;
     background-color: #ff3d3d;
     border-radius: 50%;
+
+    @media (max-width: 768px) {
+        top: 2px;
+        right: 10px;
+        width: 6px;
+        height: 6px;
+    }
+
+    @media (max-width: 480px) {
+        top: 1px;
+        right: 8px;
+        width: 4px;
+        height: 4px;
+    }
 `;
 
 const ButtonGroup = styled.div`
+    display: flex;
+    gap: 1rem;
 
+    @media (max-width: 768px) {
+        gap: 0.5rem;
+    }
+
+    @media (max-width: 480px) {
+        gap: 0;
+    }
 `;
