@@ -105,7 +105,7 @@ const Switch = styled.div<{ value: ToggleValue; role: string | null }>`
                             ? value === Role.CREATOR
                                     ? "transform: translateX(-2px);"
                                     : "transform: translateX(98px);"
-                            : "transform: translateX(-2px);"}
+                            : "transform: translateX(0);"}
         }
     }
 `;

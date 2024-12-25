@@ -279,7 +279,7 @@ const Mypage = () => {
                             <Name>{profileInfo?.nickname}</Name>
                             {role === Role.CREATOR ? (
                                 <>
-                                    <ChannelType>Creator</ChannelType>
+                                    <ChannelType>크리에이터</ChannelType>
                                     <Hashtags>
                                         <Hashtag>
                                             #{profileInfo.mediaType}
@@ -291,7 +291,7 @@ const Mypage = () => {
                                 </>
                             ) : (
                                 <>
-                                    <RoleType>Product Manager</RoleType>
+                                    <RoleType>기획자</RoleType>
                                     <Hashtags>
                                         {profileInfo.favoriteCategories.map((category) => (
                                             <Hashtag key={category}>
@@ -303,12 +303,12 @@ const Mypage = () => {
                             )}
                         </ProfileDetail>
                     </Profile>
-                    <EditButton type="button" onClick={openModal}>Edit</EditButton>
+                    <EditButton type="button" onClick={openModal}>수정</EditButton>
                     <ProfileEditModal isOpen={isModalOpen} onClose={closeModal}>
                         <InputForm>
                             <Label>Nickname</Label>
                             <InputField
-                                placeholder="Enter your new Nickname"
+                                placeholder="닉네임을 입력해주세요"
                                 value={nickname}
                                 onChange={handleNicknameChange}
                             />
@@ -355,7 +355,7 @@ const Mypage = () => {
                             </>
                         )}
                         <ButtonContainer>
-                            <ExitButton onClick={closeModal}>cancel</ExitButton>
+                            <ExitButton onClick={closeModal}>취소</ExitButton>
                             <SendButton onClick={handleSubmit} disabled={!isAvailable}>확인</SendButton>
                         </ButtonContainer>
                     </ProfileEditModal>
@@ -397,14 +397,23 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     margin: 0 auto;
+
+    @media (max-width: 768px) {
+        width: 100%;
+    }
 `;
 
 const HeaderComponent = styled.div`
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
     margin: 2rem;
     width: 100%;
+
+    @media (max-width: 768px) {
+        margin: 0.5rem 0;
+    }
 `;
 
 const Profile = styled.div`
@@ -421,6 +430,16 @@ const ProfileImg = styled.img`
     height: 150px;
     border-radius: 50%;
     background-color: gray;
+
+    @media (max-width: 768px) {
+        width: 120px;
+        height: 120px;
+    }
+
+    @media (max-width: 480px) {
+        width: 100px;
+        height: 100px;
+    }
 `;
 
 const ProfileDetail = styled.div``;
@@ -446,6 +465,11 @@ const RoleType = styled.p`
 const Hashtags = styled.div`
     display: flex;
     gap: 1rem;
+
+    @media (max-width: 768px) {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
 `;
 
 const Hashtag = styled.p`
@@ -454,6 +478,7 @@ const Hashtag = styled.p`
 
 const EditButton = styled.button`
     font-family: 'SUITE-Bold', serif;
+    white-space: nowrap;
     font-size: 0.8rem;
     padding: 0.4rem 1rem;
     background-color: #f3f3f3;
@@ -469,6 +494,11 @@ const EditButton = styled.button`
 
     &:focus {
         outline: none;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.8rem;
     }
 `;
 
@@ -522,8 +552,13 @@ const RedNotice = styled(Notice)`
 const ButtonContainer = styled.div`
     display: flex;
     justify-content: flex-end;
-    margin-top: 20px;
-    gap: 10px;
+    margin-top: 1.25rem;
+    gap: 0.7rem;
+
+    @media (max-width: 768px) {
+        justify-content: center;
+        gap: 0.5rem;
+    }
 `;
 
 const ExitButton = styled.button`

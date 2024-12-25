@@ -145,4 +145,8 @@ const Main = styled.main`
     width: 70%;
     height: calc(100vh - 60px);
     margin: 60px auto 0 auto;
+
+    @media (max-width: 768px) {
+        width: 85%;
+    }
 `;

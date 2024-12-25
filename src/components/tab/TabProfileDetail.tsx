@@ -155,13 +155,13 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, o
                     <Title1>Contact Email</Title1>
                     <Title2>{profileInfo.email}</Title2>
                 </InfoContainer>
-                <EditButton type="button" onClick={openEmailEditModal}>Edit</EditButton>
+                <EditButton type="button" onClick={openEmailEditModal}>수정</EditButton>
                 <EmailEditModal isOpen={isEmailModalOpen} onClose={closeEmailEditModal}>
                     <InputForm>
                         <Label>Email</Label>
                         <EmailContainer>
                             <InputField
-                                placeholder="Enter your new Email"
+                                placeholder="이메일을 입력해주세요"
                                 value={emailPrefix}
                                 onChange={handleEmailPrefixChange}
                             />
@@ -192,7 +192,7 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, o
                         </Notice>
                     </InputForm>
                     <ButtonContainer>
-                        <ExitButton onClick={closeEmailEditModal}>cancel</ExitButton>
+                        <ExitButton onClick={closeEmailEditModal}>취소</ExitButton>
                         <SendButton onClick={handleEmailConfirm} disabled={!isVerifyEnabled}>확인</SendButton>
                     </ButtonContainer>
                 </EmailEditModal>
@@ -201,26 +201,23 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, o
                 <>
                     <CreatorAccountBoxHeader>
                         <Title>{profileInfo.nickname}'s Channel</Title>
-                        <Detail>Connect your YouTube link</Detail>
+                        <Detail>연결된 Youtube 채널 정보입니다. 클릭 시 채널을 확인할 수 있습니다.</Detail>
                     </CreatorAccountBoxHeader>
                     <AccountBox>
                         <AccountImg>
                             <img src={PlayIcon} alt="Play icon"/>
                         </AccountImg>
-                        <InfoContainer>
+                        <InfoContainer onClick={() => window.open(profileInfo.channelUrl || "#", "_blank")}>
                             <Title1>Youtube</Title1>
                             <Title2>{profileInfo.channelId || "No channel ID available"}</Title2>
                         </InfoContainer>
-                        <a href={profileInfo.channelUrl || "#"} target="_blank" rel="noopener noreferrer">
-                            <VisitButton>Visit</VisitButton>
-                        </a>
-                        <EditButton type="button" onClick={openChannelEditModal}>Edit</EditButton>
+                        <EditButton type="button" onClick={openChannelEditModal}>수정</EditButton>
                         <ChannelEditModal isOpen={isChannelModalOpen} onClose={closeChannelEditModal}>
                             <InputForm>
                                 <Label>Channel ID / Link</Label>
                                 <EvaluationForm>
                                     <InputField
-                                        placeholder="Enter your Channel ID"
+                                        placeholder="채널 ID를 입력해주세요"
                                         value={channelID}
                                         onChange={handleChannelIDChange}
                                         onFocus={handleFocus}
@@ -241,7 +238,7 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, o
                                     </EvaluationButton>
                                 </EvaluationForm>
                                 <InputField
-                                    placeholder="Enter your Channel URL"
+                                    placeholder="채널 URL을 입력해주세요"
                                     value={channelLink}
                                     onChange={handleChannelLinkChange}
                                 />
@@ -251,7 +248,7 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, o
                                 </Notice>
                             </InputForm>
                             <ButtonContainer>
-                                <ExitButton onClick={closeChannelEditModal}>cancel</ExitButton>
+                                <ExitButton onClick={closeChannelEditModal}>취소</ExitButton>
                                 <SendButton
                                     onClick={handleChannelConfirm}
                                     disabled={channelID !== profileInfo.channelId && isEditable}>확인</SendButton>
@@ -285,6 +282,10 @@ const AccountBox = styled.div`
     background-color: #ffffff;
     border-radius: 12px;
     border: #e4e4e4 solid;
+
+    @media (max-width: 768px) {
+        gap: 0.5rem;
+    }
 `;
 
 const AccountImg = styled.div`
@@ -323,11 +324,12 @@ const Title2 = styled.div`
 
 const EditButton = styled.button`
     font-family: 'SUITE-Bold', serif;
+    white-space: nowrap;
     font-size: 0.8rem;
     padding: 0.4rem 1rem;
     margin-right: 1rem;
     background-color: #f3f3f3;
-    border-radius: 12px;
+    border-radius: 10px;
     cursor: pointer;
     transition: transform 0.3s ease, background-color 0.3s ease;
 
@@ -340,25 +342,10 @@ const EditButton = styled.button`
     &:focus {
         outline: none;
     }
-`;
 
-const VisitButton = styled.button`
-    font-family: 'SUITE-Bold', serif;
-    font-size: 0.8rem;
-    padding: 0.4rem 1rem;
-    background-color: #f3f3f3;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-
-    &:hover {
-        background-color: #dadada;
-        border: none;
-        transform: scale(1.1);
-    }
-
-    &:focus {
-        outline: none;
+    @media (max-width: 768px) {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.8rem;
     }
 `;
 
@@ -367,14 +354,15 @@ const CreatorAccountBoxHeader = styled.div`
 `;
 
 const Title = styled.h2`
-    font-family: 'SUITE-Bold';
+    font-family: 'SUITE-Bold', serif;
     font-size: 1.3rem;
     margin-bottom: 0;
 `;
 
 const Detail = styled.p`
-    font-family: 'SUITE-Regular';
+    font-family: 'SUITE-Regular', serif;
     margin: 0;
+    font-size: 0.8rem;
 `;
 
 const WithdrawButton = styled.button`
@@ -464,8 +452,13 @@ const Notice = styled.div`
 const ButtonContainer = styled.div`
     display: flex;
     justify-content: flex-end;
-    margin-top: 20px;
-    gap: 10px;
+    margin-top: 1.25rem;
+    gap: 0.7rem;
+
+    @media (max-width: 768px) {
+        justify-content: center;
+        gap: 0.5rem;
+    }
 `;
 
 const ExitButton = styled.button`

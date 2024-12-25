@@ -9,12 +9,20 @@ interface MatchingBoxProps {
     onViewDetails: (id: number) => void;
 }
 
+
+const STATUS_LABELS: { [key in ItemStatus]: string } = {
+    [ItemStatus.ACCEPTED]: "수락",
+    [ItemStatus.REJECTED]: "거절",
+    [ItemStatus.PENDING]: "요청",
+    [ItemStatus.CANCELED]: "요청 취소",
+};
+
 const MatchingBox: React.FC<MatchingBoxProps> = ({id, title, status, onViewDetails}) => {
     return (
         <BoxContainer>
             <TextContainer onClick={() => onViewDetails(id)}>
                 <Title>{title}</Title>
-                <Status>{status}</Status>
+                <Status>{STATUS_LABELS[status]}</Status>
             </TextContainer>
         </BoxContainer>
     );
