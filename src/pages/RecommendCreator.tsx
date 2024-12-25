@@ -131,7 +131,7 @@ const Slogan = styled.h2`
     color: black;
 
     @media (max-width: 768px) {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
     }
 
     @media (max-width: 768px) {
@@ -147,17 +147,20 @@ const DraftItem = styled.div`
     flex-shrink: 0;
     margin: 1rem;
     padding: 1rem;
-    border: 1px solid #ddd;
+    border: #e4e4e4 solid 1px;
     border-radius: 8px;
     width: 350px;
     white-space: normal;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 
     @media (max-width: 768px) {
         width: 300px;
+    }
+
+    @media (max-width: 768px) {
+        width: 270px;
     }
 `;
 
@@ -168,6 +171,14 @@ const Profile = styled.div`
     align-items: center;
     margin: 8px 0;
     gap: 16px;
+
+    @media (max-width: 768px) {
+        height: 130px;
+    }
+
+    @media (max-width: 768px) {
+        width: 110px;
+    }
 `;
 
 const ProfileImg = styled.img`

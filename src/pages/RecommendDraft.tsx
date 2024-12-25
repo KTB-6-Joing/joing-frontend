@@ -136,17 +136,21 @@ const DraftItem = styled.div`
     flex-shrink: 0;
     margin: 1rem;
     padding: 1rem;
-    border: 1px solid #ddd;
+    border: #e4e4e4 solid 1px;
     border-radius: 8px;
     width: 350px;
     white-space: normal;
     display: flex;
     flex-direction: column;
     gap: 3rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 
     @media (max-width: 768px) {
         width: 300px;
+        gap: 2rem;
+    }
+
+    @media (max-width: 768px) {
+        width: 270px;
     }
 `;
 

@@ -11,9 +11,9 @@ const HorizontalScroll = ({children}: {
     const getScrollDistance = () => {
         const width = window.innerWidth;
         if (width <= 480) {
-            return 300; // 모바일
+            return 350; // 모바일
         } else if (width <= 768) {
-            return 400; // 태블릿
+            return 450; // 태블릿
         } else {
             return 550; // 데스크톱
         }
