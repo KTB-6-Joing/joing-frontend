@@ -371,14 +371,32 @@ const Form = styled.form`
 const Title = styled.h2`
     font-size: 1.5rem;
     font-weight: bold;
+    margin: 4rem;
     text-align: center;
-    margin: 2.5rem;
+
+    @media (max-width: 768px) {
+        font-size: 1.4rem;
+        margin: 3.5rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 1.3rem;
+        margin: 3rem;
+    }
 `;
 
 const InputForm = styled.div`
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
+
+    @media (max-width: 768px) {
+        margin-bottom: 12px;
+    }
+
+    @media (max-width: 480px) {
+        margin-bottom: 10px;
+    }
 `;
 
 const Label = styled.label`
@@ -387,6 +405,14 @@ const Label = styled.label`
     margin-bottom: 4px;
     margin-top: 0;
     color: #333;
+
+    @media (max-width: 768px) {
+        font-size: 0.85rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 0.8rem;
+    }
 `;
 
 const InputField = styled.input`
@@ -401,6 +427,16 @@ const InputField = styled.input`
     &:focus {
         border-color: #666;
         outline: none;
+    }
+
+    @media (max-width: 768px) {
+        padding: 0.5rem;
+        font-size: 13px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 0.4rem;
+        font-size: 12px;
     }
 `;
 
@@ -479,6 +515,16 @@ const Buttons = styled.div`
     justify-content: center;
     margin-top: 4rem;
     gap: 10px;
+
+    @media (max-width: 768px) {
+        margin: 3rem 0 2rem 0;
+        gap: 8px;
+    }
+
+    @media (max-width: 480px) {
+        margin: 2.5rem 0 2rem 0;
+        gap: 6px;
+    }
 `;
 
 const BackButton = styled.button`
@@ -494,6 +540,18 @@ const BackButton = styled.button`
     &:hover {
         background-color: #e0e0e0;
         border: 1px solid #000000;
+    }
+
+    @media (max-width: 768px) {
+        width: 90px;
+        height: 35px;
+        font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+        width: 80px;
+        height: 30px;
+        font-size: 12px;
     }
 `;
 
@@ -512,6 +570,18 @@ const OkayButton = styled.button`
         background-color: ${({disabled}) => (disabled ? '#cccccc' : '#3e3e3e')};
         border: none;
     }
+
+    @media (max-width: 768px) {
+        width: 90px;
+        height: 35px;
+        font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+        width: 80px;
+        height: 30px;
+        font-size: 12px;
+    }
 `;
 
 const EvaluationButton = styled.button`
@@ -526,6 +596,14 @@ const EvaluationButton = styled.button`
     &:hover {
         background-color: ${({disabled}) => (disabled ? '#cccccc' : '#3e3e3e')};
         border: none;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 12px;
     }
 `;
 

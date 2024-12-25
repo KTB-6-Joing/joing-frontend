@@ -57,4 +57,8 @@ const MatchingDetail = styled.div`
     justify-items: center;
     gap: 1rem;
     padding-bottom: 2rem;
+
+    @media (max-width: 768px) {
+        gap: 0.8rem;
+    }
 `;

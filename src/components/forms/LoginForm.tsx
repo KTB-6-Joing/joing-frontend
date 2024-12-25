@@ -27,13 +27,29 @@ const Logo = styled.img`
     width: 180px;
     height: auto;
     margin-bottom: 20px;
+
+    @media (max-width: 768px) {
+        width: 160px;
+    }
+
+    @media (max-width: 480px) {
+        width: 140px;
+    }
 `;
 
 const LogoTitle = styled.h1`
     font-family: 'SaenggeoJincheon', serif;
     letter-spacing: -0.03em;
-    font-size: 40px;
+    font-size: 2.5rem;
     margin: 0 0 40px 0;
+
+    @media (max-width: 768px) {
+        font-size: 2.2rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 1.9rem;
+    }
 `;
 
 const KakaoLoginButton = styled.button`
@@ -45,5 +61,17 @@ const KakaoLoginButton = styled.button`
     img {
         width: 200px;
         height: auto;
+    }
+
+    @media (max-width: 768px) {
+        img {
+            width: 190px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        img {
+            width: 180px;
+        }
     }
 `;

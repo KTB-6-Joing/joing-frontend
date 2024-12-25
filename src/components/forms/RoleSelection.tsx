@@ -29,10 +29,20 @@ const RoleSelection: React.FC<RoleSelectionProps> = ({ onSelectCreator, onSelect
 export default RoleSelection;
 
 const Title = styled.h2`
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: bold;
     margin: 4rem;
     text-align: center;
+
+    @media (max-width: 768px) {
+        font-size: 1.4rem;
+        margin: 3.5rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 1.3rem;
+        margin: 3rem;
+    }
 `;
 
 const RoleSelect = styled.div`
@@ -40,6 +50,14 @@ const RoleSelect = styled.div`
     justify-content: space-around;
     width: 100%;
     gap: 2rem;
+
+    @media (max-width: 768px) {
+        gap: 1.5rem;
+    }
+
+    @media (max-width: 480px) {
+        gap: 1rem;
+    }
 `;
 
 const Box = styled.div`
@@ -52,11 +70,10 @@ const Box = styled.div`
     justify-content: center;
     padding: 10px;
     background-color: #f9f9f9;
-    border: 2px solid #e0e0e0;
+    border: 2px solid #e4e4e4;
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
 
     &:hover {
@@ -71,11 +88,23 @@ const Box = styled.div`
         height: auto;
         margin-bottom: 10px;
     }
+
+    @media (max-width: 768px) {
+        border: 1px solid #e0e0e0;
+    }
 `;
 
 const RoleText = styled.span`
-    font-size: 18px;
+    font-size: 1.1rem;
     font-weight: 500;
     margin-top: 1rem;
     color: #333;
+
+    @media (max-width: 768px) {
+        font-size: 1rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 0.9rem;
+    }
 `;
