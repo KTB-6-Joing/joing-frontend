@@ -279,7 +279,7 @@ const Mypage = () => {
                             <Name>{profileInfo?.nickname}</Name>
                             {role === Role.CREATOR ? (
                                 <>
-                                    <ChannelType>크리에이터</ChannelType>
+                                    <RoleType>크리에이터</RoleType>
                                     <Hashtags>
                                         <Hashtag>
                                             #{profileInfo.mediaType}
@@ -447,24 +447,26 @@ const ProfileDetail = styled.div``;
 const Name = styled.h2`
     font-family: 'GongGothicMedium', serif;
     margin-bottom: 0;
-`;
 
-const ChannelType = styled.p`
-    font-family: 'SUITE-Bold', serif;
-    font-size: 0.9rem;
-    margin-top: 0;
+    @media (max-width: 768px) {
+        font-size: 1.2rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 1rem;
+    }
 `;
 
 const RoleType = styled.p`
     font-family: "SUITE-Bold", serif;
     font-size: 0.9rem;
     margin-top: 0;
-    margin-bottom: 0.5rem;
 `;
 
 const Hashtags = styled.div`
     display: flex;
     gap: 1rem;
+    margin: 0;
 
     @media (max-width: 768px) {
         flex-wrap: wrap;
@@ -474,6 +476,11 @@ const Hashtags = styled.div`
 
 const Hashtag = styled.p`
     white-space: nowrap;
+    font-size: 1rem;
+    
+    @media (max-width: 768px) {
+        font-size: 0.9rem;
+    }
 `;
 
 const EditButton = styled.button`

@@ -402,7 +402,7 @@ const Container2 = styled.div`
     height: 100vh;
 
     @media (max-width: 768px) {
-        padding: 1rem;
+        padding: 0 1rem 3rem 1rem;
     }
 `;
 
@@ -448,7 +448,7 @@ const ServBox = styled.div`
     }
 
     @media (max-width: 1024px) {
-        width: 15rem; /* 태블릿에서 크기 축소 */
+        width: 15rem;
         height: 12rem;
         gap: 3rem;
         font-size: 1rem;
@@ -490,8 +490,7 @@ const Container3 = styled.div`
     width: 100%;
 
     @media (max-width: 768px) {
-        margin-top: 5rem;
-        padding: 1rem;
+        padding: 0 1rem 3rem 1rem;
     }
 `;
 

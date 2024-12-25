@@ -58,10 +58,27 @@ const Title = styled.h4`
     font-size: 1rem;
     margin: 0;
     font-weight: 600;
+
+    @media (max-width: 768px) {
+        font-size: 0.9rem;
+    }
+    
+    @media (max-width: 480px) {
+        font-size: 0.8rem;
+    }
 `;
 
 const Status = styled.p`
-    font-size: 14px;
+    font-size: 0.9rem;
     color: #6c6c6c;
     margin: 0;
+    white-space: nowrap;
+
+    @media (max-width: 768px) {
+        font-size: 0.8rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 0.7rem;
+    }
 `;

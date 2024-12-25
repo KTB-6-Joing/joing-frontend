@@ -124,15 +124,15 @@ const TabProfileDetail: React.FC<TabProfileDetailProps> = ({role, profileInfo, o
             const response = await profileEvaluation(channelID);
 
             if (response.evaluationStatus) {
-                alert('채널 평가에 성공했습니다. 수정이 불가능합니다.');
+                alert('채널 평가에 성공했습니다.');
                 setProfileImage(response.channelImage);
                 setSubscribers(response.subscribers);
                 setIsEditable(false);
             } else {
-                alert(`채널 평가에 통과하지 못했습니다. 이유는 다음과 같습니다: ${response.reason || '다시 시도해주세요.'}`);
+                alert(`채널 평가에 통과하지 못했습니다. 이유는 다음과 같습니다: ${response.message || '다시 시도해주세요.'}`);
             }
         } catch (_error) {
-            alert(`에러가 발생했습니다. 다시 시도해주세요.'}`);
+            alert(`에러가 발생했습니다. 다시 시도해주세요.`);
         }
         setIsEvaluationLoading(false);
     };
@@ -272,6 +272,10 @@ const ProfileDetail = styled.div`
     align-items: center;
     justify-items: center;
     gap: 1rem;
+
+    @media (max-width: 768px) {
+        gap: 0.8rem;
+    }
 `;
 
 const AccountBox = styled.div`
@@ -285,6 +289,7 @@ const AccountBox = styled.div`
 
     @media (max-width: 768px) {
         gap: 0.5rem;
+        border: #e4e4e4 solid 1px;
     }
 `;
 
@@ -311,6 +316,14 @@ const Title1 = styled.label`
     margin-bottom: 8px;
     margin-top: 0;
     color: #333;
+
+    @media (max-width: 768px) {
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 0.8rem;
+    }
 `;
 
 const Title2 = styled.div`
@@ -320,6 +333,14 @@ const Title2 = styled.div`
     margin-bottom: 8px;
     margin-top: 0;
     color: #333;
+
+    @media (max-width: 768px) {
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 0.8rem;
+    }
 `;
 
 const EditButton = styled.button`
@@ -363,6 +384,10 @@ const Detail = styled.p`
     font-family: 'SUITE-Regular', serif;
     margin: 0;
     font-size: 0.8rem;
+
+    @media (max-width: 768px) {
+        font-size: 0.7rem;
+    }
 `;
 
 const WithdrawButton = styled.button`
@@ -378,6 +403,14 @@ const WithdrawButton = styled.button`
 
     &:focus {
         outline: none;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 0.8rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 0.7rem;
     }
 `;
 
@@ -399,7 +432,7 @@ const InputField = styled.input`
     padding: 0.6rem;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 0.9rem;
     margin-top: 0.3rem;
     transition: border-color 0.3s;
     flex: 1;
@@ -407,6 +440,10 @@ const InputField = styled.input`
     &:focus {
         border-color: #666;
         outline: none;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 0.8rem;
     }
 `;
 
@@ -425,13 +462,17 @@ const ComboBox = styled.select`
     padding: 6px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 0.9rem;
     margin-top: 3px;
     transition: border-color 0.3s;
 
     &:focus {
         border-color: #666;
         outline: none;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 0.8rem;
     }
 `;
 
