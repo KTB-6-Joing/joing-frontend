@@ -115,9 +115,17 @@ const Container = styled.section`
 
 const Slogan = styled.h2`
     font-family: 'Paperlogy-6Bold', serif;
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: bolder;
     color: black;
+
+    @media (max-width: 768px) {
+        font-size: 1.2rem;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 1rem;
+    }
 `;
 
 const DraftBox = styled.div`
@@ -136,12 +144,24 @@ const DraftItem = styled.div`
     flex-direction: column;
     gap: 3rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+    @media (max-width: 768px) {
+        width: 300px;
+    }
 `;
 
 const Title = styled.h2`
     font-family: 'SUITE-Bold', serif;
     font-size: 1.2rem;
     margin: 30px 0 0 0;
+
+    @media (max-width: 768px) {
+        font-size: 1.1rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 1rem;
+    }
 `;
 
 const Summary = styled.p`
@@ -149,6 +169,14 @@ const Summary = styled.p`
     font-size: 1rem;
     margin: 0;
     flex: 1;
+
+    @media (max-width: 768px) {
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 0.8rem;
+    }
 `;
 
 const Keywords = styled.div`
@@ -161,8 +189,12 @@ const Keyword = styled.span`
     padding: 6px 10px;
     border-radius: 10px;
     background-color: #f3f3f3;
-    font-size: 13px;
+    font-size: 0.8px;
     font-family: 'SUITE-Regular', serif;
+
+    @media (max-width: 768px) {
+        font-size: 0.7rem;
+    }
 `;
 
 const MatchingButton = styled.button`
@@ -191,6 +223,14 @@ const MatchingButton = styled.button`
         width: 16px;
         height: auto;
     }
+
+    @media (max-width: 768px) {
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 0.8rem;
+    }
 `;
 
 const Buttons = styled.div`
@@ -203,6 +243,7 @@ const Buttons = styled.div`
 
 const ExitButton = styled.button`
     font-family: 'SUITE-Bold', serif;
+    font-size: 1rem;
     padding: 6px 15px;
     width: 200px;
     height: 40px;
@@ -221,6 +262,14 @@ const ExitButton = styled.button`
     &:focus {
         outline: none;
     }
+
+    @media (max-width: 768px) {
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 0.8rem;
+    }
 `;
 
 const Modal = styled.div`
@@ -238,4 +287,20 @@ const Modal = styled.div`
     font-size: 18px;
     font-family: 'SUITE-Bold', serif;
     z-index: 1000;
+    
+    p{
+        font-size: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        p{
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        p{
+            font-size: 0.8rem;
+        }
+    }
 `;

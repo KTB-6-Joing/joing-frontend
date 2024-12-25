@@ -50,6 +50,10 @@ const Types = styled.div`
     display: flex;
     gap: 8px;
     margin-top: 8px;
+
+    @media (max-width: 768px) {
+        gap: 6px;
+    }
 `;
 
 const Type = styled.button<{ isSelected: boolean }>`
@@ -71,4 +75,7 @@ const Type = styled.button<{ isSelected: boolean }>`
         outline: none;
     }
 
+    @media (max-width: 768px) {
+        font-size: 0.7rem;
+    }
 `;

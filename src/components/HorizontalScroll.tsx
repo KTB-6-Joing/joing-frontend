@@ -8,6 +8,17 @@ const HorizontalScroll = ({children}: {
     const [showLeftButton, setShowLeftButton] = useState(false);
     const [showRightButton, setShowRightButton] = useState(true);
 
+    const getScrollDistance = () => {
+        const width = window.innerWidth;
+        if (width <= 480) {
+            return 300; // 모바일
+        } else if (width <= 768) {
+            return 400; // 태블릿
+        } else {
+            return 550; // 데스크톱
+        }
+    };
+
     const updateButtonVisibility = () => {
         if (scrollRef.current) {
             const {scrollLeft, scrollWidth, clientWidth} = scrollRef.current;
@@ -18,13 +29,13 @@ const HorizontalScroll = ({children}: {
 
     const scrollLeft = () => {
         if (scrollRef.current) {
-            scrollRef.current.scrollBy({left: -550, behavior: "smooth"});
+            scrollRef.current.scrollBy({left: -getScrollDistance(), behavior: "smooth"});
         }
     };
 
     const scrollRight = () => {
         if (scrollRef.current) {
-            scrollRef.current.scrollBy({left: 550, behavior: "smooth"});
+            scrollRef.current.scrollBy({left: getScrollDistance(), behavior: "smooth"});
         }
     };
 

@@ -71,6 +71,10 @@ const Category = styled.div`
     flex-wrap: wrap;
     gap: 8px;
     margin-top: 0.3rem;
+
+    @media (max-width: 768px) {
+        gap: 6px;
+    }
 `;
 
 const Type = styled.button<{ isSelected: boolean }>`
@@ -90,5 +94,9 @@ const Type = styled.button<{ isSelected: boolean }>`
     &:focus {
         border-color: #555;
         outline: none;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 0.7rem;
     }
 `;

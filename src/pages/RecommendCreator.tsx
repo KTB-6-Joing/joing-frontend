@@ -107,7 +107,7 @@ const RecommendCreator = () => {
 
 
                 <Buttons>
-                    <DeleteButton onClick={() => navigate("/")}>매칭 끝내기</DeleteButton>
+                    <ExitButton onClick={() => navigate("/")}>매칭 끝내기</ExitButton>
                 </Buttons>
             </Container>
         </Layout>
@@ -126,9 +126,17 @@ const Container = styled.section`
 
 const Slogan = styled.h2`
     font-family: 'Paperlogy-6Bold', serif;
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: bolder;
     color: black;
+
+    @media (max-width: 768px) {
+        font-size: 1.2rem;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 1rem;
+    }
 `;
 
 const CreatorBox = styled.div`
@@ -147,6 +155,10 @@ const DraftItem = styled.div`
     flex-direction: column;
     gap: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+    @media (max-width: 768px) {
+        width: 300px;
+    }
 `;
 
 const Profile = styled.div`
@@ -160,20 +172,41 @@ const Profile = styled.div`
 
 const ProfileImg = styled.img`
     width: 120px;
-    height: 120px;
+    height: auto;
     border-radius: 50%;
     background-color: gray;
+
+    @media (max-width: 768px) {
+        width: 110px;
+    }
+
+    @media (max-width: 768px) {
+        width: 100px;
+    }
 `;
 
 const ProfileDetail = styled.div``;
 
 const Name = styled.h3`
     font-family: 'GongGothicMedium', serif;
+    font-size: 1.2rem;
+
+    @media (max-width: 768px) {
+        font-size: 1.1rem;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 1rem;
+    }
 `;
 
 const Platform = styled.p`
     font-family: 'SUITE-Bold', serif;
     font-size: 0.9rem;
+
+    @media (max-width: 768px) {
+        font-size: 0.8rem;
+    }
 `;
 
 const MatchingButtons = styled.div`
@@ -185,7 +218,7 @@ const MatchingButtons = styled.div`
 
 const VisitButton = styled.button`
     font-family: 'SUITE-Bold', serif;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     padding: 6px 15px;
     height: 40px;
     background-color: #ffffff;
@@ -204,11 +237,19 @@ const VisitButton = styled.button`
     &:focus {
         outline: none;
     }
+
+    @media (max-width: 768px) {
+        font-size: 0.8rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 0.7rem;
+    }
 `;
 
 const MatchingButton = styled.button`
     font-family: 'SUITE-Bold', serif;
-    font-size: 0.9rem;
+    font-size: 1rem;
     background-color: ${({disabled}) => (disabled ? "#a0a0a0" : "#000000")};
     border-radius: 8px;
     color: #ffffff;
@@ -234,6 +275,14 @@ const MatchingButton = styled.button`
         width: 16px;
         height: auto;
     }
+
+    @media (max-width: 768px) {
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 0.8rem;
+    }
 `;
 
 const Buttons = styled.div`
@@ -244,7 +293,7 @@ const Buttons = styled.div`
     gap: 10px;
 `;
 
-const DeleteButton = styled.button`
+const ExitButton = styled.button`
     font-family: 'SUITE-Bold', serif;
     padding: 6px 15px;
     width: 200px;
@@ -264,6 +313,14 @@ const DeleteButton = styled.button`
     &:focus {
         outline: none;
     }
+
+    @media (max-width: 768px) {
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 0.8rem;
+    }
 `;
 
 const Modal = styled.div`
@@ -281,4 +338,20 @@ const Modal = styled.div`
     font-size: 18px;
     font-family: 'SUITE-Bold', serif;
     z-index: 1000;
+
+    p{
+        font-size: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        p{
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        p{
+            font-size: 0.8rem;
+        }
+    }
 `;

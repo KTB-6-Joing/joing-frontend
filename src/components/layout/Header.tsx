@@ -239,14 +239,14 @@ const NotificationDot = styled.div`
 
     @media (max-width: 768px) {
         top: 2px;
-        right: 10px;
+        right: 9px;
         width: 6px;
         height: 6px;
     }
 
     @media (max-width: 480px) {
         top: 1px;
-        right: 8px;
+        right: 7px;
         width: 4px;
         height: 4px;
     }
