@@ -135,7 +135,7 @@ const Matching = () => {
                         <>
                             <Title>Product Manager Profile</Title>
                             <Name>{matchingInfo.productManagerNickname}</Name>
-                            <Email>contacnt: {matchingInfo.productManagerEmail}</Email>
+                            <Email>contact: {matchingInfo.productManagerEmail}</Email>
                         </>
                     }
                 </ItemContainer>
@@ -193,7 +193,7 @@ const CreatorContainer = styled.div`
     padding: 3rem 0;
 
     @media (max-width: 768px) {
-        padding: 2rem 1rem;
+        padding: 1rem 0;
     }
 `;
 
@@ -202,7 +202,7 @@ const ItemContainer = styled.div`
     padding: 3rem 0;
 
     @media (max-width: 768px) {
-        padding: 2rem 1rem;
+        padding: 1rem 0;
     }
 `;
 
@@ -212,6 +212,10 @@ const LinkContainer = styled.div`
 
     @media (max-width: 768px) {
         margin: 1rem 0;
+        height: auto;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
     }
 `;
 
@@ -253,7 +257,14 @@ const Profile = styled.div`
     gap: 16px;
 
     @media (max-width: 768px) {
+        width: 130px;
+        height: 130px;
         gap: 12px;
+    }
+
+    @media (max-width: 480px) {
+        width: 110px;
+        height: 110px;
     }
 `;
 
@@ -338,6 +349,10 @@ const Keywords = styled.div`
     gap: 8px;
     flex-wrap: wrap;
     margin: 2rem 0;
+
+    @media (max-width: 768px) {
+        margin: 1rem 0 2rem 0;
+    }
 `;
 
 const Keyword = styled.span`
@@ -385,6 +400,15 @@ const ButtonGroup = styled.div`
     flex-direction: row;
     justify-content: center;
     gap: 1rem;
+
+    @media (max-width: 768px) {
+        margin-bottom: 2rem;
+        gap: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        gap: 0.8rem;
+    }
 `;
 
 const CancelButton = styled.button`
@@ -397,6 +421,7 @@ const CancelButton = styled.button`
     color: #000000;
     transition: background-color 0.3s;
     cursor: pointer;
+    font-size: 1rem;
 
     &:hover {
         background-color: #e0e0e0;
@@ -407,6 +432,17 @@ const CancelButton = styled.button`
 
     &:focus {
         outline: none;
+    }
+
+    @media (max-width: 768px) {
+        width: 8rem;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        padding: 8px;
+        font-size: 0.8rem;
     }
 `;
 
@@ -420,6 +456,7 @@ const ItemViewButton = styled.button`
     color: white;
     transition: background-color 0.3s;
     cursor: pointer;
+    font-size: 1rem;
 
     &:hover {
         background-color: #3e3e3e;
@@ -430,6 +467,17 @@ const ItemViewButton = styled.button`
 
     &:focus {
         outline: none;
+    }
+
+    @media (max-width: 768px) {
+        width: 8rem;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        padding: 8px;
+        font-size: 0.8rem;
     }
 `;
 
@@ -443,6 +491,7 @@ const RejectButton = styled.button`
     color: #000000;
     transition: background-color 0.3s;
     cursor: pointer;
+    font-size: 1rem;
 
     &:hover {
         background-color: #e0e0e0;
@@ -453,6 +502,17 @@ const RejectButton = styled.button`
 
     &:focus {
         outline: none;
+    }
+
+    @media (max-width: 768px) {
+        width: 8rem;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        padding: 8px;
+        font-size: 0.8rem;
     }
 `;
 
@@ -466,6 +526,7 @@ const AcceptButton = styled.button`
     color: white;
     transition: background-color 0.3s;
     cursor: pointer;
+    font-size: 1rem;
 
     &:hover {
         background-color: #3e3e3e;
@@ -476,5 +537,16 @@ const AcceptButton = styled.button`
 
     &:focus {
         outline: none;
+    }
+
+    @media (max-width: 768px) {
+        width: 8rem;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        padding: 8px;
+        font-size: 0.8rem;
     }
 `;
