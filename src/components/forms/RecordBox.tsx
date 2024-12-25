@@ -34,6 +34,10 @@ const BoxContainer = styled.div`
         transform: scale(1.02);
         transition: transform 0.2s ease-in-out;
     }
+
+    @media (max-width: 768px) {
+        border: #e4e4e4 solid 1px;
+    }
 `;
 
 const TextContainer = styled.div`

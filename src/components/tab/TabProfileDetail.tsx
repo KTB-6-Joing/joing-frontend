@@ -302,6 +302,25 @@ const AccountImg = styled.div`
 
     img {
         width: 24px;
+        height: auto;
+    }
+
+    @media (max-width: 768px) {
+        padding: 0.9rem;
+        margin: 0.6rem;
+
+        img {
+            width: 20px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        padding: 0.8rem;
+        margin: 0.5rem;
+
+        img {
+            width: 16px;
+        }
     }
 `;
 
@@ -378,6 +397,14 @@ const Title = styled.h2`
     font-family: 'SUITE-Bold', serif;
     font-size: 1.3rem;
     margin-bottom: 0;
+
+    @media (max-width: 768px) {
+        font-size: 0.1rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 0.9rem;
+    }
 `;
 
 const Detail = styled.p`

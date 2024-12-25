@@ -477,6 +477,7 @@ const Hashtags = styled.div`
 const Hashtag = styled.p`
     white-space: nowrap;
     font-size: 1rem;
+    margin: 0;
     
     @media (max-width: 768px) {
         font-size: 0.9rem;
