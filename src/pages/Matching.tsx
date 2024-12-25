@@ -116,7 +116,6 @@ const Matching = () => {
                     <a href={matchingInfo.creatorChannelUrl || "#"} target="_blank" rel="noopener noreferrer">
                         <VisitButton>채널 방문하기</VisitButton>
                     </a>
-
                 </CreatorContainer>
 
                 <LinkContainer>
@@ -183,27 +182,49 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+    }
 `;
 
 const CreatorContainer = styled.div`
     flex: 1;
     padding: 3rem 0;
+
+    @media (max-width: 768px) {
+        padding: 2rem 1rem;
+    }
 `;
 
 const ItemContainer = styled.div`
     flex: 1;
     padding: 3rem 0;
+
+    @media (max-width: 768px) {
+        padding: 2rem 1rem;
+    }
 `;
 
 const LinkContainer = styled.div`
     display: flex;
     height: 100%;
+
+    @media (max-width: 768px) {
+        margin: 1rem 0;
+    }
 `;
 
 const Link = styled.img`
     width: 70px;
     height: 70px;
     margin: 15rem 5rem;
+
+    @media (max-width: 768px) {
+        margin: 1rem 0;
+        width: 50px;
+        height: 50px;
+    }
 `;
 
 const Title = styled.h2`
@@ -211,6 +232,16 @@ const Title = styled.h2`
     font-weight: bold;
     text-align: center;
     margin: 2.5rem;
+
+    @media (max-width: 768px) {
+        font-size: 1.2rem;
+        margin: 1.3rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 1.2rem;
+        margin: 0.5rem;
+    }
 `;
 
 const Profile = styled.div`
@@ -220,6 +251,10 @@ const Profile = styled.div`
     align-items: center;
     margin: 8px 0;
     gap: 16px;
+
+    @media (max-width: 768px) {
+        gap: 12px;
+    }
 `;
 
 const ProfileImg = styled.img`
@@ -227,6 +262,16 @@ const ProfileImg = styled.img`
     height: 120px;
     border-radius: 50%;
     background-color: gray;
+
+    @media (max-width: 768px) {
+        width: 100px;
+        height: 100px;
+    }
+
+    @media (max-width: 480px) {
+        width: 80px;
+        height: 80px;
+    }
 `;
 
 const ProfileDetail = styled.div``;
@@ -254,17 +299,38 @@ const VisitButton = styled.button`
     &:focus {
         outline: none;
     }
+
+    @media (max-width: 768px) {
+        font-size: 0.7rem;
+        padding: 10px;
+    }
 `;
 
-const SumTitle = styled.h2`
+const SumTitle = styled.h3`
     font-family: 'SUITE-Bold', serif;
     font-size: 1.2rem;
+
+    @media (max-width: 768px) {
+        font-size: 1.1rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 1rem;
+    }
 `;
 
 const Summary = styled.p`
     font-family: 'SUITE-Regular', serif;
     font-size: 1rem;
     flex: 1;
+
+    @media (max-width: 768px) {
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 0.8rem;
+    }
 `;
 
 const Keywords = styled.div`
@@ -280,15 +346,36 @@ const Keyword = styled.span`
     background-color: #f3f3f3;
     font-size: 13px;
     font-family: 'SUITE-Regular', serif;
+
+    @media (max-width: 768px) {
+        font-size: 12px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 11px;
+    }
 `;
 
 const Name = styled.h3`
     font-family: 'GongGothicMedium', serif;
+    font-size: 1.2rem;
+
+    @media (max-width: 768px) {
+        font-size: 1.1rem;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 1rem;
+    }
 `;
 
 const Platform = styled.p`
     font-family: 'SUITE-Bold', serif;
     font-size: 0.9rem;
+
+    @media (max-width: 768px) {
+        font-size: 0.8rem;
+    }
 `;
 
 const Email = styled.p``;

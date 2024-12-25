@@ -251,18 +251,21 @@ const VisitButton = styled.button`
 
     @media (max-width: 768px) {
         font-size: 0.8rem;
+        height: 35px;
     }
 
     @media (max-width: 480px) {
         font-size: 0.7rem;
+        height: 30px;
     }
 `;
 
 const MatchingButton = styled.button`
     font-family: 'SUITE-Bold', serif;
     font-size: 1rem;
+    height: 40px;
     background-color: ${({disabled}) => (disabled ? "#a0a0a0" : "#000000")};
-    border-radius: 8px;
+    border-radius: 10px;
     color: #ffffff;
     transition: background-color 0.3s;
     cursor: ${({disabled}) => (disabled ? "not-allowed" : "pointer")};
@@ -289,10 +292,12 @@ const MatchingButton = styled.button`
 
     @media (max-width: 768px) {
         font-size: 0.9rem;
+        height: 35px;
     }
 
     @media (max-width: 480px) {
         font-size: 0.8rem;
+        height: 30px;
     }
 `;
 
