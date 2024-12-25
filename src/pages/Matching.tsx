@@ -257,13 +257,11 @@ const Profile = styled.div`
     gap: 16px;
 
     @media (max-width: 768px) {
-        width: 130px;
         height: 130px;
         gap: 12px;
     }
 
     @media (max-width: 480px) {
-        width: 110px;
         height: 110px;
     }
 `;
