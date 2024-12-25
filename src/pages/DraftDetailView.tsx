@@ -7,6 +7,7 @@ import {deleteDraftPlan, viewDraftPlan} from "../services/draftService.ts";
 import {useEffect, useState} from "react";
 import WarningIcon from "../assets/icons/icon_warning.png";
 import CancelModal from "../components/modal/Modal.tsx";
+import categories from "../data/categories.ts";
 
 interface EtcItem {
     id: number;
@@ -111,7 +112,9 @@ const DraftDetailView = () => {
                     </TypeView>
                     <CategoryView>
                         <Label>Category</Label>
-                        <Category>{draft.category}</Category>
+                        <Category>
+                            {(categories as Record<string, { id: string; name: string }>)[draft.category]?.name || "알 수 없는 카테고리"}
+                        </Category>
                     </CategoryView>
                     <MiscView>
                         <Label>Additional Information</Label>

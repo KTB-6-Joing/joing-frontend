@@ -176,13 +176,13 @@ const DraftPlan: React.FC = () => {
         <Layout>
             <DraftForm onSubmit={handleSubmit}>
                 <Title>기획안 작성</Title>
-                <SubTitle>Fill in the details below to create your plan.</SubTitle>
+                <SubTitle>당신의 아이디어를 바탕으로 기획안을 작성해주세요</SubTitle>
                 <Container>
                     <LeftBox>
                         <TitleForm>
                             <Label>Title</Label>
                             <TitleInputField
-                                placeholder="Enter plan title"
+                                placeholder="제목을 입력해주세요"
                                 value={title}
                                 readOnly={readOnly}
                                 onChange={handleTitleChange}
@@ -194,7 +194,7 @@ const DraftPlan: React.FC = () => {
                                 ref={quillRef}
                                 modules={modules}
                                 value={content}
-                                placeholder="Enter plan contents"
+                                placeholder="내용을 입력해주세요"
                                 theme="snow"
                                 readOnly={readOnly}
                                 onChange={handleContentChange}
@@ -371,9 +371,17 @@ const Modal = styled.div`
 
 const Title = styled.h2`
     font-family: 'Paperlogy-6Bold', serif;
-    font-size: 32px;
+    font-size: 2rem;
     font-weight: bold;
     margin-bottom: 0;
+
+    @media (max-width: 768px) {
+        font-size: 1.7rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 1.5rem;
+    }
 `;
 
 const SubTitle = styled.p`
@@ -400,6 +408,7 @@ const Container = styled.div`
         flex-direction: column;
         height: auto;
         gap: 20px;
+        overflow: auto;
     }
 `;
 
@@ -415,6 +424,9 @@ const LeftBox = styled.div`
         flex: none;
         width: 100%;
         padding-right: 0;
+        height: auto;
+        overflow-y: hidden;
+        padding-bottom: 3rem;
     }
 `;
 
