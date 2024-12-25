@@ -165,23 +165,56 @@ const Container = styled.section`
     overflow-y: auto;
     overflow-x: hidden;
     margin: 20px;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    @media (max-width: 480px) {
+        margin: 10px;
+    }
 `;
 
 const LeftBox = styled.div`
     flex: 2;
     display: flex;
     flex-direction: column;
-
     height: 100%;
+
+    @media (max-width: 768px) {
+        flex: none;
+        width: 100%;
+    }
 `;
 
 const Title = styled.h2`
-    font-family: 'SUITE-Bold';
+    font-family: 'SUITE-Bold', serif;
     font-size: 1.5rem;
     margin: 30px 0;
+
+    @media (max-width: 768px) {
+        font-size: 1.2rem;
+        margin: 20px 0;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 1rem;
+        margin: 15px 0;
+    }
 `;
 
-const Content = styled.article``;
+const Content = styled.article`
+    font-size: 1rem;
+
+    @media (max-width: 768px) {
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 0.8rem;
+    }
+`;
 
 const Label = styled.label`
     font-family: 'SUITE-Bold', serif;
@@ -190,6 +223,10 @@ const Label = styled.label`
     margin-bottom: 8px;
     margin-top: 0;
     color: #333;
+
+    @media (max-width: 768px) {
+        font-size: 0.9rem;
+    }
 `;
 
 const RightBox = styled.div`
@@ -197,6 +234,14 @@ const RightBox = styled.div`
     display: flex;
     flex-direction: column;
     gap: 16px;
+
+    @media (max-width: 768px) {
+        gap: 12px;
+    }
+
+    @media (max-width: 480px) {
+        gap: 8px;
+    }
 `;
 
 const View = styled.div`
@@ -212,6 +257,16 @@ const Profile = styled.div`
     align-items: center;
     margin: 8px 0;
     gap: 16px;
+
+    @media (max-width: 768px) {
+        height: 130px;
+        gap: 12px;
+    }
+
+    @media (max-width: 480px) {
+        height: 110px;
+        gap: 8px;
+    }
 `;
 
 const ProfileImg = styled.img`
@@ -219,17 +274,39 @@ const ProfileImg = styled.img`
     height: 120px;
     border-radius: 50%;
     background-color: gray;
+
+    @media (max-width: 768px) {
+        width: 100px;
+        height: 100px;
+    }
+
+    @media (max-width: 480px) {
+        width: 80px;
+        height: 80px;
+    }
 `;
 
 const ProfileDetail = styled.div``;
 
 const Name = styled.h3`
     font-family: 'GongGothicMedium', serif;
+    
+    @media (max-width: 768px) {
+        font-size: 1.1rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 1rem;
+    }
 `;
 
 const Email = styled.p`
     font-family: 'SUITE-Bold', serif;
     font-size: 0.9rem;
+
+    @media (max-width: 768px) {
+        font-size: 0.8rem;
+    }
 `;
 
 const SummaryView = styled(View)``;
@@ -245,14 +322,30 @@ const KeywordView = styled(View)``;
 const Keywords = styled.div`
     display: flex;
     gap: 8px;
+
+    @media (max-width: 768px) {
+        gap: 6px;
+    }
+
+    @media (max-width: 480px) {
+        gap: 4px;
+    }
 `;
 
 const Span = styled.span`
     padding: 6px 10px;
     border-radius: 10px;
     background-color: #f3f3f3;
-    font-size: 13px;
+    font-size: 0.9rem;
     font-family: 'SUITE-Regular', serif;
+
+    @media (max-width: 768px) {
+        font-size: 0.85rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 0.75rem;
+    }
 `;
 
 const Keyword = styled(Span)`
@@ -283,6 +376,16 @@ const Buttons = styled.div`
     margin: 50px 0;
     padding-bottom: 30px;
     gap: 10px;
+
+    @media (max-width: 768px) {
+        margin: 30px 0;
+        gap: 8px;
+    }
+
+    @media (max-width: 480px) {
+        margin: 20px 0;
+        gap: 6px;
+    }
 `;
 
 const DeleteButton = styled.button`
@@ -304,6 +407,16 @@ const DeleteButton = styled.button`
 
     &:focus {
         outline: none;
+    }
+
+    @media (max-width: 768px) {
+        width: 150px;
+        height: 36px;
+    }
+
+    @media (max-width: 480px) {
+        width: 100%;
+        height: 32px;
     }
 `;
 
@@ -328,6 +441,18 @@ const ButtonContainer = styled.div`
     justify-content: flex-end;
     margin-top: 20px;
     gap: 10px;
+
+    @media (max-width: 768px) {
+        justify-content: center;
+        margin-top: 15px;
+        gap: 8px;
+    }
+
+    @media (max-width: 480px) {
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+    }
 `;
 
 const GrayButton = styled.button`

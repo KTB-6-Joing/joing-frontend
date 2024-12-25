@@ -395,6 +395,12 @@ const Container = styled.div`
     flex-grow: 1;
     height: calc(100vh - 200px);
     overflow: hidden;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        height: auto;
+        gap: 20px;
+    }
 `;
 
 const LeftBox = styled.div`
@@ -404,12 +410,24 @@ const LeftBox = styled.div`
     height: 100%;
     overflow-y: auto;
     padding-right: 10px;
+
+    @media (max-width: 768px) {
+        flex: none;
+        width: 100%;
+        padding-right: 0;
+    }
 `;
 
 const RightBox = styled.div`
     flex: 1;
     overflow-y: auto;
     padding-right: 10px;
+
+    @media (max-width: 768px) {
+        flex: none;
+        width: 100%;
+        padding-right: 0;
+    }
 `;
 
 const Label = styled.label`
@@ -457,6 +475,16 @@ const ReactQuillWrapper = styled(ReactQuill)`
 
     .ql-editor {
         min-height: 280px;
+    }
+
+    @media (max-width: 768px) {
+        .ql-container {
+            min-height: 200px;
+        }
+
+        .ql-editor {
+            min-height: 200px;
+        }
     }
 `;
 
@@ -542,6 +570,14 @@ const Buttons = styled.div`
     justify-content: center;
     margin: 50px 0;
     gap: 10px;
+
+    @media (max-width: 768px) {
+        gap: 8px;
+    }
+
+    @media (max-width: 480px) {
+        margin: 20px 0;
+    }
 `;
 
 const CancelButton = styled.button`

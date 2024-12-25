@@ -182,6 +182,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
+    overflow: visible;
 
     @media (max-width: 768px) {
         flex-direction: column;
@@ -211,7 +212,7 @@ const LinkContainer = styled.div`
     height: 100%;
 
     @media (max-width: 768px) {
-        margin: 1rem 0;
+        margin: 0;
         height: auto;
         width: 100%;
         align-items: center;
