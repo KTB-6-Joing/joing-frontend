@@ -328,7 +328,6 @@ const DraftPlan: React.FC = () => {
                                 <CancelButton
                                     type="button"
                                     onClick={openModal}
-                                    style={{width: '200px'}}
                                 >
                                     취소
                                 </CancelButton>
