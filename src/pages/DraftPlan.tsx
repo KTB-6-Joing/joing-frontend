@@ -330,7 +330,7 @@ const DraftPlan: React.FC = () => {
                                     onClick={openModal}
                                     style={{width: '200px'}}
                                 >
-                                    cancel
+                                    취소
                                 </CancelButton>
                                 <ReWriteButton
                                     onClick={handleReWriteClick}
@@ -667,6 +667,16 @@ const ReWriteButton = styled.button`
 
     &:focus {
         outline: none;
+    }
+
+    @media (max-width: 768px) {
+        width: 170px;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        width: 150px;
+        font-size: 0.8rem;
     }
 `;
 
