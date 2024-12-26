@@ -177,7 +177,7 @@ const Profile = styled.div`
     }
 
     @media (max-width: 768px) {
-        width: 110px;
+        height: 110px;
     }
 `;
 

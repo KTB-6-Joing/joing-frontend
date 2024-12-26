@@ -261,7 +261,7 @@ const DraftPlan: React.FC = () => {
                         type="button"
                         onClick={openModal}
                     >
-                        cancel
+                        취소
                     </CancelButton>
                     <CancelModal isOpen={isModalOpen} onClose={closeModal}>
                         <WarningHeader>
@@ -365,7 +365,20 @@ const Modal = styled.div`
     z-index: 1000;
 
     p{
+        font-size: 1rem;
         color: white;
+    }
+
+    @media (max-width: 768px) {
+        p{
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        p{
+            font-size: 0.8rem;
+        }
     }
 `;
 
@@ -659,6 +672,7 @@ const ReWriteButton = styled.button`
 
 const SummaryPage = styled.div`
     display: flex;
+    width: 100%;
     flex-direction: column;
     align-items: center;
     overflow: hidden;
@@ -681,22 +695,38 @@ const Summary = styled.div`
 const SumTitle = styled.h2`
     align-self: flex-start;
     font-family: 'GongGothicMedium', serif;
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: bold;
+
+    @media (max-width: 768px) {
+        font-size: 1.3rem;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 1.1rem;
+    }
 `;
 
 const SumSubTitle = styled.h3`
     align-self: flex-start;
     font-family: 'SUITE-Bold', serif;
-    font-size: 18px;
+    font-size: 1.1rem;
     color: #2c2c2c;
+
+    @media (max-width: 768px) {
+        font-size: 1rem;
+    }
 `;
 
 const SumContent = styled.p`
     font-family: 'SUITE-Regular', serif;
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.5;
     color: #333;
+
+    @media (max-width: 768px) {
+        font-size: 0.9rem;
+    }
 `;
 
 const SumKeywords = styled.div`
@@ -709,8 +739,13 @@ const Keyword = styled.span`
     padding: 6px 10px;
     border-radius: 10px;
     background-color: #f3f3f3;
-    font-size: 13px;
+    font-size: 0.9rem;
     font-family: 'SUITE-Regular', serif;
+    white-space: nowrap;
+
+    @media (max-width: 768px) {
+        font-size: 0.8rem;
+    }
 `;
 
 const ReSumButton = styled.button`
@@ -731,6 +766,16 @@ const ReSumButton = styled.button`
 
     &:focus {
         outline: none;
+    }
+
+    @media (max-width: 768px) {
+        width: 160px;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        width: 120px;
+        font-size: 0.8rem;
     }
 `;
 
@@ -754,6 +799,16 @@ const MatchingButton = styled.button`
     &:focus {
         outline: none;
     }
+
+    @media (max-width: 768px) {
+        width: 160px;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        width: 120px;
+        font-size: 0.8rem;
+    }
 `;
 
 const WarningHeader = styled.div`
@@ -769,6 +824,26 @@ const WarningHeader = styled.div`
     img {
         width: 40px;
         height: auto;
+    }
+
+    @media (max-width: 768px) {
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        img {
+            width: 35px;
+        }    
+    }
+
+    @media (max-width: 480px) {
+        h2 {
+            font-size: 1.1rem;
+        }
+
+        img {
+            width: 30px;
+        } 
     }
 `;
 
