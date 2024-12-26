@@ -690,6 +690,10 @@ const Summary = styled.div`
     flex-direction: column;
     align-items: flex-start;
     width: calc(100% - 200px);
+
+    @media (max-width: 768px) {
+        width: 100%;
+    }
 `;
 
 const SumTitle = styled.h2`
@@ -769,12 +773,12 @@ const ReSumButton = styled.button`
     }
 
     @media (max-width: 768px) {
-        width: 160px;
+        width: 170px;
         font-size: 0.9rem;
     }
 
     @media (max-width: 480px) {
-        width: 120px;
+        width: 150px;
         font-size: 0.8rem;
     }
 `;
@@ -801,12 +805,12 @@ const MatchingButton = styled.button`
     }
 
     @media (max-width: 768px) {
-        width: 160px;
+        width: 170px;
         font-size: 0.9rem;
     }
 
     @media (max-width: 480px) {
-        width: 120px;
+        width: 150px;
         font-size: 0.8rem;
     }
 `;
